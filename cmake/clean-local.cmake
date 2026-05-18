@@ -1,0 +1,48 @@
+cmake_minimum_required(VERSION 3.16)
+
+if(NOT DEFINED FEEBAS_SOURCE_DIR)
+  get_filename_component(FEEBAS_SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/.." ABSOLUTE)
+endif()
+
+file(GLOB FEEBAS_CMAKE_BUILD_DIRS LIST_DIRECTORIES true
+  "${FEEBAS_SOURCE_DIR}/cmake-build-*"
+)
+
+file(GLOB FEEBAS_ROOT_TEST_BINARIES
+  "${FEEBAS_SOURCE_DIR}/feebas-test-*"
+)
+
+set(FEEBAS_CLEAN_PATHS
+  "${FEEBAS_SOURCE_DIR}/build"
+  "${FEEBAS_SOURCE_DIR}/build-tests"
+  ${FEEBAS_CMAKE_BUILD_DIRS}
+  "${FEEBAS_SOURCE_DIR}/CMakeCache.txt"
+  "${FEEBAS_SOURCE_DIR}/CMakeFiles"
+  "${FEEBAS_SOURCE_DIR}/cmake_install.cmake"
+  "${FEEBAS_SOURCE_DIR}/CTestTestfile.cmake"
+  "${FEEBAS_SOURCE_DIR}/Testing"
+  "${FEEBAS_SOURCE_DIR}/Makefile"
+  "${FEEBAS_SOURCE_DIR}/build.ninja"
+  "${FEEBAS_SOURCE_DIR}/.ninja_deps"
+  "${FEEBAS_SOURCE_DIR}/.ninja_log"
+  "${FEEBAS_SOURCE_DIR}/feebas-server"
+  "${FEEBAS_SOURCE_DIR}/libfeebas-engine.a"
+  ${FEEBAS_ROOT_TEST_BINARIES}
+)
+
+if(DEFINED FEEBAS_PRESERVE_BINARY_DIR)
+  get_filename_component(FEEBAS_PRESERVE_BINARY_DIR
+    "${FEEBAS_PRESERVE_BINARY_DIR}"
+    ABSOLUTE
+  )
+  list(REMOVE_ITEM FEEBAS_CLEAN_PATHS "${FEEBAS_PRESERVE_BINARY_DIR}")
+endif()
+
+list(REMOVE_DUPLICATES FEEBAS_CLEAN_PATHS)
+
+foreach(FEEBAS_CLEAN_PATH IN LISTS FEEBAS_CLEAN_PATHS)
+  if(EXISTS "${FEEBAS_CLEAN_PATH}" OR IS_SYMLINK "${FEEBAS_CLEAN_PATH}")
+    message(STATUS "Removing ${FEEBAS_CLEAN_PATH}")
+    file(REMOVE_RECURSE "${FEEBAS_CLEAN_PATH}")
+  endif()
+endforeach()

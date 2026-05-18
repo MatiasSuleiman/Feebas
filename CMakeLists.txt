@@ -5,6 +5,15 @@ project(feebas_particle_simulator LANGUAGES CXX)
 option(FEEBAS_BUILD_SERVER "Build the local HTTP server" ON)
 option(FEEBAS_BUILD_TESTS "Build C++ tests" ON)
 
+add_custom_target(clean-compiled
+  COMMAND ${CMAKE_COMMAND}
+    "-DFEEBAS_SOURCE_DIR=${CMAKE_CURRENT_SOURCE_DIR}"
+    "-DFEEBAS_PRESERVE_BINARY_DIR=${CMAKE_BINARY_DIR}"
+    -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/clean-local.cmake"
+  COMMENT "Removing local CMake build outputs outside this active build tree"
+  VERBATIM
+)
+
 add_library(feebas-engine
   src/particles.cpp
   src/world.cpp

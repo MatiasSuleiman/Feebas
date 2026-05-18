@@ -40,3 +40,26 @@ cmake -S . -B build-tests -DFEEBAS_BUILD_SERVER=OFF
 cmake --build build-tests
 ctest --test-dir build-tests
 ```
+
+## Clean Local Build Outputs
+
+CMake does not have a `cmake clean` command. To clean compiled outputs inside
+one configured build tree, use CMake's generated clean target:
+
+```sh
+cmake --build build --target clean
+```
+
+To remove the local build directories completely, run the repository cleanup
+script from the source tree:
+
+```sh
+cmake -P cmake/clean-local.cmake
+```
+
+If you have already configured a build tree, this convenience target removes the
+other local build outputs while preserving the active build tree:
+
+```sh
+cmake --build build --target clean-compiled
+```
