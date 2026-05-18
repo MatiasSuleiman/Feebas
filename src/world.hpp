@@ -1,14 +1,21 @@
 #pragma once
 
-#include <tuple>
-#include <vector>
+#include <map>
+#include <memory>
+#include <utility>
 
 #include "particles.hpp"
 
 class World {
  public:
   World();
+  void Create_dirt_particle_at(int x, int y);
+  bool there_is_dirt_particle_at(int x, int y) const;
+  bool there_is_void_particle_at(int x, int y) const;
+  void step();
 
  private:
-  std::vector<std::tuple<DirtParticle, std::tuple<int, int>>> particles;
+  using Coordinate = std::pair<int, int>;
+
+  std::map<Coordinate, std::unique_ptr<Particle>> particles;
 };

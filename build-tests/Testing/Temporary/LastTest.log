@@ -1,13 +1,13 @@
-Start testing: May 14 01:38 -03
+Start testing: May 18 17:34 -03
 ----------------------------------------------------------
-1/1 Testing: feebas-tests
-1/1 Test: feebas-tests
-Command: "/home/matias/Feebas/build-tests/feebas-tests"
+1/4 Testing: feebas-test-tests_particle_tests_test01_cpp
+1/4 Test: feebas-test-tests_particle_tests_test01_cpp
+Command: "/home/matias/Feebas/build-tests/feebas-test-tests_particle_tests_test01_cpp"
 Directory: /home/matias/Feebas/build-tests
-"feebas-tests" start time: May 14 01:38 -03
+"feebas-test-tests_particle_tests_test01_cpp" start time: May 18 17:34 -03
 Output:
 ----------------------------------------------------------
-Randomness seeded to: 953773641
+Randomness seeded to: 3567751592
 ===============================================================================
 All tests passed (1 assertion in 1 test case)
 
@@ -15,8 +15,82 @@ All tests passed (1 assertion in 1 test case)
 Test time =   0.00 sec
 ----------------------------------------------------------
 Test Passed.
-"feebas-tests" end time: May 14 01:38 -03
-"feebas-tests" time elapsed: 00:00:00
+"feebas-test-tests_particle_tests_test01_cpp" end time: May 18 17:34 -03
+"feebas-test-tests_particle_tests_test01_cpp" time elapsed: 00:00:00
 ----------------------------------------------------------
 
-End testing: May 14 01:38 -03
+2/4 Testing: feebas-test-tests_world_tests_test01_cpp
+2/4 Test: feebas-test-tests_world_tests_test01_cpp
+Command: "/home/matias/Feebas/build-tests/feebas-test-tests_world_tests_test01_cpp"
+Directory: /home/matias/Feebas/build-tests
+"feebas-test-tests_world_tests_test01_cpp" start time: May 18 17:34 -03
+Output:
+----------------------------------------------------------
+Randomness seeded to: 3022788639
+===============================================================================
+All tests passed (2 assertions in 1 test case)
+
+<end of output>
+Test time =   0.35 sec
+----------------------------------------------------------
+Test Passed.
+"feebas-test-tests_world_tests_test01_cpp" end time: May 18 17:34 -03
+"feebas-test-tests_world_tests_test01_cpp" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/4 Testing: feebas-test-tests_world_tests_test02_cpp
+3/4 Test: feebas-test-tests_world_tests_test02_cpp
+Command: "/home/matias/Feebas/build-tests/feebas-test-tests_world_tests_test02_cpp"
+Directory: /home/matias/Feebas/build-tests
+"feebas-test-tests_world_tests_test02_cpp" start time: May 18 17:34 -03
+Output:
+----------------------------------------------------------
+Randomness seeded to: 2080443543
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.33 sec
+----------------------------------------------------------
+Test Passed.
+"feebas-test-tests_world_tests_test02_cpp" end time: May 18 17:34 -03
+"feebas-test-tests_world_tests_test02_cpp" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/4 Testing: feebas-test-tests_world_tests_test03_cpp
+4/4 Test: feebas-test-tests_world_tests_test03_cpp
+Command: "/home/matias/Feebas/build-tests/feebas-test-tests_world_tests_test03_cpp"
+Directory: /home/matias/Feebas/build-tests
+"feebas-test-tests_world_tests_test03_cpp" start time: May 18 17:34 -03
+Output:
+----------------------------------------------------------
+Randomness seeded to: 1710051429
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+feebas-test-tests_world_tests_test03_cpp is a Catch2 v3.7.1 host application.
+Run with -? for options
+
+-------------------------------------------------------------------------------
+test03 world lets advance simulation one step
+-------------------------------------------------------------------------------
+/home/matias/Feebas/tests/world_tests/test03.cpp:9
+...............................................................................
+
+/home/matias/Feebas/tests/world_tests/test03.cpp:14: FAILED:
+  REQUIRE( world.there_is_dirt_particle_at(399,300) )
+with expansion:
+  false
+
+===============================================================================
+test cases: 1 | 1 failed
+assertions: 2 | 1 passed | 1 failed
+
+<end of output>
+Test time =   0.33 sec
+----------------------------------------------------------
+Test Failed.
+"feebas-test-tests_world_tests_test03_cpp" end time: May 18 17:34 -03
+"feebas-test-tests_world_tests_test03_cpp" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 18 17:34 -03

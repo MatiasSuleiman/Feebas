@@ -4,6 +4,8 @@
 #include <catch2/catch.hpp>
 #endif
 
+#include "world.hpp"
+
 TEST_CASE("test01 compiles") {
   SUCCEED();
 }

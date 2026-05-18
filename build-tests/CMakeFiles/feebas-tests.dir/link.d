@@ -3,6 +3,7 @@ feebas-tests: \
   /usr/lib/gcc/x86_64-linux-gnu/14/../../../x86_64-linux-gnu/crti.o \
   /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
   CMakeFiles/feebas-tests.dir/tests/particle_tests/test01.cpp.o \
+  CMakeFiles/feebas-tests.dir/tests/word_tests/test01.cpp.o \
   libfeebas-engine.a \
   /usr/lib/libCatch2Main.a \
   /usr/lib/libCatch2.a \
@@ -41,6 +42,8 @@ feebas-tests: \
 /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
 
 CMakeFiles/feebas-tests.dir/tests/particle_tests/test01.cpp.o:
+
+CMakeFiles/feebas-tests.dir/tests/word_tests/test01.cpp.o:
 
 libfeebas-engine.a:
 

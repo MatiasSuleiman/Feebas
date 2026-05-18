@@ -39,27 +39,43 @@ endif()
 if(FEEBAS_BUILD_TESTS)
   find_package(Catch2 REQUIRED)
 
-  add_executable(feebas-tests
-    tests/particle_tests/test01.cpp
+  file(GLOB_RECURSE FEEBAS_TEST_SOURCES CONFIGURE_DEPENDS
+    tests/*.cpp
   )
-
-  target_link_libraries(feebas-tests PRIVATE
-    feebas-engine
-  )
-
-  if(TARGET Catch2::Catch2WithMain)
-    target_link_libraries(feebas-tests PRIVATE
-      Catch2::Catch2WithMain
-    )
-  else()
-    target_compile_definitions(feebas-tests PRIVATE
-      CATCH_CONFIG_MAIN
-    )
-    target_link_libraries(feebas-tests PRIVATE
-      Catch2::Catch2
-    )
-  endif()
 
   enable_testing()
-  add_test(NAME feebas-tests COMMAND feebas-tests)
+
+  foreach(FEEBAS_TEST_SOURCE IN LISTS FEEBAS_TEST_SOURCES)
+    file(RELATIVE_PATH FEEBAS_TEST_PATH
+      ${CMAKE_CURRENT_SOURCE_DIR}
+      ${FEEBAS_TEST_SOURCE}
+    )
+
+    string(REPLACE "/" "_" FEEBAS_TEST_NAME ${FEEBAS_TEST_PATH})
+    string(REPLACE "." "_" FEEBAS_TEST_NAME ${FEEBAS_TEST_NAME})
+    set(FEEBAS_TEST_TARGET feebas-test-${FEEBAS_TEST_NAME})
+
+    add_executable(${FEEBAS_TEST_TARGET}
+      ${FEEBAS_TEST_SOURCE}
+    )
+
+    target_link_libraries(${FEEBAS_TEST_TARGET} PRIVATE
+      feebas-engine
+    )
+
+    if(TARGET Catch2::Catch2WithMain)
+      target_link_libraries(${FEEBAS_TEST_TARGET} PRIVATE
+        Catch2::Catch2WithMain
+      )
+    else()
+      target_compile_definitions(${FEEBAS_TEST_TARGET} PRIVATE
+        CATCH_CONFIG_MAIN
+      )
+      target_link_libraries(${FEEBAS_TEST_TARGET} PRIVATE
+        Catch2::Catch2
+      )
+    endif()
+
+    add_test(NAME ${FEEBAS_TEST_TARGET} COMMAND ${FEEBAS_TEST_TARGET})
+  endforeach()
 endif()
