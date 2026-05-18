@@ -1,0 +1,22 @@
+Start testing: May 14 01:38 -03
+----------------------------------------------------------
+1/1 Testing: feebas-tests
+1/1 Test: feebas-tests
+Command: "/home/matias/Feebas/build-tests/feebas-tests"
+Directory: /home/matias/Feebas/build-tests
+"feebas-tests" start time: May 14 01:38 -03
+Output:
+----------------------------------------------------------
+Randomness seeded to: 953773641
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"feebas-tests" end time: May 14 01:38 -03
+"feebas-tests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 14 01:38 -03
