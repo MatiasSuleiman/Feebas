@@ -28,6 +28,7 @@ void DirtParticle::particle_is_falling_onto(Particle* particle){
 }
 
 void DirtParticle::fall_onto_dirt(DirtParticle* dirt_particle){
+        world_is_in->dirt_particle_falling_onto_dirt(this);
 }
 
 void DirtParticle::fall_onto_void(VoidParticle* void_particle){

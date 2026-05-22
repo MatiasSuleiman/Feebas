@@ -26,7 +26,7 @@ bool World::there_is_void_particle_at(int x, int y) const {
 
 void World::make_particle_fall(Particle* particle) {
        
-        auto iterator = this->iterator_of(particle);
+        ParticleIterator iterator = this->iterator_of(particle);
         if (iterator == particles.end()) {
                 return;
         }
@@ -51,7 +51,7 @@ void World::step() {
 }
 
 World::ParticleIterator World::iterator_of(Particle* particle){
-        for (auto iterator = particles.begin(); iterator != particles.end(); ++iterator) {
+        for (ParticleIterator iterator = particles.begin(); iterator != particles.end(); ++iterator) {
                 if (iterator->second.get() == particle) {
                         return iterator;
                 }
@@ -64,13 +64,25 @@ Particle* World::look_for_particle_underneath(Coordinate particle_coordinates){
                 particle_coordinates.first,
                 particle_coordinates.second - 1
         };
-        auto target_iterator = particles.find(under_coordinates);
+        ParticleIterator target_iterator = particles.find(under_coordinates);
         Particle* under_particle = target_iterator->second.get();
         return under_particle;
 }
 
+Particle* World::look_for_particle_to_the_left(Coordinate particle_coordinates){
+        Coordinate left_coordinates{
+                particle_coordinates.first - 1,
+                particle_coordinates.second
+        };
+
+        ParticleIterator target_iterator = particles.find(left_coordinates);
+        Particle* left_particle = target_iterator->second.get();
+        return left_particle;
+}
+
+
 void World::dirt_particle_falling_onto_void(DirtParticle* dirt_particle){
-        auto particle_iterator = this->iterator_of(dirt_particle);
+        ParticleIterator particle_iterator = this->iterator_of(dirt_particle);
         if (particle_iterator == particles.end()) {
                 return;
         }
@@ -79,7 +91,30 @@ void World::dirt_particle_falling_onto_void(DirtParticle* dirt_particle){
 
         Coordinate new_coordinate = particle_coordinates;
         --new_coordinate.second;
-        std::unique_ptr<Particle> moved_particle = std::move(particle_iterator->second);
-        particle_iterator->second = std::make_unique<VoidParticle>(this);
-        particles.insert_or_assign(new_coordinate, std::move(moved_particle));
+
+        ParticleIterator particle_underneath_iterator = particles.find(new_coordinate);
+        std::swap(particle_iterator->second , particle_underneath_iterator->second);
+}
+
+void World::dirt_particle_falling_onto_dirt(DirtParticle* dirt_particle){
+        ParticleIterator particle_iterator = this->iterator_of(dirt_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+
+         Coordinate left_coordinates{
+                particle_coordinates.first - 1,
+                particle_coordinates.second
+        };
+
+        Particle* particle_to_the_side = this->look_for_particle_to_the_left(particle_coordinates);
+        Particle* particle_underneath_to_the_left = this->look_for_particle_underneath(left_coordinates);
+
+        if(particle_to_the_side->isVoid() && particle_underneath_to_the_left->isVoid()){
+
+                ParticleIterator bottom_left_edge_iterator = this->iterator_of(particle_underneath_to_the_left);
+                std::swap(particle_iterator->second , bottom_left_edge_iterator->second);
+        }
 }
