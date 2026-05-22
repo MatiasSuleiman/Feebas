@@ -6,6 +6,14 @@
 
 #include "world.hpp"
 
-TEST_CASE("test01 compiles") {
-  SUCCEED();
+TEST_CASE("test01 dirt particle stops falling if encountered with a wall of dirt") {
+        World world;
+        world.Create_dirt_particle_at(0,0);
+        world.Create_dirt_particle_at(1,0);
+        world.Create_dirt_particle_at(2,0);
+        world.Create_dirt_particle_at(1,1);
+
+        REQUIRE(world.there_is_dirt_particle_at(1,1));
+        world.step();
+        REQUIRE(world.there_is_dirt_particle_at(1,1));
 }

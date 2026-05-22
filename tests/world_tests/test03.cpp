@@ -11,5 +11,6 @@ TEST_CASE("test03 world lets advance simulation one step") {
         world.Create_dirt_particle_at(400,300);
         REQUIRE(world.there_is_dirt_particle_at(400, 300));
         world.step();
-        REQUIRE(world.there_is_dirt_particle_at(399,300));
+        REQUIRE(world.there_is_dirt_particle_at(400,299));
+        REQUIRE(world.there_is_void_particle_at(400,300));
 }

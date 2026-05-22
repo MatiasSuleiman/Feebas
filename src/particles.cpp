@@ -1,9 +1,14 @@
 #include "particles.hpp"
 
+#include "world.hpp"
+
+Particle::Particle(World* world) : world_is_in(world) {
+}
+
 Particle::~Particle() {
 }
 
-DirtParticle::DirtParticle() {
+DirtParticle::DirtParticle(World* world) : Particle(world) {
 }
 
 bool DirtParticle::isDirt() const {
@@ -14,11 +19,22 @@ bool DirtParticle::isVoid() const {
   return false;
 }
 
-void DirtParticle::step(int x, int y) const{
-        
+void DirtParticle::step() {
+  world_is_in->make_particle_fall(this);
 }
 
-VoidParticle::VoidParticle() {
+void DirtParticle::particle_is_falling_onto(Particle* particle){
+        particle->fall_onto_dirt(this);
+}
+
+void DirtParticle::fall_onto_dirt(DirtParticle* dirt_particle){
+}
+
+void DirtParticle::fall_onto_void(VoidParticle* void_particle){
+        world_is_in->dirt_particle_falling_onto_void(this);
+}
+
+VoidParticle::VoidParticle(World* world) : Particle(world) {
 }
 
 bool VoidParticle::isDirt() const {
@@ -29,3 +45,15 @@ bool VoidParticle::isVoid() const {
   return true;
 }
 
+void VoidParticle::step() {
+}
+
+void VoidParticle::particle_is_falling_onto(Particle* particle){
+        particle->fall_onto_void(this);
+}
+
+void VoidParticle::fall_onto_dirt(DirtParticle* dirt_particle){
+}
+
+void VoidParticle::fall_onto_void(VoidParticle* void_particle){
+}

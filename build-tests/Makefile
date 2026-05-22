@@ -128,6 +128,19 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named clean-compiled
+
+# Build rule for target.
+clean-compiled: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean-compiled
+.PHONY : clean-compiled
+
+# fast build rule for target.
+clean-compiled/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/clean-compiled.dir/build.make CMakeFiles/clean-compiled.dir/build
+.PHONY : clean-compiled/fast
+
+#=============================================================================
 # Target rules for targets named feebas-engine
 
 # Build rule for target.
@@ -191,6 +204,19 @@ feebas-test-tests_world_tests_test03_cpp: cmake_check_build_system
 feebas-test-tests_world_tests_test03_cpp/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build
 .PHONY : feebas-test-tests_world_tests_test03_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test04_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test04_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test04_cpp
+.PHONY : feebas-test-tests_world_tests_test04_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test04_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test04_cpp/fast
 
 src/particles.o: src/particles.cpp.o
 .PHONY : src/particles.o
@@ -336,6 +362,30 @@ tests/world_tests/test03.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03.cpp.s
 .PHONY : tests/world_tests/test03.cpp.s
 
+tests/world_tests/test04.o: tests/world_tests/test04.cpp.o
+.PHONY : tests/world_tests/test04.o
+
+# target to build an object file
+tests/world_tests/test04.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/tests/world_tests/test04.cpp.o
+.PHONY : tests/world_tests/test04.cpp.o
+
+tests/world_tests/test04.i: tests/world_tests/test04.cpp.i
+.PHONY : tests/world_tests/test04.i
+
+# target to preprocess a source file
+tests/world_tests/test04.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/tests/world_tests/test04.cpp.i
+.PHONY : tests/world_tests/test04.cpp.i
+
+tests/world_tests/test04.s: tests/world_tests/test04.cpp.s
+.PHONY : tests/world_tests/test04.s
+
+# target to generate assembly for a file
+tests/world_tests/test04.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/tests/world_tests/test04.cpp.s
+.PHONY : tests/world_tests/test04.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -345,11 +395,13 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... clean-compiled"
 	@echo "... feebas-engine"
 	@echo "... feebas-test-tests_particle_tests_test01_cpp"
 	@echo "... feebas-test-tests_world_tests_test01_cpp"
 	@echo "... feebas-test-tests_world_tests_test02_cpp"
 	@echo "... feebas-test-tests_world_tests_test03_cpp"
+	@echo "... feebas-test-tests_world_tests_test04_cpp"
 	@echo "... src/particles.o"
 	@echo "... src/particles.i"
 	@echo "... src/particles.s"
@@ -368,6 +420,9 @@ help:
 	@echo "... tests/world_tests/test03.o"
 	@echo "... tests/world_tests/test03.i"
 	@echo "... tests/world_tests/test03.s"
+	@echo "... tests/world_tests/test04.o"
+	@echo "... tests/world_tests/test04.i"
+	@echo "... tests/world_tests/test04.s"
 .PHONY : help
 
 

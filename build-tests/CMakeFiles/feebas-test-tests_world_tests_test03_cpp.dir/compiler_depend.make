@@ -287,6 +287,49 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
   /usr/lib/linux/uapi/x86/asm/posix_types_64.h \
   /usr/lib/linux/uapi/x86/asm/types.h
 
+feebas-test-tests_world_tests_test03_cpp: /lib/x86_64-linux-gnu/libc.so.6 \
+  /lib/x86_64-linux-gnu/libm.so.6 \
+  /lib/x86_64-linux-gnu/libmvec.so.1 \
+  /lib64/ld-linux-x86-64.so.2 \
+  /usr/lib/x86_64-linux-gnu/Scrt1.o \
+  /usr/lib/x86_64-linux-gnu/crti.o \
+  /usr/lib/x86_64-linux-gnu/crtn.o \
+  /usr/lib/x86_64-linux-gnu/libc.so \
+  /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 \
+  /usr/lib/x86_64-linux-gnu/libm.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o \
+  /usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so \
+  /usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so \
+  /usr/lib/libCatch2.a \
+  /usr/lib/libCatch2Main.a \
+  /usr/lib/x86_64-linux-gnu/libc_nonshared.a \
+  CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03.cpp.o \
+  libfeebas-engine.a
+
+
+libfeebas-engine.a:
+
+CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03.cpp.o:
+
+/usr/lib/x86_64-linux-gnu/libc_nonshared.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libstdc++.so:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc.a:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/crtendS.o:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/crtbeginS.o:
+
+/usr/lib/x86_64-linux-gnu/libgcc_s.so.1:
+
+/usr/lib/x86_64-linux-gnu/libc.so:
+
+/usr/lib/x86_64-linux-gnu/crti.o:
+
+/lib64/ld-linux-x86-64.so.2:
 
 /usr/lib/linux/uapi/x86/asm/posix_types.h:
 
@@ -348,6 +391,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 
 /usr/include/c++/14/ctime:
 
+/lib/x86_64-linux-gnu/libm.so.6:
+
 /usr/include/c++/14/iosfwd:
 
 /usr/include/x86_64-linux-gnu/c++/14/bits/c++config.h:
@@ -375,6 +420,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 /usr/include/c++/14/bits/uses_allocator_args.h:
 
 /usr/include/c++/14/bits/unique_ptr.h:
+
+/usr/lib/libCatch2.a:
 
 /usr/include/c++/14/bits/streambuf_iterator.h:
 
@@ -429,6 +476,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 /usr/include/c++/14/bits/charconv.h:
 
 /usr/include/c++/14/bits/basic_ios.tcc:
+
+/lib/x86_64-linux-gnu/libc.so.6:
 
 /usr/include/c++/14/pstl/glue_memory_defs.h:
 
@@ -495,6 +544,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 /usr/include/c++/14/bits/stl_tree.h:
 
 /usr/include/catch2/internal/catch_result_type.hpp:
+
+/usr/lib/gcc/x86_64-linux-gnu/14/libgcc_s.so:
 
 /usr/include/c++/14/bits/chrono.h:
 
@@ -563,6 +614,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 /usr/include/asm-generic/errno.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_sched_param.h:
+
+/usr/lib/x86_64-linux-gnu/libm.so:
 
 /usr/include/c++/14/ios:
 
@@ -666,6 +719,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 
 /usr/include/c++/14/type_traits:
 
+/usr/lib/x86_64-linux-gnu/Scrt1.o:
+
 /usr/include/c++/14/typeinfo:
 
 /usr/include/x86_64-linux-gnu/bits/types/struct_timespec.h:
@@ -764,6 +819,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 
 /usr/include/x86_64-linux-gnu/bits/pthreadtypes-arch.h:
 
+/lib/x86_64-linux-gnu/libmvec.so.1:
+
 /usr/include/stdlib.h:
 
 /usr/include/c++/14/bits/allocator.h:
@@ -801,6 +858,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 /usr/include/catch2/internal/catch_preprocessor_remove_parens.hpp:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
+
+/usr/lib/libCatch2Main.a:
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
 
@@ -853,6 +912,8 @@ CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03
 /usr/include/x86_64-linux-gnu/bits/types/struct_tm.h:
 
 /usr/include/x86_64-linux-gnu/bits/types/timer_t.h:
+
+/usr/lib/x86_64-linux-gnu/crtn.o:
 
 /usr/include/c++/14/bits/hash_bytes.h:
 

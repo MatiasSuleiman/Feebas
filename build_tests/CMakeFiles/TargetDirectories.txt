@@ -1,0 +1,9 @@
+/home/matias/Feebas/build_tests/CMakeFiles/clean-compiled.dir
+/home/matias/Feebas/build_tests/CMakeFiles/feebas-engine.dir
+/home/matias/Feebas/build_tests/CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir
+/home/matias/Feebas/build_tests/CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir
+/home/matias/Feebas/build_tests/CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir
+/home/matias/Feebas/build_tests/CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir
+/home/matias/Feebas/build_tests/CMakeFiles/test.dir
+/home/matias/Feebas/build_tests/CMakeFiles/edit_cache.dir
+/home/matias/Feebas/build_tests/CMakeFiles/rebuild_cache.dir
