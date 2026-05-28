@@ -2,6 +2,7 @@ AGENTS.md
 
 # CMake build directories
 build/
+build_tests/
 build-tests/
 cmake-build-*/
 DFEEBAS_BUILD_SERVER_\=OFF/
