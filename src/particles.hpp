@@ -4,6 +4,8 @@ class World;
 class DirtParticle;
 class VoidParticle;
 class GrassParticle;
+class WaterParticle;
+class WorldVisitor;
 
 class Particle {
         public:
@@ -13,13 +15,18 @@ class Particle {
                 virtual bool isDirt() const = 0;
                 virtual bool isGrass() const = 0;
                 virtual bool isVoid() const = 0;
+                virtual bool isWater() const = 0;
                 virtual bool dirt_can_fall_through() const = 0;
+                virtual void accept(WorldVisitor& visitor) const = 0;
                 virtual void step() = 0;
                 virtual void particle_is_falling_onto(Particle* particle) = 0;
                 virtual void fall_onto_dirt(DirtParticle* dirt_particle) = 0;
                 virtual void fall_onto_void(VoidParticle* void_particle) = 0;
+                virtual void fall_onto_water(WaterParticle* water_particle) = 0;
                 virtual void dirt_falling_to_the_left(DirtParticle* dirt_particle) = 0;
                 virtual void dirt_falling_to_the_right(DirtParticle* dirt_particle) = 0;
+                virtual void water_falling_to_the_left(WaterParticle* water_particle) = 0;
+                virtual void water_falling_to_the_right(WaterParticle* water_particle) = 0;
                 virtual void grass_trying_to_spread_onto() = 0;
 
         protected:
@@ -33,13 +40,18 @@ class DirtParticle : public Particle {
                 bool isDirt() const override;
                 bool isGrass() const override;
                 bool isVoid() const override;
+                bool isWater() const override;
                 bool dirt_can_fall_through() const override;
+                void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
                 void fall_onto_dirt(DirtParticle* dirt_particle) override;
                 void fall_onto_void(VoidParticle* void_particle) override;
+                void fall_onto_water(WaterParticle* water_particle) override;
                 void dirt_falling_to_the_left(DirtParticle* dirt_particle) override;
                 void dirt_falling_to_the_right(DirtParticle* dirt_particle) override;
+                void water_falling_to_the_left(WaterParticle* water_particle) override;
+                void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
 
         private:
@@ -54,13 +66,18 @@ class VoidParticle : public Particle {
                 bool isDirt() const override;
                 bool isGrass() const override;
                 bool isVoid() const override;
+                bool isWater() const override;
                 bool dirt_can_fall_through() const override;
+                void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
                 void fall_onto_dirt(DirtParticle* dirt_particle) override;
                 void fall_onto_void(VoidParticle* void_particle) override;
+                void fall_onto_water(WaterParticle* water_particle) override;
                 void dirt_falling_to_the_left(DirtParticle* dirt_particle) override;
                 void dirt_falling_to_the_right(DirtParticle* dirt_particle) override;
+                void water_falling_to_the_left(WaterParticle* water_particle) override;
+                void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
 
 };
@@ -72,13 +89,41 @@ class GrassParticle : public Particle {
                 bool isDirt() const override;
                 bool isGrass() const override;
                 bool isVoid() const override;
+                bool isWater() const override;
                 bool dirt_can_fall_through() const override;
+                void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
                 void fall_onto_dirt(DirtParticle* dirt_particle) override;
                 void fall_onto_void(VoidParticle* void_particle) override;
+                void fall_onto_water(WaterParticle* water_particle) override;
                 void dirt_falling_to_the_left(DirtParticle* dirt_particle) override;
                 void dirt_falling_to_the_right(DirtParticle* dirt_particle) override;
+                void water_falling_to_the_left(WaterParticle* water_particle) override;
+                void water_falling_to_the_right(WaterParticle* water_particle) override;
+                void grass_trying_to_spread_onto() override;
+
+};
+
+class WaterParticle : public Particle {
+        public:
+
+                WaterParticle(World* world);
+                bool isDirt() const override;
+                bool isGrass() const override;
+                bool isVoid() const override;
+                bool isWater() const override;
+                bool dirt_can_fall_through() const override;
+                void accept(WorldVisitor& visitor) const override;
+                void step() override;
+                void particle_is_falling_onto(Particle* particle) override;
+                void fall_onto_dirt(DirtParticle* dirt_particle) override;
+                void fall_onto_void(VoidParticle* void_particle) override;
+                void fall_onto_water(WaterParticle* water_particle) override;
+                void dirt_falling_to_the_left(DirtParticle* dirt_particle) override;
+                void dirt_falling_to_the_right(DirtParticle* dirt_particle) override;
+                void water_falling_to_the_left(WaterParticle* water_particle) override;
+                void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
 
 };

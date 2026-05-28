@@ -1,5 +1,78 @@
 const canvas = document.querySelector("#simulation-canvas");
 const context = canvas.getContext("2d");
+const statusElement = document.querySelector(".status");
+const particleButtons = document.querySelectorAll("[data-particle]");
+const stepButton = document.querySelector("[data-action='step']");
+
+const colors = {
+  VoidParticle: [32, 37, 42, 255],
+  DirtParticle: [132, 92, 58, 255],
+  GrassParticle: [91, 164, 88, 255],
+};
+
+const worldCanvas = document.createElement("canvas");
+const worldContext = worldCanvas.getContext("2d");
+
+let selectedParticle = "dirt";
+let world = null;
+let isPainting = false;
+let lastPaintedCell = "";
+let requestChain = Promise.resolve();
+
+function setStatus(message) {
+  statusElement.textContent = message;
+}
+
+function selectedLabel() {
+  return selectedParticle === "grass" ? "Grass" : "Dirt";
+}
+
+function selectParticle(particle) {
+  selectedParticle = particle;
+  particleButtons.forEach((button) => {
+    const isSelected = button.dataset.particle === selectedParticle;
+    button.classList.toggle("is-selected", isSelected);
+    button.setAttribute("aria-pressed", String(isSelected));
+  });
+  setStatus(`${selectedLabel()} selected`);
+}
+
+async function callWorldApi(url, options, busyMessage) {
+  setStatus(busyMessage);
+
+  try {
+    const response = await fetch(url, options);
+    if (!response.ok) {
+      throw new Error(`Request failed with ${response.status}`);
+    }
+
+    world = await response.json();
+    drawWorld();
+    setStatus(`${selectedLabel()} selected`);
+  } catch (error) {
+    setStatus("API request failed");
+  }
+}
+
+function queueWorldApiCall(url, options, busyMessage) {
+  requestChain = requestChain.then(() => callWorldApi(url, options, busyMessage));
+  return requestChain;
+}
+
+function loadWorld() {
+  queueWorldApiCall("/world", {}, "Loading world");
+}
+
+function stepWorld() {
+  queueWorldApiCall("/world/step", { method: "POST" }, "Stepping world");
+}
+
+function createParticleAt(cell) {
+  const path =
+    selectedParticle === "grass" ? "/world/create-grass-particle-at" : "/world/create-dirt-particle-at";
+  const url = `${path}?x=${encodeURIComponent(cell.x)}&y=${encodeURIComponent(cell.y)}`;
+  queueWorldApiCall(url, { method: "POST" }, `Creating ${selectedLabel()}`);
+}
 
 function resizeCanvas() {
   const bounds = canvas.getBoundingClientRect();
@@ -12,25 +85,123 @@ function resizeCanvas() {
     canvas.height = height;
   }
 
-  drawStage(pixelRatio);
+  drawWorld();
 }
 
-function drawStage(pixelRatio) {
-  const width = canvas.width;
-  const height = canvas.height;
-
+function drawWorld() {
   context.save();
   context.setTransform(1, 0, 0, 1, 0, 0);
-  context.clearRect(0, 0, width, height);
-  context.fillStyle = "#20252a";
-  context.fillRect(0, 0, width, height);
+  context.imageSmoothingEnabled = false;
+  context.clearRect(0, 0, canvas.width, canvas.height);
 
-  context.strokeStyle = "rgba(255, 255, 255, 0.045)";
-  context.lineWidth = pixelRatio;
-  context.strokeRect(pixelRatio * 0.5, pixelRatio * 0.5, width - pixelRatio, height - pixelRatio);
+  if (!world) {
+    context.fillStyle = "#20252a";
+    context.fillRect(0, 0, canvas.width, canvas.height);
+    drawBorder();
+    context.restore();
+    return;
+  }
+
+  if (worldCanvas.width !== world.width || worldCanvas.height !== world.height) {
+    worldCanvas.width = world.width;
+    worldCanvas.height = world.height;
+  }
+
+  const image = worldContext.createImageData(world.width, world.height);
+  for (let worldY = 0; worldY < world.height; worldY += 1) {
+    for (let worldX = 0; worldX < world.width; worldX += 1) {
+      const worldIndex = worldY * world.width + worldX;
+      const renderY = world.height - 1 - worldY;
+      const imageIndex = (renderY * world.width + worldX) * 4;
+      const color = colors[world.cells[worldIndex]] || colors.VoidParticle;
+
+      image.data[imageIndex] = color[0];
+      image.data[imageIndex + 1] = color[1];
+      image.data[imageIndex + 2] = color[2];
+      image.data[imageIndex + 3] = color[3];
+    }
+  }
+
+  worldContext.putImageData(image, 0, 0);
+  context.drawImage(worldCanvas, 0, 0, canvas.width, canvas.height);
+  drawBorder();
   context.restore();
 }
 
-window.addEventListener("resize", resizeCanvas);
-resizeCanvas();
+function drawBorder() {
+  const pixelRatio = window.devicePixelRatio || 1;
+  context.strokeStyle = "rgba(255, 255, 255, 0.045)";
+  context.lineWidth = pixelRatio;
+  context.strokeRect(pixelRatio * 0.5, pixelRatio * 0.5, canvas.width - pixelRatio, canvas.height - pixelRatio);
+}
 
+function canvasToWorldCell(event) {
+  if (!world) {
+    return null;
+  }
+
+  const bounds = canvas.getBoundingClientRect();
+  const relativeX = (event.clientX - bounds.left) / bounds.width;
+  const relativeY = (event.clientY - bounds.top) / bounds.height;
+
+  return {
+    x: Math.min(world.width - 1, Math.max(0, Math.floor(relativeX * world.width))),
+    y: Math.min(world.height - 1, Math.max(0, world.height - 1 - Math.floor(relativeY * world.height))),
+  };
+}
+
+function createParticleFromPointer(event) {
+  const cell = canvasToWorldCell(event);
+  if (!cell) {
+    return;
+  }
+
+  const cellKey = `${cell.x}:${cell.y}`;
+  if (cellKey === lastPaintedCell) {
+    return;
+  }
+
+  lastPaintedCell = cellKey;
+  createParticleAt(cell);
+}
+
+particleButtons.forEach((button) => {
+  button.addEventListener("click", () => selectParticle(button.dataset.particle));
+});
+
+stepButton.addEventListener("click", stepWorld);
+
+canvas.addEventListener("pointerdown", (event) => {
+  if (event.button !== 0) {
+    return;
+  }
+
+  isPainting = true;
+  lastPaintedCell = "";
+  canvas.setPointerCapture(event.pointerId);
+  createParticleFromPointer(event);
+});
+
+canvas.addEventListener("pointermove", (event) => {
+  if (isPainting) {
+    createParticleFromPointer(event);
+  }
+});
+
+canvas.addEventListener("pointerup", (event) => {
+  isPainting = false;
+  lastPaintedCell = "";
+  canvas.releasePointerCapture(event.pointerId);
+});
+
+canvas.addEventListener("pointercancel", () => {
+  isPainting = false;
+  lastPaintedCell = "";
+});
+
+window.addEventListener("resize", resizeCanvas);
+
+selectParticle(selectedParticle);
+resizeCanvas();
+loadWorld();
+setInterval(stepWorld, 500);

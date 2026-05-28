@@ -6,7 +6,7 @@
 
 #include "world.hpp"
 
-TEST_CASE("test05 grass particle spreads to the side dirt particles after 50 ticks") {
+TEST_CASE("test06 grass particle spreads to the side dirt particles after 50 ticks") {
         World world;
         world.Create_dirt_particle_at(0,0);
         world.Create_grass_particle_at(1,0);

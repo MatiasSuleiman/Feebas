@@ -6,8 +6,8 @@
 
 #include "world.hpp"
 
-TEST_CASE("test07 world lets create a grass particle") {
+TEST_CASE("test08 world lets create a water particle") {
         World world;
-        world.Create_grass_particle_at(0,0);
-        REQUIRE(world.there_is_grass_particle_at(0, 0));
+        world.Create_water_particle_at(0,0);
+        REQUIRE(world.there_is_water_particle_at(0, 0));
 }
