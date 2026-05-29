@@ -40,6 +40,8 @@ class World {
         void water_particle_falling_onto_void(WaterParticle* water_particle);
         void water_particle_falling_onto_blocking_particle(WaterParticle* water_particle);
         void water_particle_falling_onto_water(WaterParticle* falling_water_particle, WaterParticle* blocking_water_particle);
+        bool can_be_moved_to_the_left(Particle* particle);
+        bool can_be_moved_to_the_right(Particle* particle);
         void water_falling_to_the_left_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
         void water_falling_to_the_right_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
   
@@ -58,5 +60,7 @@ class World {
         Particle* look_for_particle_to_the_left(Coordinate particle_coordinates);
         Particle* look_for_particle_to_the_right(Coordinate particle_coordinates);
         void move_particle_to(ParticleIterator particle_iterator, Coordinate new_coordinate);
+        void move_water_chain_to_the_left(WaterParticle* water_particle);
+        void move_water_chain_to_the_right(WaterParticle* water_particle);
         ParticleIterator iterator_of(Particle* particle);
 };

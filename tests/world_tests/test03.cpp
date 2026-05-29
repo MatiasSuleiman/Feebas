@@ -8,9 +8,9 @@
 
 TEST_CASE("test03 world lets advance simulation one step") {
         World world;
-        world.Create_dirt_particle_at(400,300);
-        REQUIRE(world.there_is_dirt_particle_at(400, 300));
+        world.Create_dirt_particle_at(0,1);
+        REQUIRE(world.there_is_dirt_particle_at(0,1));
         world.step();
-        REQUIRE(world.there_is_dirt_particle_at(400,299));
-        REQUIRE(world.there_is_void_particle_at(400,300));
+        REQUIRE(world.there_is_dirt_particle_at(0,0));
+        REQUIRE(world.there_is_void_particle_at(0,1));
 }

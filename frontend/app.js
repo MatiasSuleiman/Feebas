@@ -8,6 +8,7 @@ const colors = {
   VoidParticle: [32, 37, 42, 255],
   DirtParticle: [132, 92, 58, 255],
   GrassParticle: [91, 164, 88, 255],
+  WaterParticle: [58, 139, 253, 255],
 };
 
 const worldCanvas = document.createElement("canvas");
@@ -25,7 +26,15 @@ function setStatus(message) {
 }
 
 function selectedLabel() {
-  return selectedParticle === "grass" ? "Grass" : "Dirt";
+  if (selectedParticle === "grass") {
+    return "Grass";
+  }
+
+  if (selectedParticle === "water") {
+    return "Water";
+  }
+
+  return "Dirt";
 }
 
 function selectParticle(particle) {
@@ -95,8 +104,12 @@ function stepWorld({ silent = false } = {}) {
 }
 
 function createParticleAt(cell) {
-  const path =
-    selectedParticle === "grass" ? "/world/create-grass-particle-at" : "/world/create-dirt-particle-at";
+  const paths = {
+    dirt: "/world/create-dirt-particle-at",
+    grass: "/world/create-grass-particle-at",
+    water: "/world/create-water-particle-at",
+  };
+  const path = paths[selectedParticle] || paths.dirt;
   const url = `${path}?x=${encodeURIComponent(cell.x)}&y=${encodeURIComponent(cell.y)}`;
   inputGeneration += 1;
   callWorldApi(url, { method: "POST" }, `Creating ${selectedLabel()}`);

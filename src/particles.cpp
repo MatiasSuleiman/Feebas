@@ -32,6 +32,18 @@ bool DirtParticle::dirt_can_fall_through() const {
   return false;
 }
 
+bool DirtParticle::can_be_pushed_into_by_water() const {
+        return false;
+}
+
+bool DirtParticle::can_be_pushed_to_the_left() {
+        return false;
+}
+
+bool DirtParticle::can_be_pushed_to_the_right() {
+        return false;
+}
+
 void DirtParticle::accept(WorldVisitor& visitor) const {
         visitor.visit_dirt_particle(*this);
 }
@@ -101,6 +113,18 @@ bool VoidParticle::dirt_can_fall_through() const {
   return true;
 }
 
+bool VoidParticle::can_be_pushed_into_by_water() const {
+        return true;
+}
+
+bool VoidParticle::can_be_pushed_to_the_left() {
+        return false;
+}
+
+bool VoidParticle::can_be_pushed_to_the_right() {
+        return false;
+}
+
 void VoidParticle::accept(WorldVisitor& visitor) const {
         visitor.visit_void_particle(*this);
 }
@@ -162,6 +186,18 @@ bool GrassParticle::dirt_can_fall_through() const {
   return false;
 }
 
+bool GrassParticle::can_be_pushed_into_by_water() const {
+        return false;
+}
+
+bool GrassParticle::can_be_pushed_to_the_left() {
+        return false;
+}
+
+bool GrassParticle::can_be_pushed_to_the_right() {
+        return false;
+}
+
 void GrassParticle::accept(WorldVisitor& visitor) const {
         visitor.visit_grass_particle(*this);
 }
@@ -219,6 +255,18 @@ bool WaterParticle::isWater() const {
 
 bool WaterParticle::dirt_can_fall_through() const {
   return false;
+}
+
+bool WaterParticle::can_be_pushed_into_by_water() const {
+        return false;
+}
+
+bool WaterParticle::can_be_pushed_to_the_left() {
+        return world_is_in->can_be_moved_to_the_left(this);
+}
+
+bool WaterParticle::can_be_pushed_to_the_right() {
+        return world_is_in->can_be_moved_to_the_right(this);
 }
 
 void WaterParticle::accept(WorldVisitor& visitor) const {

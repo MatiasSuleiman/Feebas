@@ -17,6 +17,9 @@ class Particle {
                 virtual bool isVoid() const = 0;
                 virtual bool isWater() const = 0;
                 virtual bool dirt_can_fall_through() const = 0;
+                virtual bool can_be_pushed_into_by_water() const = 0;
+                virtual bool can_be_pushed_to_the_left() = 0;
+                virtual bool can_be_pushed_to_the_right() = 0;
                 virtual void accept(WorldVisitor& visitor) const = 0;
                 virtual void step() = 0;
                 virtual void particle_is_falling_onto(Particle* particle) = 0;
@@ -42,6 +45,9 @@ class DirtParticle : public Particle {
                 bool isVoid() const override;
                 bool isWater() const override;
                 bool dirt_can_fall_through() const override;
+                bool can_be_pushed_into_by_water() const override;
+                bool can_be_pushed_to_the_left() override;
+                bool can_be_pushed_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
@@ -68,6 +74,9 @@ class VoidParticle : public Particle {
                 bool isVoid() const override;
                 bool isWater() const override;
                 bool dirt_can_fall_through() const override;
+                bool can_be_pushed_into_by_water() const override;
+                bool can_be_pushed_to_the_left() override;
+                bool can_be_pushed_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
@@ -91,6 +100,9 @@ class GrassParticle : public Particle {
                 bool isVoid() const override;
                 bool isWater() const override;
                 bool dirt_can_fall_through() const override;
+                bool can_be_pushed_into_by_water() const override;
+                bool can_be_pushed_to_the_left() override;
+                bool can_be_pushed_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
@@ -114,6 +126,9 @@ class WaterParticle : public Particle {
                 bool isVoid() const override;
                 bool isWater() const override;
                 bool dirt_can_fall_through() const override;
+                bool can_be_pushed_into_by_water() const override;
+                bool can_be_pushed_to_the_left() override;
+                bool can_be_pushed_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
