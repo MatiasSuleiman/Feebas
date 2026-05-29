@@ -242,7 +242,7 @@ void WaterParticle::fall_onto_void(VoidParticle* void_particle){
 }
 
 void WaterParticle::fall_onto_water(WaterParticle* water_particle){
-        world_is_in->water_particle_falling_onto_blocking_particle(this);
+        world_is_in->water_particle_falling_onto_water(this, water_particle);
 }
 
 void WaterParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){

@@ -1,22 +1,19 @@
 #include "world.hpp"
 
+#include <algorithm>
 #include <memory>
+#include <vector>
 
 #include "world_to_json_visitor.hpp"
 
 namespace {
 
-constexpr int world_width = 800;
-constexpr int world_height = 600;
+constexpr int world_width = 100;
+constexpr int world_height = 200;
 
 }  // namespace
 
-World::World() {
-  for (int y = 0; y < world_height; ++y) {
-    for (int x = 0; x < world_width; ++x) {
-      particles.insert_or_assign({x, y}, std::make_unique<VoidParticle>(this));
-    }
-  }
+World::World() : void_particle(this) {
 }
 
 int World::width() const {
@@ -35,6 +32,8 @@ void World::accept(WorldVisitor& visitor) const {
       const auto particle_iterator = particles.find({x, y});
       if (particle_iterator != particles.end()) {
         particle_iterator->second->accept(visitor);
+      } else {
+        void_particle.accept(visitor);
       }
     }
   }
@@ -65,23 +64,23 @@ void World::Create_water_partcile_at(int x, int y) {
 }
 
 bool World::there_is_dirt_particle_at(int x, int y) const {
-  const Particle& particle = *particles.find({x, y})->second;
-  return particle.isDirt();
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isDirt();
 }
 
 bool World::there_is_water_particle_at(int x, int y) const {
-  const Particle& particle = *particles.find({x, y})->second;
-  return particle.isWater();
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isWater();
 }
 
 bool World::there_is_grass_particle_at(int x, int y) const {
-  const Particle& particle = *particles.find({x, y})->second;
-  return particle.isGrass();
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isGrass();
 }
 
 bool World::there_is_void_particle_at(int x, int y) const {
-  const Particle& particle = *particles.find({x, y})->second;
-  return particle.isVoid();
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isVoid();
 }
 
 void World::make_particle_fall(Particle* particle) {
@@ -118,12 +117,58 @@ void World::make_water_particle_fall_to_the_right(WaterParticle* water_particle,
 }
 
 void World::step() {
-  for (int y = 0; y < world_height; ++y) {
-    for (int x = 0; x < world_width; ++x) {
-      Particle& particle = *particles.find({x, y})->second;
-      particle.step();
-    }
-  }
+        std::vector<Coordinate> particle_coordinates;
+        particle_coordinates.reserve(particles.size());
+
+        for (const auto& particle_entry : particles) {
+                particle_coordinates.push_back(particle_entry.first);
+        }
+
+        std::sort(particle_coordinates.begin(), particle_coordinates.end(),
+                [](Coordinate left, Coordinate right) {
+                        if (left.second != right.second) {
+                                return left.second < right.second;
+                        }
+                        return left.first < right.first;
+                });
+
+        for (Coordinate coordinate : particle_coordinates) {
+                ParticleIterator iterator = particles.find(coordinate);
+                if (iterator != particles.end()) {
+                        iterator->second->step();
+                }
+        }
+}
+
+bool World::coordinate_is_inside_world(Coordinate coordinate) const {
+        return coordinate.first >= 0 && coordinate.second >= 0 &&
+                coordinate.first < world_width && coordinate.second < world_height;
+}
+
+Particle* World::particle_at(Coordinate coordinate) {
+        if (!coordinate_is_inside_world(coordinate)) {
+                return nullptr;
+        }
+
+        ParticleIterator target_iterator = particles.find(coordinate);
+        if (target_iterator == particles.end()) {
+                return &void_particle;
+        }
+
+        return target_iterator->second.get();
+}
+
+const Particle* World::particle_at(Coordinate coordinate) const {
+        if (!coordinate_is_inside_world(coordinate)) {
+                return nullptr;
+        }
+
+        ConstParticleIterator target_iterator = particles.find(coordinate);
+        if (target_iterator == particles.end()) {
+                return &void_particle;
+        }
+
+        return target_iterator->second.get();
 }
 
 World::ParticleIterator World::iterator_of(Particle* particle){
@@ -140,9 +185,7 @@ Particle* World::look_for_particle_underneath(Coordinate particle_coordinates){
                 particle_coordinates.first,
                 particle_coordinates.second - 1
         };
-        ParticleIterator target_iterator = particles.find(under_coordinates);
-        Particle* under_particle = target_iterator->second.get();
-        return under_particle;
+        return particle_at(under_coordinates);
 }
 
 Particle* World::look_for_particle_to_the_left(Coordinate particle_coordinates){
@@ -151,9 +194,7 @@ Particle* World::look_for_particle_to_the_left(Coordinate particle_coordinates){
                 particle_coordinates.second
         };
 
-        ParticleIterator target_iterator = particles.find(left_coordinates);
-        Particle* left_particle = target_iterator->second.get();
-        return left_particle;
+        return particle_at(left_coordinates);
 }
 
 Particle* World::look_for_particle_to_the_right(Coordinate particle_coordinates){
@@ -162,9 +203,17 @@ Particle* World::look_for_particle_to_the_right(Coordinate particle_coordinates)
                 particle_coordinates.second
         };
 
-        ParticleIterator target_iterator = particles.find(right_coordinates);
-        Particle* right_particle = target_iterator->second.get();
-        return right_particle;
+        return particle_at(right_coordinates);
+}
+
+void World::move_particle_to(ParticleIterator particle_iterator, Coordinate new_coordinate) {
+        if (particle_iterator == particles.end() || !coordinate_is_inside_world(new_coordinate)) {
+                return;
+        }
+
+        std::unique_ptr<Particle> particle = std::move(particle_iterator->second);
+        particles.erase(particle_iterator);
+        particles.insert_or_assign(new_coordinate, std::move(particle));
 }
 
 
@@ -180,8 +229,7 @@ void World::dirt_particle_falling_onto_void(DirtParticle* dirt_particle){
         Coordinate new_coordinate = particle_coordinates;
         --new_coordinate.second;
 
-        ParticleIterator particle_underneath_iterator = particles.find(new_coordinate);
-        std::swap(particle_iterator->second , particle_underneath_iterator->second);
+        move_particle_to(particle_iterator, new_coordinate);
 }
 
 void World::dirt_particle_falling_onto_dirt(DirtParticle* dirt_particle){
@@ -201,21 +249,27 @@ void World::dirt_particle_falling_onto_dirt(DirtParticle* dirt_particle){
                 Particle* particle_to_the_left = this->look_for_particle_to_the_left(particle_coordinates);
                 Particle* particle_underneath_to_the_left = this->look_for_particle_underneath(left_coordinates);
 
-                if(particle_to_the_left->dirt_can_fall_through() && particle_underneath_to_the_left->dirt_can_fall_through()){
+                if(particle_to_the_left != nullptr && particle_underneath_to_the_left != nullptr &&
+                                particle_to_the_left->dirt_can_fall_through() &&
+                                particle_underneath_to_the_left->dirt_can_fall_through()){
                         this->make_particle_fall_to_the_left(dirt_particle, particle_underneath_to_the_left);
                         return;
                 }
         }
 
-        Coordinate right_coordinates{
-                particle_coordinates.first + 1,
-                particle_coordinates.second
-        };
-        Particle* particle_to_the_right = this->look_for_particle_to_the_right(particle_coordinates);
-        Particle* particle_underneath_to_the_right = this->look_for_particle_underneath(right_coordinates);
+        if (particle_coordinates.first < world_width - 1) {
+                Coordinate right_coordinates{
+                        particle_coordinates.first + 1,
+                        particle_coordinates.second
+                };
+                Particle* particle_to_the_right = this->look_for_particle_to_the_right(particle_coordinates);
+                Particle* particle_underneath_to_the_right = this->look_for_particle_underneath(right_coordinates);
 
-        if(particle_to_the_right->dirt_can_fall_through() && particle_underneath_to_the_right->dirt_can_fall_through()){
-                this->make_particle_fall_to_the_right(dirt_particle, particle_underneath_to_the_right);
+                if(particle_to_the_right != nullptr && particle_underneath_to_the_right != nullptr &&
+                                particle_to_the_right->dirt_can_fall_through() &&
+                                particle_underneath_to_the_right->dirt_can_fall_through()){
+                        this->make_particle_fall_to_the_right(dirt_particle, particle_underneath_to_the_right);
+                }
         }
 }
 
@@ -225,12 +279,8 @@ void World::dirt_falling_to_the_left_onto_void(DirtParticle* dirt_particle, Void
                 return;
         }
 
-        ParticleIterator void_iterator = this->iterator_of(void_particle);
-        if (void_iterator == particles.end()) {
-                return;
-        }
-
-        std::swap(particle_iterator->second , void_iterator->second);
+        Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first - 1, particle_coordinates.second - 1});
 }
 
 void World::dirt_falling_to_the_right_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle){
@@ -239,12 +289,8 @@ void World::dirt_falling_to_the_right_onto_void(DirtParticle* dirt_particle, Voi
                 return;
         }
 
-        ParticleIterator void_iterator = this->iterator_of(void_particle);
-        if (void_iterator == particles.end()) {
-                return;
-        }
-
-        std::swap(particle_iterator->second , void_iterator->second);
+        Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first + 1, particle_coordinates.second - 1});
 }
 
 void World::grass_particle_falling_onto_void(GrassParticle* grass_particle){
@@ -259,8 +305,7 @@ void World::grass_particle_falling_onto_void(GrassParticle* grass_particle){
         Coordinate new_coordinate = particle_coordinates;
         --new_coordinate.second;
 
-        ParticleIterator particle_underneath_iterator = particles.find(new_coordinate);
-        std::swap(particle_iterator->second , particle_underneath_iterator->second);
+        move_particle_to(particle_iterator, new_coordinate);
 }
 
 void World::water_particle_falling_onto_void(WaterParticle* water_particle){
@@ -275,8 +320,7 @@ void World::water_particle_falling_onto_void(WaterParticle* water_particle){
         Coordinate new_coordinate = particle_coordinates;
         --new_coordinate.second;
 
-        ParticleIterator particle_underneath_iterator = particles.find(new_coordinate);
-        std::swap(particle_iterator->second , particle_underneath_iterator->second);
+        move_particle_to(particle_iterator, new_coordinate);
 }
 
 void World::water_particle_falling_onto_blocking_particle(WaterParticle* water_particle){
@@ -296,7 +340,9 @@ void World::water_particle_falling_onto_blocking_particle(WaterParticle* water_p
                 Particle* particle_to_the_left = this->look_for_particle_to_the_left(particle_coordinates);
                 Particle* particle_underneath_to_the_left = this->look_for_particle_underneath(left_coordinates);
 
-                if(particle_to_the_left->dirt_can_fall_through() && particle_underneath_to_the_left->dirt_can_fall_through()){
+                if(particle_to_the_left != nullptr && particle_underneath_to_the_left != nullptr &&
+                                particle_to_the_left->dirt_can_fall_through() &&
+                                particle_underneath_to_the_left->dirt_can_fall_through()){
                         this->make_water_particle_fall_to_the_left(water_particle, particle_underneath_to_the_left);
                         return;
                 }
@@ -310,8 +356,53 @@ void World::water_particle_falling_onto_blocking_particle(WaterParticle* water_p
                 Particle* particle_to_the_right = this->look_for_particle_to_the_right(particle_coordinates);
                 Particle* particle_underneath_to_the_right = this->look_for_particle_underneath(right_coordinates);
 
-                if(particle_to_the_right->dirt_can_fall_through() && particle_underneath_to_the_right->dirt_can_fall_through()){
+                if(particle_to_the_right != nullptr && particle_underneath_to_the_right != nullptr &&
+                                particle_to_the_right->dirt_can_fall_through() &&
+                                particle_underneath_to_the_right->dirt_can_fall_through()){
                         this->make_water_particle_fall_to_the_right(water_particle, particle_underneath_to_the_right);
+                }
+        }
+}
+
+void World::water_particle_falling_onto_water(WaterParticle* falling_water_particle, WaterParticle* blocking_water_particle){
+        ParticleIterator falling_water_iterator = this->iterator_of(falling_water_particle);
+        if (falling_water_iterator == particles.end()) {
+                return;
+        }
+
+        ParticleIterator blocking_water_iterator = this->iterator_of(blocking_water_particle);
+        if (blocking_water_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate blocking_water_coordinates = blocking_water_iterator->first;
+
+        if (blocking_water_coordinates.first != 0) {
+                Coordinate left_coordinates{
+                        blocking_water_coordinates.first - 1,
+                        blocking_water_coordinates.second
+                };
+
+                Particle* left_particle = particle_at(left_coordinates);
+                if (left_particle != nullptr && left_particle->isVoid()) {
+                        move_particle_to(blocking_water_iterator, left_coordinates);
+                        falling_water_iterator = this->iterator_of(falling_water_particle);
+                        move_particle_to(falling_water_iterator, blocking_water_coordinates);
+                        return;
+                }
+        }
+
+        if (blocking_water_coordinates.first < world_width - 1) {
+                Coordinate right_coordinates{
+                        blocking_water_coordinates.first + 1,
+                        blocking_water_coordinates.second
+                };
+
+                Particle* right_particle = particle_at(right_coordinates);
+                if (right_particle != nullptr && right_particle->isVoid()) {
+                        move_particle_to(blocking_water_iterator, right_coordinates);
+                        falling_water_iterator = this->iterator_of(falling_water_particle);
+                        move_particle_to(falling_water_iterator, blocking_water_coordinates);
                 }
         }
 }
@@ -322,12 +413,8 @@ void World::water_falling_to_the_left_onto_void(WaterParticle* water_particle, V
                 return;
         }
 
-        ParticleIterator void_iterator = this->iterator_of(void_particle);
-        if (void_iterator == particles.end()) {
-                return;
-        }
-
-        std::swap(particle_iterator->second , void_iterator->second);
+        Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first - 1, particle_coordinates.second - 1});
 }
 
 void World::water_falling_to_the_right_onto_void(WaterParticle* water_particle, VoidParticle* void_particle){
@@ -336,12 +423,8 @@ void World::water_falling_to_the_right_onto_void(WaterParticle* water_particle, 
                 return;
         }
 
-        ParticleIterator void_iterator = this->iterator_of(void_particle);
-        if (void_iterator == particles.end()) {
-                return;
-        }
-
-        std::swap(particle_iterator->second , void_iterator->second);
+        Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first + 1, particle_coordinates.second - 1});
 }
 
 void World::grass_trying_to_spread(){
@@ -369,14 +452,18 @@ void World::grass_trying_to_spread(GrassParticle* grass_particle){
 
         if(left_coordinate.first >= 0){
 
-                ParticleIterator particle_to_the_left_iterator = particles.find(left_coordinate);
-                particle_to_the_left_iterator->second->grass_trying_to_spread_onto();
+                Particle* particle_to_the_left = particle_at(left_coordinate);
+                if (particle_to_the_left != nullptr) {
+                        particle_to_the_left->grass_trying_to_spread_onto();
+                }
         }
 
         if(right_coordinate.first < world_width){
 
-                ParticleIterator particle_to_the_right_iterator = particles.find(right_coordinate);
-                particle_to_the_right_iterator->second->grass_trying_to_spread_onto();
+                Particle* particle_to_the_right = particle_at(right_coordinate);
+                if (particle_to_the_right != nullptr) {
+                        particle_to_the_right->grass_trying_to_spread_onto();
+                }
         }
 }
 

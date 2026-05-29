@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <cstddef>
 #include <iostream>
+#include <mutex>
 #include <string>
 
 #include <httplib.h>
@@ -63,19 +64,22 @@ int main() {
   const int port = read_port();
   const std::string static_dir = read_static_dir();
   World world;
+  std::mutex world_mutex;
 
   httplib::Server server;
 
-  server.Get("/world", [&world](const httplib::Request&, httplib::Response& res) {
+  server.Get("/world", [&world, &world_mutex](const httplib::Request&, httplib::Response& res) {
+    std::lock_guard<std::mutex> lock(world_mutex);
     res.set_content(world.to_json(), "application/json");
   });
 
-  server.Post("/world/step", [&world](const httplib::Request&, httplib::Response& res) {
+  server.Post("/world/step", [&world, &world_mutex](const httplib::Request&, httplib::Response& res) {
+    std::lock_guard<std::mutex> lock(world_mutex);
     world.step();
     res.set_content(world.to_json(), "application/json");
   });
 
-  server.Post("/world/create-dirt-particle-at", [&world](const httplib::Request& req, httplib::Response& res) {
+  server.Post("/world/create-dirt-particle-at", [&world, &world_mutex](const httplib::Request& req, httplib::Response& res) {
     int x = 0;
     int y = 0;
     if (!read_int_param(req, "x", x) || !read_int_param(req, "y", y)) {
@@ -83,6 +87,7 @@ int main() {
       return;
     }
 
+    std::lock_guard<std::mutex> lock(world_mutex);
     if (!coordinates_are_inside_world(world, x, y)) {
       set_bad_request(res, "coordinates must be inside the world");
       return;
@@ -92,7 +97,7 @@ int main() {
     res.set_content(world.to_json(), "application/json");
   });
 
-  server.Post("/world/create-grass-particle-at", [&world](const httplib::Request& req, httplib::Response& res) {
+  server.Post("/world/create-grass-particle-at", [&world, &world_mutex](const httplib::Request& req, httplib::Response& res) {
     int x = 0;
     int y = 0;
     if (!read_int_param(req, "x", x) || !read_int_param(req, "y", y)) {
@@ -100,6 +105,7 @@ int main() {
       return;
     }
 
+    std::lock_guard<std::mutex> lock(world_mutex);
     if (!coordinates_are_inside_world(world, x, y)) {
       set_bad_request(res, "coordinates must be inside the world");
       return;

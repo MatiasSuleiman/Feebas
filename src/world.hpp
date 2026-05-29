@@ -39,6 +39,7 @@ class World {
         bool there_is_water_particle_at(int x, int y) const;
         void water_particle_falling_onto_void(WaterParticle* water_particle);
         void water_particle_falling_onto_blocking_particle(WaterParticle* water_particle);
+        void water_particle_falling_onto_water(WaterParticle* falling_water_particle, WaterParticle* blocking_water_particle);
         void water_falling_to_the_left_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
         void water_falling_to_the_right_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
   
@@ -46,10 +47,16 @@ class World {
  private:
         using Coordinate = std::pair<int, int>;
         using ParticleIterator = std::map<Coordinate, std::unique_ptr<Particle>>::iterator;
+        using ConstParticleIterator = std::map<Coordinate, std::unique_ptr<Particle>>::const_iterator;
 
         std::map<Coordinate, std::unique_ptr<Particle>> particles;
+        VoidParticle void_particle;
+        bool coordinate_is_inside_world(Coordinate coordinate) const;
+        Particle* particle_at(Coordinate coordinate);
+        const Particle* particle_at(Coordinate coordinate) const;
         Particle* look_for_particle_underneath(Coordinate particle_coordinates);
         Particle* look_for_particle_to_the_left(Coordinate particle_coordinates);
         Particle* look_for_particle_to_the_right(Coordinate particle_coordinates);
+        void move_particle_to(ParticleIterator particle_iterator, Coordinate new_coordinate);
         ParticleIterator iterator_of(Particle* particle);
 };

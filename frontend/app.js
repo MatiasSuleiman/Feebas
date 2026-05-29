@@ -17,7 +17,8 @@ let selectedParticle = "dirt";
 let world = null;
 let isPainting = false;
 let lastPaintedCell = "";
-let requestChain = Promise.resolve();
+let inputGeneration = 0;
+let stepInFlight = false;
 
 function setStatus(message) {
   statusElement.textContent = message;
@@ -37,8 +38,16 @@ function selectParticle(particle) {
   setStatus(`${selectedLabel()} selected`);
 }
 
-async function callWorldApi(url, options, busyMessage) {
-  setStatus(busyMessage);
+async function callWorldApi(
+  url,
+  options,
+  busyMessage,
+  shouldApplyResponse = () => true,
+  failureMessage = "API request failed",
+) {
+  if (busyMessage) {
+    setStatus(busyMessage);
+  }
 
   try {
     const response = await fetch(url, options);
@@ -46,32 +55,51 @@ async function callWorldApi(url, options, busyMessage) {
       throw new Error(`Request failed with ${response.status}`);
     }
 
-    world = await response.json();
+    const nextWorld = await response.json();
+    if (!shouldApplyResponse()) {
+      return;
+    }
+
+    world = nextWorld;
     drawWorld();
     setStatus(`${selectedLabel()} selected`);
   } catch (error) {
-    setStatus("API request failed");
+    if (failureMessage) {
+      setStatus(failureMessage);
+    }
   }
 }
 
-function queueWorldApiCall(url, options, busyMessage) {
-  requestChain = requestChain.then(() => callWorldApi(url, options, busyMessage));
-  return requestChain;
-}
-
 function loadWorld() {
-  queueWorldApiCall("/world", {}, "Loading world");
+  const generation = inputGeneration;
+  callWorldApi("/world", {}, "Loading world", () => generation === inputGeneration);
 }
 
-function stepWorld() {
-  queueWorldApiCall("/world/step", { method: "POST" }, "Stepping world");
+function stepWorld({ silent = false } = {}) {
+  if (stepInFlight) {
+    return;
+  }
+
+  stepInFlight = true;
+  const generation = inputGeneration;
+  callWorldApi(
+    "/world/step",
+    { method: "POST" },
+    silent ? "" : "Stepping world",
+    () => generation === inputGeneration,
+    silent ? "" : "API request failed",
+  )
+    .finally(() => {
+      stepInFlight = false;
+    });
 }
 
 function createParticleAt(cell) {
   const path =
     selectedParticle === "grass" ? "/world/create-grass-particle-at" : "/world/create-dirt-particle-at";
   const url = `${path}?x=${encodeURIComponent(cell.x)}&y=${encodeURIComponent(cell.y)}`;
-  queueWorldApiCall(url, { method: "POST" }, `Creating ${selectedLabel()}`);
+  inputGeneration += 1;
+  callWorldApi(url, { method: "POST" }, `Creating ${selectedLabel()}`);
 }
 
 function resizeCanvas() {
@@ -204,4 +232,4 @@ window.addEventListener("resize", resizeCanvas);
 selectParticle(selectedParticle);
 resizeCanvas();
 loadWorld();
-setInterval(stepWorld, 500);
+setInterval(() => stepWorld({ silent: true }), 100);

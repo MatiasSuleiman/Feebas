@@ -16,8 +16,8 @@ TEST_CASE("test05 world doesnt let particles fall throug the left walls") {
 
 TEST_CASE("test05b world doesnt let particles fall throug the right walls") {
         World world;
-        world.Create_dirt_particle_at(799,0);
-        world.Create_dirt_particle_at(799,1);
+        world.Create_dirt_particle_at(99,0);
+        world.Create_dirt_particle_at(99,1);
         world.step();
-        REQUIRE(world.there_is_dirt_particle_at(798,0));
+        REQUIRE(world.there_is_dirt_particle_at(98,0));
 }
