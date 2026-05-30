@@ -8,10 +8,10 @@
 
 TEST_CASE("test09 water levels to the terrain") {
         World world;
-        world.Create_water_partcile_at(1,1);
-        world.Create_water_partcile_at(1,0);
-        world.Create_water_partcile_at(2,0);
-        world.Create_water_partcile_at(3,0);
+        world.Create_water_particle_at(1,1);
+        world.Create_water_particle_at(1,0);
+        world.Create_water_particle_at(2,0);
+        world.Create_water_particle_at(3,0);
 
         world.step();
 

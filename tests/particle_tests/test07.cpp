@@ -8,7 +8,7 @@
 
 TEST_CASE("test07 water particle falls if there is nothing underneath") {
         World world;
-        world.Create_water_partcile_at(0,1);
+        world.Create_water_particle_at(0,1);
 
         world.step();
         REQUIRE(world.there_is_water_particle_at(0,0));

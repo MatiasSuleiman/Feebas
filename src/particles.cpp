@@ -28,6 +28,10 @@ bool DirtParticle::isWater() const {
   return false;
 }
 
+bool DirtParticle::isMud() const {
+  return false;
+}
+
 bool DirtParticle::dirt_can_fall_through() const {
   return false;
 }
@@ -81,13 +85,22 @@ void DirtParticle::fall_onto_void(VoidParticle* void_particle){
 }
 
 void DirtParticle::fall_onto_water(WaterParticle* water_particle){
+        world_is_in->dirt_particle_falling_onto_water(this, water_particle);
 }
 
+void DirtParticle::fall_onto_mud(MudParticle* mud_particle){
+}
 
 void DirtParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
 }
 
 void DirtParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
+}
+
+void DirtParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+}
+
+void DirtParticle::mud_falling_to_the_right(MudParticle* mud_particle){
 }
 
 void DirtParticle::water_falling_to_the_left(WaterParticle* water_particle){
@@ -122,6 +135,10 @@ bool VoidParticle::isVoid() const {
 }
 
 bool VoidParticle::isWater() const {
+  return false;
+}
+
+bool VoidParticle::isMud() const {
   return false;
 }
 
@@ -177,12 +194,23 @@ void VoidParticle::fall_onto_void(VoidParticle* void_particle){
 void VoidParticle::fall_onto_water(WaterParticle* water_particle){
 }
 
+void VoidParticle::fall_onto_mud(MudParticle* mud_particle){
+}
+
 void VoidParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
         world_is_in->dirt_falling_to_the_left_onto_void(dirt_particle, this);
 }
 
 void VoidParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
         world_is_in->dirt_falling_to_the_right_onto_void(dirt_particle, this);
+}
+
+void VoidParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+        world_is_in->mud_falling_to_the_left_onto_void(mud_particle, this);
+}
+
+void VoidParticle::mud_falling_to_the_right(MudParticle* mud_particle){
+        world_is_in->mud_falling_to_the_right_onto_void(mud_particle, this);
 }
 
 void VoidParticle::water_falling_to_the_left(WaterParticle* water_particle){
@@ -211,6 +239,10 @@ bool GrassParticle::isVoid() const {
 }
 
 bool GrassParticle::isWater() const {
+  return false;
+}
+
+bool GrassParticle::isMud() const {
   return false;
 }
 
@@ -268,10 +300,19 @@ void GrassParticle::fall_onto_void(VoidParticle* void_particle){
 void GrassParticle::fall_onto_water(WaterParticle* water_particle){
 }
 
+void GrassParticle::fall_onto_mud(MudParticle* mud_particle){
+}
+
 void GrassParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
 }
 
 void GrassParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
+}
+
+void GrassParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+}
+
+void GrassParticle::mud_falling_to_the_right(MudParticle* mud_particle){
 }
 
 void GrassParticle::water_falling_to_the_left(WaterParticle* water_particle){
@@ -299,6 +340,10 @@ bool WaterParticle::isVoid() const {
 
 bool WaterParticle::isWater() const {
   return true;
+}
+
+bool WaterParticle::isMud() const {
+  return false;
 }
 
 bool WaterParticle::dirt_can_fall_through() const {
@@ -366,7 +411,7 @@ void WaterParticle::particle_is_falling_onto(Particle* particle){
 }
 
 void WaterParticle::fall_onto_dirt(DirtParticle* dirt_particle){
-        world_is_in->water_particle_falling_onto_blocking_particle(this);
+        world_is_in->water_particle_falling_onto_dirt(this, dirt_particle);
 }
 
 void WaterParticle::fall_onto_void(VoidParticle* void_particle){
@@ -377,10 +422,19 @@ void WaterParticle::fall_onto_water(WaterParticle* water_particle){
         world_is_in->water_particle_falling_onto_water(this, water_particle);
 }
 
+void WaterParticle::fall_onto_mud(MudParticle* mud_particle){
+}
+
 void WaterParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
 }
 
 void WaterParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
+}
+
+void WaterParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+}
+
+void WaterParticle::mud_falling_to_the_right(MudParticle* mud_particle){
 }
 
 void WaterParticle::water_falling_to_the_left(WaterParticle* water_particle){
@@ -390,3 +444,106 @@ void WaterParticle::water_falling_to_the_right(WaterParticle* water_particle){
 }
 
 void WaterParticle::grass_trying_to_spread_onto(){}
+
+MudParticle::MudParticle(World* world) : Particle(world) {
+}
+
+bool MudParticle::isDirt() const {
+  return false;
+}
+
+bool MudParticle::isGrass() const {
+  return false;
+}
+
+bool MudParticle::isVoid() const {
+  return false;
+}
+
+bool MudParticle::isWater() const {
+  return false;
+}
+
+bool MudParticle::isMud() const {
+  return true;
+}
+
+bool MudParticle::dirt_can_fall_through() const {
+  return false;
+}
+
+bool MudParticle::can_be_pushed_into_by_water() const {
+        return false;
+}
+
+bool MudParticle::can_be_pushed_to_the_left() {
+        return false;
+}
+
+bool MudParticle::can_be_pushed_to_the_right() {
+        return false;
+}
+
+int MudParticle::water_to_the_left() {
+        return 0;
+}
+
+int MudParticle::water_to_the_right() {
+        return 0;
+}
+
+int MudParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int MudParticle::water_from_to_the_right() {
+        return 0;
+}
+
+void MudParticle::accept(WorldVisitor& visitor) const {
+        visitor.visit_mud_particle(*this);
+}
+
+void MudParticle::step() {
+        world_is_in->make_particle_fall(this);
+}
+
+void MudParticle::particle_is_falling_onto(Particle* particle){
+        particle->fall_onto_mud(this);
+}
+
+void MudParticle::fall_onto_dirt(DirtParticle* dirt_particle){
+        world_is_in->mud_particle_falling_onto_blocking_particle(this);
+}
+
+void MudParticle::fall_onto_void(VoidParticle* void_particle){
+        world_is_in->mud_particle_falling_onto_void(this);
+}
+
+void MudParticle::fall_onto_water(WaterParticle* water_particle){
+}
+
+void MudParticle::fall_onto_mud(MudParticle* mud_particle){
+        world_is_in->mud_particle_falling_onto_blocking_particle(this);
+}
+
+void MudParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
+}
+
+void MudParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
+}
+
+void MudParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+}
+
+void MudParticle::mud_falling_to_the_right(MudParticle* mud_particle){
+}
+
+void MudParticle::water_falling_to_the_left(WaterParticle* water_particle){
+}
+
+void MudParticle::water_falling_to_the_right(WaterParticle* water_particle){
+}
+
+void MudParticle::grass_trying_to_spread_onto(){
+}

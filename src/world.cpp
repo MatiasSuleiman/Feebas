@@ -59,8 +59,8 @@ void World::Create_water_particle_at(int x, int y) {
   particles.insert_or_assign({x, y}, std::make_unique<WaterParticle>(this));
 }
 
-void World::Create_water_partcile_at(int x, int y) {
-  Create_water_particle_at(x, y);
+void World::Create_mud_particle_at(int x, int y) {
+  particles.insert_or_assign({x, y}, std::make_unique<MudParticle>(this));
 }
 
 bool World::there_is_dirt_particle_at(int x, int y) const {
@@ -71,6 +71,11 @@ bool World::there_is_dirt_particle_at(int x, int y) const {
 bool World::there_is_water_particle_at(int x, int y) const {
   const Particle* particle = particle_at({x, y});
   return particle != nullptr && particle->isWater();
+}
+
+bool World::there_is_mud_particle_at(int x, int y) const {
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isMud();
 }
 
 bool World::there_is_grass_particle_at(int x, int y) const {
@@ -409,6 +414,36 @@ void World::dirt_particle_falling_onto_dirt(DirtParticle* dirt_particle){
         }
 }
 
+void World::dirt_particle_falling_onto_water(DirtParticle* dirt_particle, WaterParticle* water_particle){
+        ParticleIterator dirt_iterator = this->iterator_of(dirt_particle);
+        if (dirt_iterator == particles.end()) {
+                return;
+        }
+
+        ParticleIterator water_iterator = this->iterator_of(water_particle);
+        if (water_iterator == particles.end()) {
+                return;
+        }
+
+        water_iterator->second = std::make_unique<MudParticle>(this);
+        particles.erase(dirt_iterator);
+}
+
+void World::water_particle_falling_onto_dirt(WaterParticle* water_particle, DirtParticle* dirt_particle){
+        ParticleIterator water_iterator = this->iterator_of(water_particle);
+        if (water_iterator == particles.end()) {
+                return;
+        }
+
+        ParticleIterator dirt_iterator = this->iterator_of(dirt_particle);
+        if (dirt_iterator == particles.end()) {
+                return;
+        }
+
+        dirt_iterator->second = std::make_unique<MudParticle>(this);
+        particles.erase(water_iterator);
+}
+
 void World::dirt_falling_to_the_left_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle){
         ParticleIterator particle_iterator = this->iterator_of(dirt_particle);
         if (particle_iterator == particles.end()) {
@@ -421,6 +456,81 @@ void World::dirt_falling_to_the_left_onto_void(DirtParticle* dirt_particle, Void
 
 void World::dirt_falling_to_the_right_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle){
         ParticleIterator particle_iterator = this->iterator_of(dirt_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first + 1, particle_coordinates.second - 1});
+}
+
+void World::mud_particle_falling_onto_void(MudParticle* mud_particle){
+        ParticleIterator particle_iterator = this->iterator_of(mud_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+
+        Coordinate new_coordinate = particle_coordinates;
+        --new_coordinate.second;
+
+        move_particle_to(particle_iterator, new_coordinate);
+}
+
+void World::mud_particle_falling_onto_blocking_particle(MudParticle* mud_particle){
+        ParticleIterator particle_iterator = this->iterator_of(mud_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+
+        if (particle_coordinates.first != 0) {
+                Coordinate left_coordinates{
+                        particle_coordinates.first - 1,
+                        particle_coordinates.second
+                };
+
+                Particle* particle_to_the_left = this->look_for_particle_to_the_left(particle_coordinates);
+                Particle* particle_underneath_to_the_left = this->look_for_particle_underneath(left_coordinates);
+
+                if(particle_to_the_left != nullptr && particle_underneath_to_the_left != nullptr &&
+                                particle_to_the_left->dirt_can_fall_through() &&
+                                particle_underneath_to_the_left->dirt_can_fall_through()){
+                        particle_underneath_to_the_left->mud_falling_to_the_left(mud_particle);
+                        return;
+                }
+        }
+
+        if (particle_coordinates.first < world_width - 1) {
+                Coordinate right_coordinates{
+                        particle_coordinates.first + 1,
+                        particle_coordinates.second
+                };
+                Particle* particle_to_the_right = this->look_for_particle_to_the_right(particle_coordinates);
+                Particle* particle_underneath_to_the_right = this->look_for_particle_underneath(right_coordinates);
+
+                if(particle_to_the_right != nullptr && particle_underneath_to_the_right != nullptr &&
+                                particle_to_the_right->dirt_can_fall_through() &&
+                                particle_underneath_to_the_right->dirt_can_fall_through()){
+                        particle_underneath_to_the_right->mud_falling_to_the_right(mud_particle);
+                }
+        }
+}
+
+void World::mud_falling_to_the_left_onto_void(MudParticle* mud_particle, VoidParticle* void_particle){
+        ParticleIterator particle_iterator = this->iterator_of(mud_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first - 1, particle_coordinates.second - 1});
+}
+
+void World::mud_falling_to_the_right_onto_void(MudParticle* mud_particle, VoidParticle* void_particle){
+        ParticleIterator particle_iterator = this->iterator_of(mud_particle);
         if (particle_iterator == particles.end()) {
                 return;
         }
