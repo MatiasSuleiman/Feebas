@@ -37,6 +37,8 @@ class World {
         void Create_water_particle_at(int x, int y);
         void Create_water_partcile_at(int x, int y);
         bool there_is_water_particle_at(int x, int y) const;
+        Particle* particle_to_the_left(Particle* particle);
+        Particle* particle_to_the_right(Particle* particle);
         void water_particle_falling_onto_void(WaterParticle* water_particle);
         void water_particle_falling_onto_blocking_particle(WaterParticle* water_particle);
         void water_particle_falling_onto_water(WaterParticle* falling_water_particle, WaterParticle* blocking_water_particle);

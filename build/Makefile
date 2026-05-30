@@ -123,8 +123,22 @@ preinstall/fast:
 
 # clear depends
 depend:
+	$(CMAKE_COMMAND) -P /home/matias/Feebas/build/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
+
+#=============================================================================
+# Target rules for targets named clean-compiled
+
+# Build rule for target.
+clean-compiled: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 clean-compiled
+.PHONY : clean-compiled
+
+# fast build rule for target.
+clean-compiled/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/clean-compiled.dir/build.make CMakeFiles/clean-compiled.dir/build
+.PHONY : clean-compiled/fast
 
 #=============================================================================
 # Target rules for targets named feebas-engine
@@ -140,17 +154,238 @@ feebas-engine/fast:
 .PHONY : feebas-engine/fast
 
 #=============================================================================
-# Target rules for targets named feebas-tests
+# Target rules for targets named feebas-test-tests_particle_tests_test01_cpp
 
 # Build rule for target.
-feebas-tests: cmake_check_build_system
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-tests
-.PHONY : feebas-tests
+feebas-test-tests_particle_tests_test01_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test01_cpp
+.PHONY : feebas-test-tests_particle_tests_test01_cpp
 
 # fast build rule for target.
-feebas-tests/fast:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-tests.dir/build.make CMakeFiles/feebas-tests.dir/build
-.PHONY : feebas-tests/fast
+feebas-test-tests_particle_tests_test01_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test01_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test02_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test02_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test02_cpp
+.PHONY : feebas-test-tests_particle_tests_test02_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test02_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test02_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test03_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test03_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test03_cpp
+.PHONY : feebas-test-tests_particle_tests_test03_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test03_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test03_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test04_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test04_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test04_cpp
+.PHONY : feebas-test-tests_particle_tests_test04_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test04_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test04_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test05_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test05_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test05_cpp
+.PHONY : feebas-test-tests_particle_tests_test05_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test05_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test05_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test06_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test06_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test06_cpp
+.PHONY : feebas-test-tests_particle_tests_test06_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test06_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test06_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test07_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test07_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test07_cpp
+.PHONY : feebas-test-tests_particle_tests_test07_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test07_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test07_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test08_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test08_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test08_cpp
+.PHONY : feebas-test-tests_particle_tests_test08_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test08_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test08_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test09_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test09_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test09_cpp
+.PHONY : feebas-test-tests_particle_tests_test09_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test09_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test09_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_particle_tests_test10_cpp
+
+# Build rule for target.
+feebas-test-tests_particle_tests_test10_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_particle_tests_test10_cpp
+.PHONY : feebas-test-tests_particle_tests_test10_cpp
+
+# fast build rule for target.
+feebas-test-tests_particle_tests_test10_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/build
+.PHONY : feebas-test-tests_particle_tests_test10_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test01_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test01_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test01_cpp
+.PHONY : feebas-test-tests_world_tests_test01_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test01_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test01_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test02_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test02_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test02_cpp
+.PHONY : feebas-test-tests_world_tests_test02_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test02_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test02_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test03_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test03_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test03_cpp
+.PHONY : feebas-test-tests_world_tests_test03_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test03_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test03_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test04_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test04_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test04_cpp
+.PHONY : feebas-test-tests_world_tests_test04_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test04_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test04_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test05_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test05_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test05_cpp
+.PHONY : feebas-test-tests_world_tests_test05_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test05_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test05_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test06_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test06_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test06_cpp
+.PHONY : feebas-test-tests_world_tests_test06_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test06_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test06_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test07_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test07_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test07_cpp
+.PHONY : feebas-test-tests_world_tests_test07_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test07_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test07_cpp/fast
+
+#=============================================================================
+# Target rules for targets named feebas-test-tests_world_tests_test08_cpp
+
+# Build rule for target.
+feebas-test-tests_world_tests_test08_cpp: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 feebas-test-tests_world_tests_test08_cpp
+.PHONY : feebas-test-tests_world_tests_test08_cpp
+
+# fast build rule for target.
+feebas-test-tests_world_tests_test08_cpp/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/build
+.PHONY : feebas-test-tests_world_tests_test08_cpp/fast
 
 src/particles.o: src/particles.cpp.o
 .PHONY : src/particles.o
@@ -200,12 +435,36 @@ src/world.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-engine.dir/build.make CMakeFiles/feebas-engine.dir/src/world.cpp.s
 .PHONY : src/world.cpp.s
 
+src/world_to_json_visitor.o: src/world_to_json_visitor.cpp.o
+.PHONY : src/world_to_json_visitor.o
+
+# target to build an object file
+src/world_to_json_visitor.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-engine.dir/build.make CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o
+.PHONY : src/world_to_json_visitor.cpp.o
+
+src/world_to_json_visitor.i: src/world_to_json_visitor.cpp.i
+.PHONY : src/world_to_json_visitor.i
+
+# target to preprocess a source file
+src/world_to_json_visitor.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-engine.dir/build.make CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.i
+.PHONY : src/world_to_json_visitor.cpp.i
+
+src/world_to_json_visitor.s: src/world_to_json_visitor.cpp.s
+.PHONY : src/world_to_json_visitor.s
+
+# target to generate assembly for a file
+src/world_to_json_visitor.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-engine.dir/build.make CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.s
+.PHONY : src/world_to_json_visitor.cpp.s
+
 tests/particle_tests/test01.o: tests/particle_tests/test01.cpp.o
 .PHONY : tests/particle_tests/test01.o
 
 # target to build an object file
 tests/particle_tests/test01.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-tests.dir/build.make CMakeFiles/feebas-tests.dir/tests/particle_tests/test01.cpp.o
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/tests/particle_tests/test01.cpp.o
 .PHONY : tests/particle_tests/test01.cpp.o
 
 tests/particle_tests/test01.i: tests/particle_tests/test01.cpp.i
@@ -213,7 +472,7 @@ tests/particle_tests/test01.i: tests/particle_tests/test01.cpp.i
 
 # target to preprocess a source file
 tests/particle_tests/test01.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-tests.dir/build.make CMakeFiles/feebas-tests.dir/tests/particle_tests/test01.cpp.i
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/tests/particle_tests/test01.cpp.i
 .PHONY : tests/particle_tests/test01.cpp.i
 
 tests/particle_tests/test01.s: tests/particle_tests/test01.cpp.s
@@ -221,8 +480,416 @@ tests/particle_tests/test01.s: tests/particle_tests/test01.cpp.s
 
 # target to generate assembly for a file
 tests/particle_tests/test01.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-tests.dir/build.make CMakeFiles/feebas-tests.dir/tests/particle_tests/test01.cpp.s
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test01_cpp.dir/tests/particle_tests/test01.cpp.s
 .PHONY : tests/particle_tests/test01.cpp.s
+
+tests/particle_tests/test02.o: tests/particle_tests/test02.cpp.o
+.PHONY : tests/particle_tests/test02.o
+
+# target to build an object file
+tests/particle_tests/test02.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/tests/particle_tests/test02.cpp.o
+.PHONY : tests/particle_tests/test02.cpp.o
+
+tests/particle_tests/test02.i: tests/particle_tests/test02.cpp.i
+.PHONY : tests/particle_tests/test02.i
+
+# target to preprocess a source file
+tests/particle_tests/test02.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/tests/particle_tests/test02.cpp.i
+.PHONY : tests/particle_tests/test02.cpp.i
+
+tests/particle_tests/test02.s: tests/particle_tests/test02.cpp.s
+.PHONY : tests/particle_tests/test02.s
+
+# target to generate assembly for a file
+tests/particle_tests/test02.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test02_cpp.dir/tests/particle_tests/test02.cpp.s
+.PHONY : tests/particle_tests/test02.cpp.s
+
+tests/particle_tests/test03.o: tests/particle_tests/test03.cpp.o
+.PHONY : tests/particle_tests/test03.o
+
+# target to build an object file
+tests/particle_tests/test03.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/tests/particle_tests/test03.cpp.o
+.PHONY : tests/particle_tests/test03.cpp.o
+
+tests/particle_tests/test03.i: tests/particle_tests/test03.cpp.i
+.PHONY : tests/particle_tests/test03.i
+
+# target to preprocess a source file
+tests/particle_tests/test03.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/tests/particle_tests/test03.cpp.i
+.PHONY : tests/particle_tests/test03.cpp.i
+
+tests/particle_tests/test03.s: tests/particle_tests/test03.cpp.s
+.PHONY : tests/particle_tests/test03.s
+
+# target to generate assembly for a file
+tests/particle_tests/test03.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test03_cpp.dir/tests/particle_tests/test03.cpp.s
+.PHONY : tests/particle_tests/test03.cpp.s
+
+tests/particle_tests/test04.o: tests/particle_tests/test04.cpp.o
+.PHONY : tests/particle_tests/test04.o
+
+# target to build an object file
+tests/particle_tests/test04.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/tests/particle_tests/test04.cpp.o
+.PHONY : tests/particle_tests/test04.cpp.o
+
+tests/particle_tests/test04.i: tests/particle_tests/test04.cpp.i
+.PHONY : tests/particle_tests/test04.i
+
+# target to preprocess a source file
+tests/particle_tests/test04.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/tests/particle_tests/test04.cpp.i
+.PHONY : tests/particle_tests/test04.cpp.i
+
+tests/particle_tests/test04.s: tests/particle_tests/test04.cpp.s
+.PHONY : tests/particle_tests/test04.s
+
+# target to generate assembly for a file
+tests/particle_tests/test04.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test04_cpp.dir/tests/particle_tests/test04.cpp.s
+.PHONY : tests/particle_tests/test04.cpp.s
+
+tests/particle_tests/test05.o: tests/particle_tests/test05.cpp.o
+.PHONY : tests/particle_tests/test05.o
+
+# target to build an object file
+tests/particle_tests/test05.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/tests/particle_tests/test05.cpp.o
+.PHONY : tests/particle_tests/test05.cpp.o
+
+tests/particle_tests/test05.i: tests/particle_tests/test05.cpp.i
+.PHONY : tests/particle_tests/test05.i
+
+# target to preprocess a source file
+tests/particle_tests/test05.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/tests/particle_tests/test05.cpp.i
+.PHONY : tests/particle_tests/test05.cpp.i
+
+tests/particle_tests/test05.s: tests/particle_tests/test05.cpp.s
+.PHONY : tests/particle_tests/test05.s
+
+# target to generate assembly for a file
+tests/particle_tests/test05.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test05_cpp.dir/tests/particle_tests/test05.cpp.s
+.PHONY : tests/particle_tests/test05.cpp.s
+
+tests/particle_tests/test06.o: tests/particle_tests/test06.cpp.o
+.PHONY : tests/particle_tests/test06.o
+
+# target to build an object file
+tests/particle_tests/test06.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/tests/particle_tests/test06.cpp.o
+.PHONY : tests/particle_tests/test06.cpp.o
+
+tests/particle_tests/test06.i: tests/particle_tests/test06.cpp.i
+.PHONY : tests/particle_tests/test06.i
+
+# target to preprocess a source file
+tests/particle_tests/test06.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/tests/particle_tests/test06.cpp.i
+.PHONY : tests/particle_tests/test06.cpp.i
+
+tests/particle_tests/test06.s: tests/particle_tests/test06.cpp.s
+.PHONY : tests/particle_tests/test06.s
+
+# target to generate assembly for a file
+tests/particle_tests/test06.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test06_cpp.dir/tests/particle_tests/test06.cpp.s
+.PHONY : tests/particle_tests/test06.cpp.s
+
+tests/particle_tests/test07.o: tests/particle_tests/test07.cpp.o
+.PHONY : tests/particle_tests/test07.o
+
+# target to build an object file
+tests/particle_tests/test07.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/tests/particle_tests/test07.cpp.o
+.PHONY : tests/particle_tests/test07.cpp.o
+
+tests/particle_tests/test07.i: tests/particle_tests/test07.cpp.i
+.PHONY : tests/particle_tests/test07.i
+
+# target to preprocess a source file
+tests/particle_tests/test07.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/tests/particle_tests/test07.cpp.i
+.PHONY : tests/particle_tests/test07.cpp.i
+
+tests/particle_tests/test07.s: tests/particle_tests/test07.cpp.s
+.PHONY : tests/particle_tests/test07.s
+
+# target to generate assembly for a file
+tests/particle_tests/test07.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test07_cpp.dir/tests/particle_tests/test07.cpp.s
+.PHONY : tests/particle_tests/test07.cpp.s
+
+tests/particle_tests/test08.o: tests/particle_tests/test08.cpp.o
+.PHONY : tests/particle_tests/test08.o
+
+# target to build an object file
+tests/particle_tests/test08.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/tests/particle_tests/test08.cpp.o
+.PHONY : tests/particle_tests/test08.cpp.o
+
+tests/particle_tests/test08.i: tests/particle_tests/test08.cpp.i
+.PHONY : tests/particle_tests/test08.i
+
+# target to preprocess a source file
+tests/particle_tests/test08.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/tests/particle_tests/test08.cpp.i
+.PHONY : tests/particle_tests/test08.cpp.i
+
+tests/particle_tests/test08.s: tests/particle_tests/test08.cpp.s
+.PHONY : tests/particle_tests/test08.s
+
+# target to generate assembly for a file
+tests/particle_tests/test08.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test08_cpp.dir/tests/particle_tests/test08.cpp.s
+.PHONY : tests/particle_tests/test08.cpp.s
+
+tests/particle_tests/test09.o: tests/particle_tests/test09.cpp.o
+.PHONY : tests/particle_tests/test09.o
+
+# target to build an object file
+tests/particle_tests/test09.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/tests/particle_tests/test09.cpp.o
+.PHONY : tests/particle_tests/test09.cpp.o
+
+tests/particle_tests/test09.i: tests/particle_tests/test09.cpp.i
+.PHONY : tests/particle_tests/test09.i
+
+# target to preprocess a source file
+tests/particle_tests/test09.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/tests/particle_tests/test09.cpp.i
+.PHONY : tests/particle_tests/test09.cpp.i
+
+tests/particle_tests/test09.s: tests/particle_tests/test09.cpp.s
+.PHONY : tests/particle_tests/test09.s
+
+# target to generate assembly for a file
+tests/particle_tests/test09.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test09_cpp.dir/tests/particle_tests/test09.cpp.s
+.PHONY : tests/particle_tests/test09.cpp.s
+
+tests/particle_tests/test10.o: tests/particle_tests/test10.cpp.o
+.PHONY : tests/particle_tests/test10.o
+
+# target to build an object file
+tests/particle_tests/test10.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/tests/particle_tests/test10.cpp.o
+.PHONY : tests/particle_tests/test10.cpp.o
+
+tests/particle_tests/test10.i: tests/particle_tests/test10.cpp.i
+.PHONY : tests/particle_tests/test10.i
+
+# target to preprocess a source file
+tests/particle_tests/test10.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/tests/particle_tests/test10.cpp.i
+.PHONY : tests/particle_tests/test10.cpp.i
+
+tests/particle_tests/test10.s: tests/particle_tests/test10.cpp.s
+.PHONY : tests/particle_tests/test10.s
+
+# target to generate assembly for a file
+tests/particle_tests/test10.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/build.make CMakeFiles/feebas-test-tests_particle_tests_test10_cpp.dir/tests/particle_tests/test10.cpp.s
+.PHONY : tests/particle_tests/test10.cpp.s
+
+tests/world_tests/test01.o: tests/world_tests/test01.cpp.o
+.PHONY : tests/world_tests/test01.o
+
+# target to build an object file
+tests/world_tests/test01.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/tests/world_tests/test01.cpp.o
+.PHONY : tests/world_tests/test01.cpp.o
+
+tests/world_tests/test01.i: tests/world_tests/test01.cpp.i
+.PHONY : tests/world_tests/test01.i
+
+# target to preprocess a source file
+tests/world_tests/test01.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/tests/world_tests/test01.cpp.i
+.PHONY : tests/world_tests/test01.cpp.i
+
+tests/world_tests/test01.s: tests/world_tests/test01.cpp.s
+.PHONY : tests/world_tests/test01.s
+
+# target to generate assembly for a file
+tests/world_tests/test01.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test01_cpp.dir/tests/world_tests/test01.cpp.s
+.PHONY : tests/world_tests/test01.cpp.s
+
+tests/world_tests/test02.o: tests/world_tests/test02.cpp.o
+.PHONY : tests/world_tests/test02.o
+
+# target to build an object file
+tests/world_tests/test02.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/tests/world_tests/test02.cpp.o
+.PHONY : tests/world_tests/test02.cpp.o
+
+tests/world_tests/test02.i: tests/world_tests/test02.cpp.i
+.PHONY : tests/world_tests/test02.i
+
+# target to preprocess a source file
+tests/world_tests/test02.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/tests/world_tests/test02.cpp.i
+.PHONY : tests/world_tests/test02.cpp.i
+
+tests/world_tests/test02.s: tests/world_tests/test02.cpp.s
+.PHONY : tests/world_tests/test02.s
+
+# target to generate assembly for a file
+tests/world_tests/test02.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test02_cpp.dir/tests/world_tests/test02.cpp.s
+.PHONY : tests/world_tests/test02.cpp.s
+
+tests/world_tests/test03.o: tests/world_tests/test03.cpp.o
+.PHONY : tests/world_tests/test03.o
+
+# target to build an object file
+tests/world_tests/test03.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03.cpp.o
+.PHONY : tests/world_tests/test03.cpp.o
+
+tests/world_tests/test03.i: tests/world_tests/test03.cpp.i
+.PHONY : tests/world_tests/test03.i
+
+# target to preprocess a source file
+tests/world_tests/test03.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03.cpp.i
+.PHONY : tests/world_tests/test03.cpp.i
+
+tests/world_tests/test03.s: tests/world_tests/test03.cpp.s
+.PHONY : tests/world_tests/test03.s
+
+# target to generate assembly for a file
+tests/world_tests/test03.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test03_cpp.dir/tests/world_tests/test03.cpp.s
+.PHONY : tests/world_tests/test03.cpp.s
+
+tests/world_tests/test04.o: tests/world_tests/test04.cpp.o
+.PHONY : tests/world_tests/test04.o
+
+# target to build an object file
+tests/world_tests/test04.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/tests/world_tests/test04.cpp.o
+.PHONY : tests/world_tests/test04.cpp.o
+
+tests/world_tests/test04.i: tests/world_tests/test04.cpp.i
+.PHONY : tests/world_tests/test04.i
+
+# target to preprocess a source file
+tests/world_tests/test04.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/tests/world_tests/test04.cpp.i
+.PHONY : tests/world_tests/test04.cpp.i
+
+tests/world_tests/test04.s: tests/world_tests/test04.cpp.s
+.PHONY : tests/world_tests/test04.s
+
+# target to generate assembly for a file
+tests/world_tests/test04.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test04_cpp.dir/tests/world_tests/test04.cpp.s
+.PHONY : tests/world_tests/test04.cpp.s
+
+tests/world_tests/test05.o: tests/world_tests/test05.cpp.o
+.PHONY : tests/world_tests/test05.o
+
+# target to build an object file
+tests/world_tests/test05.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/tests/world_tests/test05.cpp.o
+.PHONY : tests/world_tests/test05.cpp.o
+
+tests/world_tests/test05.i: tests/world_tests/test05.cpp.i
+.PHONY : tests/world_tests/test05.i
+
+# target to preprocess a source file
+tests/world_tests/test05.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/tests/world_tests/test05.cpp.i
+.PHONY : tests/world_tests/test05.cpp.i
+
+tests/world_tests/test05.s: tests/world_tests/test05.cpp.s
+.PHONY : tests/world_tests/test05.s
+
+# target to generate assembly for a file
+tests/world_tests/test05.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test05_cpp.dir/tests/world_tests/test05.cpp.s
+.PHONY : tests/world_tests/test05.cpp.s
+
+tests/world_tests/test06.o: tests/world_tests/test06.cpp.o
+.PHONY : tests/world_tests/test06.o
+
+# target to build an object file
+tests/world_tests/test06.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/tests/world_tests/test06.cpp.o
+.PHONY : tests/world_tests/test06.cpp.o
+
+tests/world_tests/test06.i: tests/world_tests/test06.cpp.i
+.PHONY : tests/world_tests/test06.i
+
+# target to preprocess a source file
+tests/world_tests/test06.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/tests/world_tests/test06.cpp.i
+.PHONY : tests/world_tests/test06.cpp.i
+
+tests/world_tests/test06.s: tests/world_tests/test06.cpp.s
+.PHONY : tests/world_tests/test06.s
+
+# target to generate assembly for a file
+tests/world_tests/test06.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test06_cpp.dir/tests/world_tests/test06.cpp.s
+.PHONY : tests/world_tests/test06.cpp.s
+
+tests/world_tests/test07.o: tests/world_tests/test07.cpp.o
+.PHONY : tests/world_tests/test07.o
+
+# target to build an object file
+tests/world_tests/test07.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/tests/world_tests/test07.cpp.o
+.PHONY : tests/world_tests/test07.cpp.o
+
+tests/world_tests/test07.i: tests/world_tests/test07.cpp.i
+.PHONY : tests/world_tests/test07.i
+
+# target to preprocess a source file
+tests/world_tests/test07.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/tests/world_tests/test07.cpp.i
+.PHONY : tests/world_tests/test07.cpp.i
+
+tests/world_tests/test07.s: tests/world_tests/test07.cpp.s
+.PHONY : tests/world_tests/test07.s
+
+# target to generate assembly for a file
+tests/world_tests/test07.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test07_cpp.dir/tests/world_tests/test07.cpp.s
+.PHONY : tests/world_tests/test07.cpp.s
+
+tests/world_tests/test08.o: tests/world_tests/test08.cpp.o
+.PHONY : tests/world_tests/test08.o
+
+# target to build an object file
+tests/world_tests/test08.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/tests/world_tests/test08.cpp.o
+.PHONY : tests/world_tests/test08.cpp.o
+
+tests/world_tests/test08.i: tests/world_tests/test08.cpp.i
+.PHONY : tests/world_tests/test08.i
+
+# target to preprocess a source file
+tests/world_tests/test08.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/tests/world_tests/test08.cpp.i
+.PHONY : tests/world_tests/test08.cpp.i
+
+tests/world_tests/test08.s: tests/world_tests/test08.cpp.s
+.PHONY : tests/world_tests/test08.s
+
+# target to generate assembly for a file
+tests/world_tests/test08.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/build.make CMakeFiles/feebas-test-tests_world_tests_test08_cpp.dir/tests/world_tests/test08.cpp.s
+.PHONY : tests/world_tests/test08.cpp.s
 
 # Help Target
 help:
@@ -233,17 +900,89 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... test"
+	@echo "... clean-compiled"
 	@echo "... feebas-engine"
-	@echo "... feebas-tests"
+	@echo "... feebas-test-tests_particle_tests_test01_cpp"
+	@echo "... feebas-test-tests_particle_tests_test02_cpp"
+	@echo "... feebas-test-tests_particle_tests_test03_cpp"
+	@echo "... feebas-test-tests_particle_tests_test04_cpp"
+	@echo "... feebas-test-tests_particle_tests_test05_cpp"
+	@echo "... feebas-test-tests_particle_tests_test06_cpp"
+	@echo "... feebas-test-tests_particle_tests_test07_cpp"
+	@echo "... feebas-test-tests_particle_tests_test08_cpp"
+	@echo "... feebas-test-tests_particle_tests_test09_cpp"
+	@echo "... feebas-test-tests_particle_tests_test10_cpp"
+	@echo "... feebas-test-tests_world_tests_test01_cpp"
+	@echo "... feebas-test-tests_world_tests_test02_cpp"
+	@echo "... feebas-test-tests_world_tests_test03_cpp"
+	@echo "... feebas-test-tests_world_tests_test04_cpp"
+	@echo "... feebas-test-tests_world_tests_test05_cpp"
+	@echo "... feebas-test-tests_world_tests_test06_cpp"
+	@echo "... feebas-test-tests_world_tests_test07_cpp"
+	@echo "... feebas-test-tests_world_tests_test08_cpp"
 	@echo "... src/particles.o"
 	@echo "... src/particles.i"
 	@echo "... src/particles.s"
 	@echo "... src/world.o"
 	@echo "... src/world.i"
 	@echo "... src/world.s"
+	@echo "... src/world_to_json_visitor.o"
+	@echo "... src/world_to_json_visitor.i"
+	@echo "... src/world_to_json_visitor.s"
 	@echo "... tests/particle_tests/test01.o"
 	@echo "... tests/particle_tests/test01.i"
 	@echo "... tests/particle_tests/test01.s"
+	@echo "... tests/particle_tests/test02.o"
+	@echo "... tests/particle_tests/test02.i"
+	@echo "... tests/particle_tests/test02.s"
+	@echo "... tests/particle_tests/test03.o"
+	@echo "... tests/particle_tests/test03.i"
+	@echo "... tests/particle_tests/test03.s"
+	@echo "... tests/particle_tests/test04.o"
+	@echo "... tests/particle_tests/test04.i"
+	@echo "... tests/particle_tests/test04.s"
+	@echo "... tests/particle_tests/test05.o"
+	@echo "... tests/particle_tests/test05.i"
+	@echo "... tests/particle_tests/test05.s"
+	@echo "... tests/particle_tests/test06.o"
+	@echo "... tests/particle_tests/test06.i"
+	@echo "... tests/particle_tests/test06.s"
+	@echo "... tests/particle_tests/test07.o"
+	@echo "... tests/particle_tests/test07.i"
+	@echo "... tests/particle_tests/test07.s"
+	@echo "... tests/particle_tests/test08.o"
+	@echo "... tests/particle_tests/test08.i"
+	@echo "... tests/particle_tests/test08.s"
+	@echo "... tests/particle_tests/test09.o"
+	@echo "... tests/particle_tests/test09.i"
+	@echo "... tests/particle_tests/test09.s"
+	@echo "... tests/particle_tests/test10.o"
+	@echo "... tests/particle_tests/test10.i"
+	@echo "... tests/particle_tests/test10.s"
+	@echo "... tests/world_tests/test01.o"
+	@echo "... tests/world_tests/test01.i"
+	@echo "... tests/world_tests/test01.s"
+	@echo "... tests/world_tests/test02.o"
+	@echo "... tests/world_tests/test02.i"
+	@echo "... tests/world_tests/test02.s"
+	@echo "... tests/world_tests/test03.o"
+	@echo "... tests/world_tests/test03.i"
+	@echo "... tests/world_tests/test03.s"
+	@echo "... tests/world_tests/test04.o"
+	@echo "... tests/world_tests/test04.i"
+	@echo "... tests/world_tests/test04.s"
+	@echo "... tests/world_tests/test05.o"
+	@echo "... tests/world_tests/test05.i"
+	@echo "... tests/world_tests/test05.s"
+	@echo "... tests/world_tests/test06.o"
+	@echo "... tests/world_tests/test06.i"
+	@echo "... tests/world_tests/test06.s"
+	@echo "... tests/world_tests/test07.o"
+	@echo "... tests/world_tests/test07.i"
+	@echo "... tests/world_tests/test07.s"
+	@echo "... tests/world_tests/test08.o"
+	@echo "... tests/world_tests/test08.i"
+	@echo "... tests/world_tests/test08.s"
 .PHONY : help
 
 
@@ -255,6 +994,7 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
+	$(CMAKE_COMMAND) -P /home/matias/Feebas/build/CMakeFiles/VerifyGlobs.cmake
 	$(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

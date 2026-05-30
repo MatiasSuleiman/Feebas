@@ -44,6 +44,22 @@ bool DirtParticle::can_be_pushed_to_the_right() {
         return false;
 }
 
+int DirtParticle::water_to_the_left() {
+        return 0;
+}
+
+int DirtParticle::water_to_the_right() {
+        return 0;
+}
+
+int DirtParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int DirtParticle::water_from_to_the_right() {
+        return 0;
+}
+
 void DirtParticle::accept(WorldVisitor& visitor) const {
         visitor.visit_dirt_particle(*this);
 }
@@ -125,6 +141,22 @@ bool VoidParticle::can_be_pushed_to_the_right() {
         return false;
 }
 
+int VoidParticle::water_to_the_left() {
+        return 0;
+}
+
+int VoidParticle::water_to_the_right() {
+        return 0;
+}
+
+int VoidParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int VoidParticle::water_from_to_the_right() {
+        return 0;
+}
+
 void VoidParticle::accept(WorldVisitor& visitor) const {
         visitor.visit_void_particle(*this);
 }
@@ -198,6 +230,22 @@ bool GrassParticle::can_be_pushed_to_the_right() {
         return false;
 }
 
+int GrassParticle::water_to_the_left() {
+        return 0;
+}
+
+int GrassParticle::water_to_the_right() {
+        return 0;
+}
+
+int GrassParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int GrassParticle::water_from_to_the_right() {
+        return 0;
+}
+
 void GrassParticle::accept(WorldVisitor& visitor) const {
         visitor.visit_grass_particle(*this);
 }
@@ -267,6 +315,42 @@ bool WaterParticle::can_be_pushed_to_the_left() {
 
 bool WaterParticle::can_be_pushed_to_the_right() {
         return world_is_in->can_be_moved_to_the_right(this);
+}
+
+int WaterParticle::water_to_the_left() {
+        Particle* particle = world_is_in->particle_to_the_left(this);
+        if (particle == nullptr) {
+                return 0;
+        }
+
+        return particle->water_from_to_the_left();
+}
+
+int WaterParticle::water_to_the_right() {
+        Particle* particle = world_is_in->particle_to_the_right(this);
+        if (particle == nullptr) {
+                return 0;
+        }
+
+        return particle->water_from_to_the_right();
+}
+
+int WaterParticle::water_from_to_the_left() {
+        Particle* particle = world_is_in->particle_to_the_left(this);
+        if (particle == nullptr) {
+                return 1;
+        }
+
+        return 1 + particle->water_from_to_the_left();
+}
+
+int WaterParticle::water_from_to_the_right() {
+        Particle* particle = world_is_in->particle_to_the_right(this);
+        if (particle == nullptr) {
+                return 1;
+        }
+
+        return 1 + particle->water_from_to_the_right();
 }
 
 void WaterParticle::accept(WorldVisitor& visitor) const {

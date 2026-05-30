@@ -171,6 +171,36 @@ const Particle* World::particle_at(Coordinate coordinate) const {
         return target_iterator->second.get();
 }
 
+Particle* World::particle_to_the_left(Particle* particle) {
+        ParticleIterator particle_iterator = this->iterator_of(particle);
+        if (particle_iterator == particles.end()) {
+                return nullptr;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        Coordinate left_coordinates{
+                particle_coordinates.first - 1,
+                particle_coordinates.second
+        };
+
+        return particle_at(left_coordinates);
+}
+
+Particle* World::particle_to_the_right(Particle* particle) {
+        ParticleIterator particle_iterator = this->iterator_of(particle);
+        if (particle_iterator == particles.end()) {
+                return nullptr;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        Coordinate right_coordinates{
+                particle_coordinates.first + 1,
+                particle_coordinates.second
+        };
+
+        return particle_at(right_coordinates);
+}
+
 World::ParticleIterator World::iterator_of(Particle* particle){
         for (ParticleIterator iterator = particles.begin(); iterator != particles.end(); ++iterator) {
                 if (iterator->second.get() == particle) {
@@ -484,16 +514,25 @@ void World::water_particle_falling_onto_water(WaterParticle* falling_water_parti
         Coordinate blocking_water_coordinates = blocking_water_iterator->first;
 
         if (blocking_water_particle->can_be_pushed_to_the_left()) {
-                move_water_chain_to_the_left(blocking_water_particle);
+                if (blocking_water_particle->can_be_pushed_to_the_right()) {
+                        if (blocking_water_particle->water_to_the_left() <= blocking_water_particle->water_to_the_right()) {
+                                move_water_chain_to_the_left(blocking_water_particle);
+                        } else {
+                                move_water_chain_to_the_right(blocking_water_particle);
+                        }
+                } else {
+                        move_water_chain_to_the_left(blocking_water_particle);
+                }
+
                 falling_water_iterator = this->iterator_of(falling_water_particle);
                 move_particle_to(falling_water_iterator, blocking_water_coordinates);
                 return;
-        }
-
-        if (blocking_water_particle->can_be_pushed_to_the_right()) {
-                move_water_chain_to_the_right(blocking_water_particle);
-                falling_water_iterator = this->iterator_of(falling_water_particle);
-                move_particle_to(falling_water_iterator, blocking_water_coordinates);
+        } else {
+                if (blocking_water_particle->can_be_pushed_to_the_right()) {
+                        move_water_chain_to_the_right(blocking_water_particle);
+                        falling_water_iterator = this->iterator_of(falling_water_particle);
+                        move_particle_to(falling_water_iterator, blocking_water_coordinates);
+                }
         }
 }
 

@@ -100,19 +100,35 @@ CMakeFiles/feebas-engine.dir/src/world.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/feebas-engine.dir/src/world.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matias/Feebas/src/world.cpp -o CMakeFiles/feebas-engine.dir/src/world.cpp.s
 
+CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o: CMakeFiles/feebas-engine.dir/flags.make
+CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o: /home/matias/Feebas/src/world_to_json_visitor.cpp
+CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o: CMakeFiles/feebas-engine.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/matias/Feebas/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o -MF CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o.d -o CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o -c /home/matias/Feebas/src/world_to_json_visitor.cpp
+
+CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/matias/Feebas/src/world_to_json_visitor.cpp > CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.i
+
+CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/matias/Feebas/src/world_to_json_visitor.cpp -o CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.s
+
 # Object files for target feebas-engine
 feebas__engine_OBJECTS = \
 "CMakeFiles/feebas-engine.dir/src/particles.cpp.o" \
-"CMakeFiles/feebas-engine.dir/src/world.cpp.o"
+"CMakeFiles/feebas-engine.dir/src/world.cpp.o" \
+"CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o"
 
 # External object files for target feebas-engine
 feebas__engine_EXTERNAL_OBJECTS =
 
 libfeebas-engine.a: CMakeFiles/feebas-engine.dir/src/particles.cpp.o
 libfeebas-engine.a: CMakeFiles/feebas-engine.dir/src/world.cpp.o
+libfeebas-engine.a: CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o
 libfeebas-engine.a: CMakeFiles/feebas-engine.dir/build.make
 libfeebas-engine.a: CMakeFiles/feebas-engine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/matias/Feebas/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libfeebas-engine.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/matias/Feebas/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking CXX static library libfeebas-engine.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/feebas-engine.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/feebas-engine.dir/link.txt --verbose=$(VERBOSE)
 

@@ -17,6 +17,7 @@ add_custom_target(clean-compiled
 add_library(feebas-engine
   src/particles.cpp
   src/world.cpp
+  src/world_to_json_visitor.cpp
 )
 
 target_compile_features(feebas-engine PUBLIC cxx_std_17)

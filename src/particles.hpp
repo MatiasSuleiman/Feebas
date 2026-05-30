@@ -20,6 +20,10 @@ class Particle {
                 virtual bool can_be_pushed_into_by_water() const = 0;
                 virtual bool can_be_pushed_to_the_left() = 0;
                 virtual bool can_be_pushed_to_the_right() = 0;
+                virtual int water_to_the_left() = 0;
+                virtual int water_to_the_right() = 0;
+                virtual int water_from_to_the_left() = 0;
+                virtual int water_from_to_the_right() = 0;
                 virtual void accept(WorldVisitor& visitor) const = 0;
                 virtual void step() = 0;
                 virtual void particle_is_falling_onto(Particle* particle) = 0;
@@ -48,6 +52,10 @@ class DirtParticle : public Particle {
                 bool can_be_pushed_into_by_water() const override;
                 bool can_be_pushed_to_the_left() override;
                 bool can_be_pushed_to_the_right() override;
+                int water_to_the_left() override;
+                int water_to_the_right() override;
+                int water_from_to_the_left() override;
+                int water_from_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
@@ -77,6 +85,10 @@ class VoidParticle : public Particle {
                 bool can_be_pushed_into_by_water() const override;
                 bool can_be_pushed_to_the_left() override;
                 bool can_be_pushed_to_the_right() override;
+                int water_to_the_left() override;
+                int water_to_the_right() override;
+                int water_from_to_the_left() override;
+                int water_from_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
@@ -103,6 +115,10 @@ class GrassParticle : public Particle {
                 bool can_be_pushed_into_by_water() const override;
                 bool can_be_pushed_to_the_left() override;
                 bool can_be_pushed_to_the_right() override;
+                int water_to_the_left() override;
+                int water_to_the_right() override;
+                int water_from_to_the_left() override;
+                int water_from_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;
@@ -129,6 +145,10 @@ class WaterParticle : public Particle {
                 bool can_be_pushed_into_by_water() const override;
                 bool can_be_pushed_to_the_left() override;
                 bool can_be_pushed_to_the_right() override;
+                int water_to_the_left() override;
+                int water_to_the_right() override;
+                int water_from_to_the_left() override;
+                int water_from_to_the_right() override;
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_falling_onto(Particle* particle) override;

@@ -1,2 +1,2 @@
-/usr/bin/ar qc libfeebas-engine.a "CMakeFiles/feebas-engine.dir/src/particles.cpp.o" "CMakeFiles/feebas-engine.dir/src/world.cpp.o"
+/usr/bin/ar qc libfeebas-engine.a "CMakeFiles/feebas-engine.dir/src/particles.cpp.o" "CMakeFiles/feebas-engine.dir/src/world.cpp.o" "CMakeFiles/feebas-engine.dir/src/world_to_json_visitor.cpp.o"
 /usr/bin/ranlib libfeebas-engine.a
