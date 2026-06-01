@@ -35,6 +35,8 @@ class World {
         void mud_particle_falling_onto_void(MudParticle* mud_particle);
         void mud_particle_falling_onto_blocking_particle(MudParticle* mud_particle);
         void mud_particle_falling_onto_water(MudParticle* mud_particle, WaterParticle* water_particle);
+        void stone_particle_falling_onto_void(StoneParticle* stone_particle);
+        void stone_particle_falling_onto_water(StoneParticle* stone_particle, WaterParticle* water_particle);
         void mud_falling_to_the_left_onto_void(MudParticle* mud_particle, VoidParticle* void_particle);
         void mud_falling_to_the_right_onto_void(MudParticle* mud_particle, VoidParticle* void_particle);
         void grass_particle_falling_onto_void(GrassParticle* grass_particle);
@@ -46,6 +48,8 @@ class World {
         bool there_is_water_particle_at(int x, int y) const;
         void Create_mud_particle_at(int x, int y);
         bool there_is_mud_particle_at(int x, int y) const;
+        void Create_stone_particle_at(int x, int y);
+        bool there_is_stone_particle_at(int x, int y) const;
         void water_particle_falling_onto_void(WaterParticle* water_particle);
         void water_particle_falling_onto_dirt(WaterParticle* water_particle, DirtParticle* dirt_particle);
         void water_particle_falling_onto_blocking_particle(WaterParticle* water_particle);
@@ -55,6 +59,16 @@ class World {
         int amount_of_water_to_the_left_of(Particle* particle);
         int amount_of_water_to_the_right_of(Particle* particle);
         bool water_can_be_pushed_upwards(WaterParticle* water_particle);
+        int distance_to_overflow_to_the_left_from(WaterParticle* water_particle);
+        int distance_to_overflow_to_the_right_from(WaterParticle* water_particle);
+        bool has_stone_upwards(Particle* particle);
+        bool has_stone_downwards(Particle* particle);
+        bool has_stone_to_the_left(Particle* particle);
+        bool has_stone_to_the_right(Particle* particle);
+        bool has_stone_to_the_upper_left(Particle* particle);
+        bool has_stone_to_the_upper_right(Particle* particle);
+        bool has_stone_to_the_lower_left(Particle* particle);
+        bool has_stone_to_the_lower_right(Particle* particle);
         void water_falling_to_the_left_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
         void water_falling_to_the_right_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
   

@@ -28,6 +28,10 @@ void WorldToJSONVisitor::visit_mud_particle(const MudParticle&) {
   append_particle_type("MudParticle");
 }
 
+void WorldToJSONVisitor::visit_stone_particle(const StoneParticle&) {
+  append_particle_type("StoneParticle");
+}
+
 std::string WorldToJSONVisitor::json() const {
   return output.str();
 }

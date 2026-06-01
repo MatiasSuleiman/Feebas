@@ -36,6 +36,10 @@ bool DirtParticle::isMud() const {
   return false;
 }
 
+bool DirtParticle::isStone() const {
+        return false;
+}
+
 bool DirtParticle::dirt_can_fall_through() const {
   return false;
 }
@@ -150,6 +154,10 @@ bool VoidParticle::isMud() const {
   return false;
 }
 
+bool VoidParticle::isStone() const {
+        return false;
+}
+
 bool VoidParticle::dirt_can_fall_through() const {
   return true;
 }
@@ -252,6 +260,10 @@ bool GrassParticle::isWater() const {
 
 bool GrassParticle::isMud() const {
   return false;
+}
+
+bool GrassParticle::isStone() const {
+        return false;
 }
 
 bool GrassParticle::dirt_can_fall_through() const {
@@ -359,6 +371,10 @@ bool WaterParticle::isMud() const {
   return false;
 }
 
+bool WaterParticle::isStone() const {
+        return false;
+}
+
 bool WaterParticle::dirt_can_fall_through() const {
   return false;
 }
@@ -393,6 +409,21 @@ int WaterParticle::water_from_to_the_left() {
 
 int WaterParticle::water_from_to_the_right() {
         return 1 + world_is_in->amount_of_water_to_the_right_of(this);
+}
+
+bool WaterParticle::left_has_the_nearest_space_to_overlflow() {
+        int left_distance = distance_to_overflow_to_the_left();
+        int right_distance = distance_to_overflow_to_the_right();
+        return left_distance != -1 &&
+                (right_distance == -1 || left_distance <= right_distance);
+}
+
+int WaterParticle::distance_to_overflow_to_the_left() {
+        return world_is_in->distance_to_overflow_to_the_left_from(this);
+}
+
+int WaterParticle::distance_to_overflow_to_the_right() {
+        return world_is_in->distance_to_overflow_to_the_right_from(this);
 }
 
 void WaterParticle::accept(WorldVisitor& visitor) const {
@@ -463,6 +494,10 @@ bool MudParticle::isWater() const {
 
 bool MudParticle::isMud() const {
   return true;
+}
+
+bool MudParticle::isStone() const {
+        return false;
 }
 
 bool MudParticle::dirt_can_fall_through() const {
@@ -548,4 +583,162 @@ void MudParticle::water_falling_to_the_right(WaterParticle* water_particle){
 }
 
 void MudParticle::grass_trying_to_spread_onto(){
+}
+
+StoneParticle::StoneParticle(World* world) : Particle(world) {
+}
+
+bool StoneParticle::isDirt() const {
+        return false;
+}
+
+bool StoneParticle::isGrass() const {
+        return false;
+}
+
+bool StoneParticle::isVoid() const {
+        return false;
+}
+
+bool StoneParticle::isWater() const {
+        return false;
+}
+
+bool StoneParticle::isMud() const {
+        return false;
+}
+
+bool StoneParticle::isStone() const {
+        return true;
+}
+
+bool StoneParticle::dirt_can_fall_through() const {
+        return false;
+}
+
+bool StoneParticle::can_be_pushed_into_by_water() const {
+        return false;
+}
+
+bool StoneParticle::water_can_push_it_to_the_left() {
+        return false;
+}
+
+bool StoneParticle::water_can_push_it_to_the_right() {
+        return false;
+}
+
+bool StoneParticle::water_can_push_it_upwards() {
+        return false;
+}
+
+int StoneParticle::water_to_the_left() {
+        return 0;
+}
+
+int StoneParticle::water_to_the_right() {
+        return 0;
+}
+
+int StoneParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int StoneParticle::water_from_to_the_right() {
+        return 0;
+}
+
+void StoneParticle::accept(WorldVisitor& visitor) const {
+        visitor.visit_stone_particle(*this);
+}
+
+void StoneParticle::step() {
+        if (!is_being_supported()) {
+                world_is_in->make_particle_fall(this);
+        }
+}
+
+void StoneParticle::particle_is_falling_onto(Particle* particle){
+}
+
+void StoneParticle::fall_onto_dirt(DirtParticle* dirt_particle){
+}
+
+void StoneParticle::fall_onto_void(VoidParticle* void_particle){
+        world_is_in->stone_particle_falling_onto_void(this);
+}
+
+void StoneParticle::fall_onto_water(WaterParticle* water_particle){
+        world_is_in->stone_particle_falling_onto_water(this, water_particle);
+}
+
+void StoneParticle::fall_onto_mud(MudParticle* mud_particle){
+}
+
+void StoneParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
+}
+
+void StoneParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
+}
+
+void StoneParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+}
+
+void StoneParticle::mud_falling_to_the_right(MudParticle* mud_particle){
+}
+
+void StoneParticle::water_falling_to_the_left(WaterParticle* water_particle){
+}
+
+void StoneParticle::water_falling_to_the_right(WaterParticle* water_particle){
+}
+
+void StoneParticle::grass_trying_to_spread_onto(){
+}
+
+bool StoneParticle::is_being_supported() {
+        return has_neighbour_stone();
+}
+
+bool StoneParticle::has_neighbour_stone() {
+        return has_stone_upwards() ||
+                has_stone_downwards() ||
+                has_stone_to_the_left() ||
+                has_stone_to_the_right() ||
+                has_stone_to_the_upper_left() ||
+                has_stone_to_the_upper_right() ||
+                has_stone_to_the_lower_left() ||
+                has_stone_to_the_lower_right();
+}
+
+bool StoneParticle::has_stone_upwards() {
+        return world_is_in->has_stone_upwards(this);
+}
+
+bool StoneParticle::has_stone_downwards() {
+        return world_is_in->has_stone_downwards(this);
+}
+
+bool StoneParticle::has_stone_to_the_left() {
+        return world_is_in->has_stone_to_the_left(this);
+}
+
+bool StoneParticle::has_stone_to_the_right() {
+        return world_is_in->has_stone_to_the_right(this);
+}
+
+bool StoneParticle::has_stone_to_the_upper_left() {
+        return world_is_in->has_stone_to_the_upper_left(this);
+}
+
+bool StoneParticle::has_stone_to_the_upper_right() {
+        return world_is_in->has_stone_to_the_upper_right(this);
+}
+
+bool StoneParticle::has_stone_to_the_lower_left() {
+        return world_is_in->has_stone_to_the_lower_left(this);
+}
+
+bool StoneParticle::has_stone_to_the_lower_right() {
+        return world_is_in->has_stone_to_the_lower_right(this);
 }

@@ -57,7 +57,10 @@ body {
 
 .tool-group {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 4px;
+  max-width: 100%;
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 4px;

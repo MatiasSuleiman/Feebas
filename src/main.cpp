@@ -133,6 +133,42 @@ int main() {
     res.set_content(world.to_json(), "application/json");
   });
 
+  server.Post("/world/create-mud-particle-at", [&world, &world_mutex](const httplib::Request& req, httplib::Response& res) {
+    int x = 0;
+    int y = 0;
+    if (!read_int_param(req, "x", x) || !read_int_param(req, "y", y)) {
+      set_bad_request(res, "x and y query parameters must be integers");
+      return;
+    }
+
+    std::lock_guard<std::mutex> lock(world_mutex);
+    if (!coordinates_are_inside_world(world, x, y)) {
+      set_bad_request(res, "coordinates must be inside the world");
+      return;
+    }
+
+    world.Create_mud_particle_at(x, y);
+    res.set_content(world.to_json(), "application/json");
+  });
+
+  server.Post("/world/create-stone-particle-at", [&world, &world_mutex](const httplib::Request& req, httplib::Response& res) {
+    int x = 0;
+    int y = 0;
+    if (!read_int_param(req, "x", x) || !read_int_param(req, "y", y)) {
+      set_bad_request(res, "x and y query parameters must be integers");
+      return;
+    }
+
+    std::lock_guard<std::mutex> lock(world_mutex);
+    if (!coordinates_are_inside_world(world, x, y)) {
+      set_bad_request(res, "coordinates must be inside the world");
+      return;
+    }
+
+    world.Create_stone_particle_at(x, y);
+    res.set_content(world.to_json(), "application/json");
+  });
+
   if (!server.set_mount_point("/", static_dir)) {
     std::cerr << "Failed to mount static directory: " << static_dir << '\n';
     return 1;

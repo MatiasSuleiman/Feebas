@@ -5,6 +5,7 @@ class GrassParticle;
 class VoidParticle;
 class WaterParticle;
 class MudParticle;
+class StoneParticle;
 
 class WorldVisitor {
  public:
@@ -16,4 +17,5 @@ class WorldVisitor {
         virtual void visit_void_particle(const VoidParticle& particle) = 0;
         virtual void visit_water_particle(const WaterParticle& particle) = 0;
         virtual void visit_mud_particle(const MudParticle& particle) = 0;
+        virtual void visit_stone_particle(const StoneParticle& particle) = 0;
 };
