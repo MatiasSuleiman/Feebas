@@ -9,6 +9,10 @@ Particle::Particle(World* world) : world_is_in(world) {
 Particle::~Particle() {
 }
 
+bool Particle::water_can_push_it_upwards() {
+        return false;
+}
+
 DirtParticle::DirtParticle(World* world) : Particle(world) {
 }
 
@@ -40,11 +44,15 @@ bool DirtParticle::can_be_pushed_into_by_water() const {
         return false;
 }
 
-bool DirtParticle::can_be_pushed_to_the_left() {
+bool DirtParticle::water_can_push_it_to_the_left() {
         return false;
 }
 
-bool DirtParticle::can_be_pushed_to_the_right() {
+bool DirtParticle::water_can_push_it_to_the_right() {
+        return false;
+}
+
+bool DirtParticle::water_can_push_it_upwards() {
         return false;
 }
 
@@ -150,11 +158,11 @@ bool VoidParticle::can_be_pushed_into_by_water() const {
         return true;
 }
 
-bool VoidParticle::can_be_pushed_to_the_left() {
+bool VoidParticle::water_can_push_it_to_the_left() {
         return false;
 }
 
-bool VoidParticle::can_be_pushed_to_the_right() {
+bool VoidParticle::water_can_push_it_to_the_right() {
         return false;
 }
 
@@ -254,11 +262,15 @@ bool GrassParticle::can_be_pushed_into_by_water() const {
         return false;
 }
 
-bool GrassParticle::can_be_pushed_to_the_left() {
+bool GrassParticle::water_can_push_it_to_the_left() {
         return false;
 }
 
-bool GrassParticle::can_be_pushed_to_the_right() {
+bool GrassParticle::water_can_push_it_to_the_right() {
+        return false;
+}
+
+bool GrassParticle::water_can_push_it_upwards() {
         return false;
 }
 
@@ -298,6 +310,7 @@ void GrassParticle::fall_onto_void(VoidParticle* void_particle){
 }
 
 void GrassParticle::fall_onto_water(WaterParticle* water_particle){
+        world_is_in->grass_particle_falling_onto_water(this, water_particle);
 }
 
 void GrassParticle::fall_onto_mud(MudParticle* mud_particle){
@@ -354,48 +367,32 @@ bool WaterParticle::can_be_pushed_into_by_water() const {
         return false;
 }
 
-bool WaterParticle::can_be_pushed_to_the_left() {
+bool WaterParticle::water_can_push_it_to_the_left() {
         return world_is_in->can_be_moved_to_the_left(this);
 }
 
-bool WaterParticle::can_be_pushed_to_the_right() {
+bool WaterParticle::water_can_push_it_to_the_right() {
         return world_is_in->can_be_moved_to_the_right(this);
 }
 
-int WaterParticle::water_to_the_left() {
-        Particle* particle = world_is_in->particle_to_the_left(this);
-        if (particle == nullptr) {
-                return 0;
-        }
+bool WaterParticle::water_can_push_it_upwards() {
+        return world_is_in->water_can_be_pushed_upwards(this);
+}
 
-        return particle->water_from_to_the_left();
+int WaterParticle::water_to_the_left() {
+        return world_is_in->amount_of_water_to_the_left_of(this);
 }
 
 int WaterParticle::water_to_the_right() {
-        Particle* particle = world_is_in->particle_to_the_right(this);
-        if (particle == nullptr) {
-                return 0;
-        }
-
-        return particle->water_from_to_the_right();
+        return world_is_in->amount_of_water_to_the_right_of(this);
 }
 
 int WaterParticle::water_from_to_the_left() {
-        Particle* particle = world_is_in->particle_to_the_left(this);
-        if (particle == nullptr) {
-                return 1;
-        }
-
-        return 1 + particle->water_from_to_the_left();
+        return 1 + world_is_in->amount_of_water_to_the_left_of(this);
 }
 
 int WaterParticle::water_from_to_the_right() {
-        Particle* particle = world_is_in->particle_to_the_right(this);
-        if (particle == nullptr) {
-                return 1;
-        }
-
-        return 1 + particle->water_from_to_the_right();
+        return 1 + world_is_in->amount_of_water_to_the_right_of(this);
 }
 
 void WaterParticle::accept(WorldVisitor& visitor) const {
@@ -476,11 +473,15 @@ bool MudParticle::can_be_pushed_into_by_water() const {
         return false;
 }
 
-bool MudParticle::can_be_pushed_to_the_left() {
+bool MudParticle::water_can_push_it_to_the_left() {
         return false;
 }
 
-bool MudParticle::can_be_pushed_to_the_right() {
+bool MudParticle::water_can_push_it_to_the_right() {
+        return false;
+}
+
+bool MudParticle::water_can_push_it_upwards() {
         return false;
 }
 
@@ -521,6 +522,7 @@ void MudParticle::fall_onto_void(VoidParticle* void_particle){
 }
 
 void MudParticle::fall_onto_water(WaterParticle* water_particle){
+        world_is_in->mud_particle_falling_onto_water(this, water_particle);
 }
 
 void MudParticle::fall_onto_mud(MudParticle* mud_particle){
