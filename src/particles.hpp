@@ -7,6 +7,7 @@ class GrassParticle;
 class WaterParticle;
 class MudParticle;
 class StoneParticle;
+class WoodParticle;
 class WorldVisitor;
 
 class Particle {
@@ -20,6 +21,10 @@ class Particle {
                 virtual bool isWater() const = 0;
                 virtual bool isMud() const = 0;
                 virtual bool isStone() const = 0;
+                virtual bool isWood() const = 0;
+                virtual bool isDam();
+                virtual bool isDamUpwards();
+                virtual bool isDamDownwards();
                 virtual bool dirt_can_fall_through() const = 0;
                 virtual bool can_be_pushed_into_by_water() const = 0;
                 virtual bool water_can_push_it_to_the_left() = 0;
@@ -58,6 +63,7 @@ class DirtParticle : public Particle {
                 bool isWater() const override;
                 bool isMud() const override;
                 bool isStone() const override;
+                bool isWood() const override;
                 bool dirt_can_fall_through() const override;
                 bool can_be_pushed_into_by_water() const override;
                 bool water_can_push_it_to_the_left() override;
@@ -97,6 +103,7 @@ class VoidParticle : public Particle {
                 bool isWater() const override;
                 bool isMud() const override;
                 bool isStone() const override;
+                bool isWood() const override;
                 bool dirt_can_fall_through() const override;
                 bool can_be_pushed_into_by_water() const override;
                 bool water_can_push_it_to_the_left() override;
@@ -132,6 +139,7 @@ class GrassParticle : public Particle {
                 bool isWater() const override;
                 bool isMud() const override;
                 bool isStone() const override;
+                bool isWood() const override;
                 bool dirt_can_fall_through() const override;
                 bool can_be_pushed_into_by_water() const override;
                 bool water_can_push_it_to_the_left() override;
@@ -168,6 +176,7 @@ class WaterParticle : public Particle {
                 bool isWater() const override;
                 bool isMud() const override;
                 bool isStone() const override;
+                bool isWood() const override;
                 bool dirt_can_fall_through() const override;
                 bool can_be_pushed_into_by_water() const override;
                 bool water_can_push_it_to_the_left() override;
@@ -209,6 +218,7 @@ class MudParticle : public Particle {
                 bool isWater() const override;
                 bool isMud() const override;
                 bool isStone() const override;
+                bool isWood() const override;
                 bool dirt_can_fall_through() const override;
                 bool can_be_pushed_into_by_water() const override;
                 bool water_can_push_it_to_the_left() override;
@@ -245,6 +255,10 @@ class StoneParticle : public Particle {
                 bool isWater() const override;
                 bool isMud() const override;
                 bool isStone() const override;
+                bool isWood() const override;
+                bool isDam() override;
+                bool isDamUpwards() override;
+                bool isDamDownwards() override;
                 bool dirt_can_fall_through() const override;
                 bool can_be_pushed_into_by_water() const override;
                 bool water_can_push_it_to_the_left() override;
@@ -280,5 +294,47 @@ class StoneParticle : public Particle {
                 bool has_stone_to_the_upper_right();
                 bool has_stone_to_the_lower_left();
                 bool has_stone_to_the_lower_right();
+
+};
+
+class WoodParticle : public Particle {
+        public:
+
+                WoodParticle(World* world);
+                bool isDirt() const override;
+                bool isGrass() const override;
+                bool isVoid() const override;
+                bool isWater() const override;
+                bool isMud() const override;
+                bool isStone() const override;
+                bool isWood() const override;
+                bool dirt_can_fall_through() const override;
+                bool can_be_pushed_into_by_water() const override;
+                bool water_can_push_it_to_the_left() override;
+                bool water_can_push_it_to_the_right() override;
+                bool water_can_push_it_upwards() override;
+                int water_to_the_left() override;
+                int water_to_the_right() override;
+                int water_from_to_the_left() override;
+                int water_from_to_the_right() override;
+                void accept(WorldVisitor& visitor) const override;
+                void step() override;
+                void particle_is_falling_onto(Particle* particle) override;
+                void fall_onto_dirt(DirtParticle* dirt_particle) override;
+                void fall_onto_void(VoidParticle* void_particle) override;
+                void fall_onto_water(WaterParticle* water_particle) override;
+                void fall_onto_mud(MudParticle* mud_particle) override;
+                void dirt_falling_to_the_left(DirtParticle* dirt_particle) override;
+                void dirt_falling_to_the_right(DirtParticle* dirt_particle) override;
+                void mud_falling_to_the_left(MudParticle* mud_particle) override;
+                void mud_falling_to_the_right(MudParticle* mud_particle) override;
+                void water_falling_to_the_left(WaterParticle* water_particle) override;
+                void water_falling_to_the_right(WaterParticle* water_particle) override;
+                void grass_trying_to_spread_onto() override;
+
+        private:
+                bool isDam() override;
+                bool isDamUpwards() override;
+                bool isDamDownwards() override;
 
 };

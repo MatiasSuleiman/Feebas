@@ -11,6 +11,7 @@ const colors = {
   WaterParticle: [58, 139, 253, 255],
   MudParticle: [104, 70, 48, 255],
   StoneParticle: [190, 194, 198, 255],
+  WoodParticle: [125, 53, 17, 255],
 };
 
 const worldCanvas = document.createElement("canvas");
@@ -44,6 +45,9 @@ function selectedLabel() {
     return "Stone";
   }
 
+  if (selectedParticle === "wood") {
+    return "Wood";
+  }
   return "Dirt";
 }
 
@@ -120,6 +124,7 @@ function createParticleAt(cell) {
     water: "/world/create-water-particle-at",
     mud: "/world/create-mud-particle-at",
     stone: "/world/create-stone-particle-at",
+    wood: "/world/create-wood-particle-at",
   };
   const path = paths[selectedParticle] || paths.dirt;
   const url = `${path}?x=${encodeURIComponent(cell.x)}&y=${encodeURIComponent(cell.y)}`;

@@ -13,6 +13,18 @@ bool Particle::water_can_push_it_upwards() {
         return false;
 }
 
+bool Particle::isDam() {
+        return false;
+}
+
+bool Particle::isDamUpwards() {
+        return false;
+}
+
+bool Particle::isDamDownwards() {
+        return false;
+}
+
 DirtParticle::DirtParticle(World* world) : Particle(world) {
 }
 
@@ -37,6 +49,10 @@ bool DirtParticle::isMud() const {
 }
 
 bool DirtParticle::isStone() const {
+        return false;
+}
+
+bool DirtParticle::isWood() const {
         return false;
 }
 
@@ -158,6 +174,10 @@ bool VoidParticle::isStone() const {
         return false;
 }
 
+bool VoidParticle::isWood() const {
+        return false;
+}
+
 bool VoidParticle::dirt_can_fall_through() const {
   return true;
 }
@@ -263,6 +283,10 @@ bool GrassParticle::isMud() const {
 }
 
 bool GrassParticle::isStone() const {
+        return false;
+}
+
+bool GrassParticle::isWood() const {
         return false;
 }
 
@@ -372,6 +396,10 @@ bool WaterParticle::isMud() const {
 }
 
 bool WaterParticle::isStone() const {
+        return false;
+}
+
+bool WaterParticle::isWood() const {
         return false;
 }
 
@@ -500,6 +528,10 @@ bool MudParticle::isStone() const {
         return false;
 }
 
+bool MudParticle::isWood() const {
+        return false;
+}
+
 bool MudParticle::dirt_can_fall_through() const {
   return false;
 }
@@ -609,6 +641,22 @@ bool StoneParticle::isMud() const {
 }
 
 bool StoneParticle::isStone() const {
+        return true;
+}
+
+bool StoneParticle::isWood() const {
+        return false;
+}
+
+bool StoneParticle::isDam() {
+        return true;
+}
+
+bool StoneParticle::isDamUpwards() {
+        return true;
+}
+
+bool StoneParticle::isDamDownwards() {
         return true;
 }
 
@@ -741,4 +789,139 @@ bool StoneParticle::has_stone_to_the_lower_left() {
 
 bool StoneParticle::has_stone_to_the_lower_right() {
         return world_is_in->has_stone_to_the_lower_right(this);
+}
+
+
+
+WoodParticle::WoodParticle(World* world) : Particle(world) {
+}
+
+bool WoodParticle::isDirt() const {
+        return false;
+}
+
+bool WoodParticle::isGrass() const {
+        return false;
+}
+
+bool WoodParticle::isVoid() const {
+        return false;
+}
+
+bool WoodParticle::isWater() const {
+        return false;
+}
+
+bool WoodParticle::isMud() const {
+        return false;
+}
+
+bool WoodParticle::isStone() const {
+        return false;
+}
+
+bool WoodParticle::isWood() const {
+        return true;
+}
+
+bool WoodParticle::isDam() {
+        return world_is_in->isDamStructureUpwards(this) &&
+                world_is_in->isDamStructureDownwards(this);
+}
+
+bool WoodParticle::isDamUpwards() {
+        return world_is_in->isDamStructureUpwards(this);
+}
+
+bool WoodParticle::isDamDownwards() {
+        return world_is_in->isDamStructureDownwards(this);
+}
+
+bool WoodParticle::dirt_can_fall_through() const {
+        return false;
+}
+
+bool WoodParticle::can_be_pushed_into_by_water() const {
+        return false;
+}
+
+bool WoodParticle::water_can_push_it_to_the_left() {
+        if (isDam()) {
+                return false;
+        }
+
+        return world_is_in->can_be_moved_to_the_left(this);
+}
+
+bool WoodParticle::water_can_push_it_to_the_right() {
+        if (isDam()) {
+                return false;
+        }
+
+        return world_is_in->can_be_moved_to_the_right(this);
+}
+
+bool WoodParticle::water_can_push_it_upwards() {
+        return true;
+}
+
+int WoodParticle::water_to_the_left() {
+        return 0;
+}
+
+int WoodParticle::water_to_the_right() {
+        return 0;
+}
+
+int WoodParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int WoodParticle::water_from_to_the_right() {
+        return 0;
+}
+
+void WoodParticle::accept(WorldVisitor& visitor) const {
+        visitor.visit_wood_particle(*this);
+}
+
+void WoodParticle::step() {
+        world_is_in->make_particle_fall(this);
+}
+
+void WoodParticle::particle_is_falling_onto(Particle* particle){
+}
+
+void WoodParticle::fall_onto_dirt(DirtParticle* dirt_particle){
+}
+
+void WoodParticle::fall_onto_void(VoidParticle* void_particle){
+        world_is_in->wood_particle_falling_onto_void(this);
+}
+
+void WoodParticle::fall_onto_water(WaterParticle* water_particle){
+}
+
+void WoodParticle::fall_onto_mud(MudParticle* mud_particle){
+}
+
+void WoodParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
+}
+
+void WoodParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
+}
+
+void WoodParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+}
+
+void WoodParticle::mud_falling_to_the_right(MudParticle* mud_particle){
+}
+
+void WoodParticle::water_falling_to_the_left(WaterParticle* water_particle){
+}
+
+void WoodParticle::water_falling_to_the_right(WaterParticle* water_particle){
+}
+
+void WoodParticle::grass_trying_to_spread_onto(){
 }
