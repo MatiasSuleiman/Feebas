@@ -32,14 +32,19 @@ class World {
         void dirt_particle_falling_onto_water(DirtParticle* dirt_particle, WaterParticle* water_particle);
         void dirt_falling_to_the_left_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle);
         void dirt_falling_to_the_right_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle);
+        void dirt_falling_to_the_left_onto_fire(DirtParticle* dirt_particle, FireParticle* fire_particle);
+        void dirt_falling_to_the_right_onto_fire(DirtParticle* dirt_particle, FireParticle* fire_particle);
         void mud_particle_falling_onto_void(MudParticle* mud_particle);
         void mud_particle_falling_onto_blocking_particle(MudParticle* mud_particle);
         void mud_particle_falling_onto_water(MudParticle* mud_particle, WaterParticle* water_particle);
         void stone_particle_falling_onto_void(StoneParticle* stone_particle);
         void stone_particle_falling_onto_water(StoneParticle* stone_particle, WaterParticle* water_particle);
         void wood_particle_falling_onto_void(WoodParticle* wood_particle);
+        void fire_particle_falling_onto_void(FireParticle* fire_particle);
         void mud_falling_to_the_left_onto_void(MudParticle* mud_particle, VoidParticle* void_particle);
         void mud_falling_to_the_right_onto_void(MudParticle* mud_particle, VoidParticle* void_particle);
+        void mud_falling_to_the_left_onto_fire(MudParticle* mud_particle, FireParticle* fire_particle);
+        void mud_falling_to_the_right_onto_fire(MudParticle* mud_particle, FireParticle* fire_particle);
         void grass_particle_falling_onto_void(GrassParticle* grass_particle);
         void grass_particle_falling_onto_water(GrassParticle* grass_particle, WaterParticle* water_particle);
         void grass_trying_to_spread();
@@ -53,6 +58,8 @@ class World {
         bool there_is_stone_particle_at(int x, int y) const;
         void Create_wood_particle_at(int x, int y);
         bool there_is_wood_particle_at(int x, int y) const;
+        void Create_fire_particle_at(int x, int y);
+        bool there_is_fire_particle_at(int x, int y) const;
         
         void water_particle_falling_onto_void(WaterParticle* water_particle);
         void water_particle_falling_onto_dirt(WaterParticle* water_particle, DirtParticle* dirt_particle);
@@ -82,6 +89,9 @@ class World {
         void water_falling_to_the_left_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
         void water_falling_to_the_right_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
   
+        void fire_died(FireParticle* fire_particle);
+
+        
 
  private:
         using Coordinate = std::pair<int, int>;

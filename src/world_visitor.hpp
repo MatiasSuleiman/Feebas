@@ -7,6 +7,7 @@ class WaterParticle;
 class MudParticle;
 class StoneParticle;
 class WoodParticle;
+class FireParticle;
 
 class WorldVisitor {
  public:
@@ -20,4 +21,5 @@ class WorldVisitor {
         virtual void visit_mud_particle(const MudParticle& particle) = 0;
         virtual void visit_stone_particle(const StoneParticle& particle) = 0;
         virtual void visit_wood_particle(const WoodParticle& particle) = 0;
+        virtual void visit_fire_particle(const FireParticle& particle) = 0;
 };

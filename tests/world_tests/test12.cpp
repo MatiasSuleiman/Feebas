@@ -4,11 +4,13 @@
 #include <catch2/catch.hpp>
 #endif
 
+#include <string>
+
 #include "world.hpp"
 
-TEST_CASE("test11 world lets create a wood particle") {
+TEST_CASE("test12 world lets create a fire particle") {
 
         World world;
-        world.Create_wood_particle_at(0,0);
-        REQUIRE(world.there_is_wood_particle_at(0, 0));
+        world.Create_fire_particle_at(0,0);
+        REQUIRE(world.there_is_fire_particle_at(0,0));
 }

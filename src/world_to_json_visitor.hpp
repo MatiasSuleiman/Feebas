@@ -16,6 +16,7 @@ class WorldToJSONVisitor : public WorldVisitor {
         void visit_mud_particle(const MudParticle& particle) override;
         void visit_stone_particle(const StoneParticle& particle) override;
         void visit_wood_particle(const WoodParticle& particle) override;
+        void visit_fire_particle(const FireParticle& particle) override;
         std::string json() const;
 
  private:

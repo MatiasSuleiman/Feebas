@@ -25,6 +25,18 @@ bool Particle::isDamDownwards() {
         return false;
 }
 
+void Particle::fall_onto_grass(GrassParticle* grass_particle) {
+}
+
+void Particle::fall_onto_stone(StoneParticle* stone_particle) {
+}
+
+void Particle::fall_onto_wood(WoodParticle* wood_particle) {
+}
+
+void Particle::fall_onto_fire(FireParticle* fire_particle) {
+}
+
 DirtParticle::DirtParticle(World* world) : Particle(world) {
 }
 
@@ -53,6 +65,10 @@ bool DirtParticle::isStone() const {
 }
 
 bool DirtParticle::isWood() const {
+        return false;
+}
+
+bool DirtParticle::isFire() const {
         return false;
 }
 
@@ -119,6 +135,10 @@ void DirtParticle::fall_onto_water(WaterParticle* water_particle){
 void DirtParticle::fall_onto_mud(MudParticle* mud_particle){
 }
 
+void DirtParticle::fall_onto_fire(FireParticle* fire_particle){
+        world_is_in->fire_died(fire_particle);
+}
+
 void DirtParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
 }
 
@@ -175,6 +195,10 @@ bool VoidParticle::isStone() const {
 }
 
 bool VoidParticle::isWood() const {
+        return false;
+}
+
+bool VoidParticle::isFire() const {
         return false;
 }
 
@@ -290,6 +314,10 @@ bool GrassParticle::isWood() const {
         return false;
 }
 
+bool GrassParticle::isFire() const {
+        return false;
+}
+
 bool GrassParticle::dirt_can_fall_through() const {
   return false;
 }
@@ -336,6 +364,7 @@ void GrassParticle::step() {
 }
 
 void GrassParticle::particle_is_falling_onto(Particle* particle){
+        particle->fall_onto_grass(this);
 }
 
 void GrassParticle::fall_onto_dirt(DirtParticle* dirt_particle){
@@ -400,6 +429,10 @@ bool WaterParticle::isStone() const {
 }
 
 bool WaterParticle::isWood() const {
+        return false;
+}
+
+bool WaterParticle::isFire() const {
         return false;
 }
 
@@ -479,6 +512,23 @@ void WaterParticle::fall_onto_water(WaterParticle* water_particle){
 }
 
 void WaterParticle::fall_onto_mud(MudParticle* mud_particle){
+        world_is_in->water_particle_falling_onto_blocking_particle(this);
+}
+
+void WaterParticle::fall_onto_grass(GrassParticle* grass_particle){
+        world_is_in->water_particle_falling_onto_blocking_particle(this);
+}
+
+void WaterParticle::fall_onto_stone(StoneParticle* stone_particle){
+        world_is_in->water_particle_falling_onto_blocking_particle(this);
+}
+
+void WaterParticle::fall_onto_wood(WoodParticle* wood_particle){
+        world_is_in->water_particle_falling_onto_blocking_particle(this);
+}
+
+void WaterParticle::fall_onto_fire(FireParticle* fire_particle){
+        world_is_in->fire_died(fire_particle);
 }
 
 void WaterParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
@@ -529,6 +579,11 @@ bool MudParticle::isStone() const {
 }
 
 bool MudParticle::isWood() const {
+        return false;
+}
+
+
+bool MudParticle::isFire() const {
         return false;
 }
 
@@ -596,6 +651,10 @@ void MudParticle::fall_onto_mud(MudParticle* mud_particle){
         world_is_in->mud_particle_falling_onto_blocking_particle(this);
 }
 
+void MudParticle::fall_onto_fire(FireParticle* fire_particle){
+        world_is_in->fire_died(fire_particle);
+}
+
 void MudParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
 }
 
@@ -645,6 +704,10 @@ bool StoneParticle::isStone() const {
 }
 
 bool StoneParticle::isWood() const {
+        return false;
+}
+
+bool StoneParticle::isFire() const {
         return false;
 }
 
@@ -707,6 +770,7 @@ void StoneParticle::step() {
 }
 
 void StoneParticle::particle_is_falling_onto(Particle* particle){
+        particle->fall_onto_stone(this);
 }
 
 void StoneParticle::fall_onto_dirt(DirtParticle* dirt_particle){
@@ -721,6 +785,10 @@ void StoneParticle::fall_onto_water(WaterParticle* water_particle){
 }
 
 void StoneParticle::fall_onto_mud(MudParticle* mud_particle){
+}
+
+void StoneParticle::fall_onto_fire(FireParticle* fire_particle){
+        world_is_in->fire_died(fire_particle);
 }
 
 void StoneParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
@@ -824,6 +892,10 @@ bool WoodParticle::isWood() const {
         return true;
 }
 
+bool WoodParticle::isFire() const {
+        return false;
+}
+
 bool WoodParticle::isDam() {
         return world_is_in->isDamStructureUpwards(this) &&
                 world_is_in->isDamStructureDownwards(this);
@@ -890,6 +962,7 @@ void WoodParticle::step() {
 }
 
 void WoodParticle::particle_is_falling_onto(Particle* particle){
+        particle->fall_onto_wood(this);
 }
 
 void WoodParticle::fall_onto_dirt(DirtParticle* dirt_particle){
@@ -924,4 +997,129 @@ void WoodParticle::water_falling_to_the_right(WaterParticle* water_particle){
 }
 
 void WoodParticle::grass_trying_to_spread_onto(){
+}
+
+FireParticle::FireParticle(World* world) : Particle(world) {
+}
+
+bool FireParticle::isDirt() const {
+        return false;
+}
+
+bool FireParticle::isGrass() const {
+        return false;
+}
+
+bool FireParticle::isVoid() const {
+        return false;
+}
+
+bool FireParticle::isWater() const {
+        return false;
+}
+
+bool FireParticle::isMud() const {
+        return false;
+}
+
+bool FireParticle::isStone() const {
+        return false;
+}
+
+bool FireParticle::isWood() const {
+        return false;
+}
+
+bool FireParticle::isFire() const {
+        return true;
+}
+
+bool FireParticle::dirt_can_fall_through() const {
+        return true;
+}
+
+bool FireParticle::can_be_pushed_into_by_water() const {
+        return true;
+}
+
+bool FireParticle::water_can_push_it_to_the_left() {
+        return false;
+}
+
+bool FireParticle::water_can_push_it_to_the_right() {
+        return false;
+}
+
+int FireParticle::water_to_the_left() {
+        return 0;
+}
+
+int FireParticle::water_to_the_right() {
+        return 0;
+}
+
+int FireParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int FireParticle::water_from_to_the_right() {
+        return 0;
+}
+
+void FireParticle::accept(WorldVisitor& visitor) const {
+        visitor.visit_fire_particle(*this);
+}
+
+void FireParticle::step() {
+
+        steps_until_being_put_off--;
+        if(steps_until_being_put_off <= 0){
+                world_is_in->fire_died(this);
+                return;
+        }
+
+        world_is_in->make_particle_fall(this);
+}
+
+void FireParticle::particle_is_falling_onto(Particle* particle){
+        particle->fall_onto_fire(this);
+}
+
+void FireParticle::fall_onto_dirt(DirtParticle* dirt_particle){
+}
+
+void FireParticle::fall_onto_void(VoidParticle* void_particle){
+        world_is_in->fire_particle_falling_onto_void(this);
+}
+
+void FireParticle::fall_onto_water(WaterParticle* water_particle){
+        world_is_in->fire_died(this);
+}
+
+void FireParticle::fall_onto_mud(MudParticle* mud_particle){
+}
+
+void FireParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
+        world_is_in->dirt_falling_to_the_left_onto_fire(dirt_particle, this);
+}
+
+void FireParticle::dirt_falling_to_the_right(DirtParticle* dirt_particle){
+        world_is_in->dirt_falling_to_the_right_onto_fire(dirt_particle, this);
+}
+
+void FireParticle::mud_falling_to_the_left(MudParticle* mud_particle){
+        world_is_in->mud_falling_to_the_left_onto_fire(mud_particle, this);
+}
+
+void FireParticle::mud_falling_to_the_right(MudParticle* mud_particle){
+        world_is_in->mud_falling_to_the_right_onto_fire(mud_particle, this);
+}
+
+void FireParticle::water_falling_to_the_left(WaterParticle* water_particle){
+}
+
+void FireParticle::water_falling_to_the_right(WaterParticle* water_particle){
+}
+
+void FireParticle::grass_trying_to_spread_onto(){
 }

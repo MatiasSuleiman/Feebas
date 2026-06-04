@@ -71,6 +71,10 @@ void World::Create_wood_particle_at(int x, int y) {
   particles.insert_or_assign({x, y}, std::make_unique<WoodParticle>(this));
 }
 
+void World::Create_fire_particle_at(int x, int y) {
+  particles.insert_or_assign({x, y}, std::make_unique<FireParticle>(this));
+}
+
 bool World::there_is_dirt_particle_at(int x, int y) const {
   const Particle* particle = particle_at({x, y});
   return particle != nullptr && particle->isDirt();
@@ -105,6 +109,12 @@ bool World::there_is_wood_particle_at(int x, int y) const {
   const Particle* particle = particle_at({x, y});
   return particle != nullptr && particle->isWood();
 }
+
+bool World::there_is_fire_particle_at(int x, int y) const {
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isFire();
+}
+
 
 void World::make_particle_fall(Particle* particle) {
        
@@ -820,6 +830,20 @@ void World::wood_particle_falling_onto_void(WoodParticle* wood_particle){
         move_particle_to(particle_iterator, new_coordinate);
 }
 
+void World::fire_particle_falling_onto_void(FireParticle* fire_particle){
+        ParticleIterator particle_iterator = this->iterator_of(fire_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+
+        Coordinate new_coordinate = particle_coordinates;
+        --new_coordinate.second;
+
+        move_particle_to(particle_iterator, new_coordinate);
+}
+
 void World::grass_particle_falling_onto_water(GrassParticle* grass_particle, WaterParticle* water_particle){
         solid_falling_onto_water(grass_particle, water_particle);
 }
@@ -856,6 +880,28 @@ void World::dirt_falling_to_the_right_onto_void(DirtParticle* dirt_particle, Voi
         }
 
         Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first + 1, particle_coordinates.second - 1});
+}
+
+void World::dirt_falling_to_the_left_onto_fire(DirtParticle* dirt_particle, FireParticle* fire_particle){
+        ParticleIterator particle_iterator = this->iterator_of(dirt_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        fire_died(fire_particle);
+        move_particle_to(particle_iterator, {particle_coordinates.first - 1, particle_coordinates.second - 1});
+}
+
+void World::dirt_falling_to_the_right_onto_fire(DirtParticle* dirt_particle, FireParticle* fire_particle){
+        ParticleIterator particle_iterator = this->iterator_of(dirt_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        fire_died(fire_particle);
         move_particle_to(particle_iterator, {particle_coordinates.first + 1, particle_coordinates.second - 1});
 }
 
@@ -931,6 +977,28 @@ void World::mud_falling_to_the_right_onto_void(MudParticle* mud_particle, VoidPa
         }
 
         Coordinate particle_coordinates = particle_iterator->first;
+        move_particle_to(particle_iterator, {particle_coordinates.first + 1, particle_coordinates.second - 1});
+}
+
+void World::mud_falling_to_the_left_onto_fire(MudParticle* mud_particle, FireParticle* fire_particle){
+        ParticleIterator particle_iterator = this->iterator_of(mud_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        fire_died(fire_particle);
+        move_particle_to(particle_iterator, {particle_coordinates.first - 1, particle_coordinates.second - 1});
+}
+
+void World::mud_falling_to_the_right_onto_fire(MudParticle* mud_particle, FireParticle* fire_particle){
+        ParticleIterator particle_iterator = this->iterator_of(mud_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+        fire_died(fire_particle);
         move_particle_to(particle_iterator, {particle_coordinates.first + 1, particle_coordinates.second - 1});
 }
 
@@ -1088,4 +1156,14 @@ void World::grass_spreads_onto(DirtParticle* dirt_particle){
         }
 
         particle_iterator->second = std::make_unique<GrassParticle>(this);
+}
+
+void World::fire_died(FireParticle* fire_particle){
+
+        ParticleIterator particle_iterator = this->iterator_of(fire_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        particles.erase(particle_iterator);
 }
