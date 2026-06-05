@@ -1158,6 +1158,41 @@ void World::grass_spreads_onto(DirtParticle* dirt_particle){
         particle_iterator->second = std::make_unique<GrassParticle>(this);
 }
 
+void World::fire_trying_to_spread(FireParticle* fire_particle){
+        ParticleIterator particle_iterator = this->iterator_of(fire_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        Coordinate particle_coordinates = particle_iterator->first;
+
+        for (int x_offset = -1; x_offset <= 1; ++x_offset) {
+                for (int y_offset = -1; y_offset <= 1; ++y_offset) {
+                        if (x_offset == 0 && y_offset == 0) {
+                                continue;
+                        }
+
+                        Particle* neighbour = this->particle_at({
+                                particle_coordinates.first + x_offset,
+                                particle_coordinates.second + y_offset
+                        });
+
+                        if (neighbour != nullptr) {
+                                neighbour->burn();
+                        }
+                }
+        }
+}
+
+void World::fire_spreading_onto(GrassParticle* grass_particle){
+        ParticleIterator particle_iterator = this->iterator_of(grass_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        particle_iterator->second = std::make_unique<FireParticle>(this);
+}
+
 void World::fire_died(FireParticle* fire_particle){
 
         ParticleIterator particle_iterator = this->iterator_of(fire_particle);

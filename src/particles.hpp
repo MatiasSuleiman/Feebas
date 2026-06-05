@@ -55,6 +55,7 @@ class Particle {
                 virtual void water_falling_to_the_left(WaterParticle* water_particle) = 0;
                 virtual void water_falling_to_the_right(WaterParticle* water_particle) = 0;
                 virtual void grass_trying_to_spread_onto() = 0;
+                virtual void burn() = 0;
 
         protected:
                 World* world_is_in;
@@ -96,6 +97,7 @@ class DirtParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
         private:
                 int steps_until_being_grass = 50;
@@ -136,6 +138,7 @@ class VoidParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
 };
 
@@ -167,6 +170,7 @@ class GrassParticle : public Particle {
                 void fall_onto_void(VoidParticle* void_particle) override;
                 void fall_onto_water(WaterParticle* water_particle) override;
                 void fall_onto_mud(MudParticle* mud_particle) override;
+                void fall_onto_fire(FireParticle* fire_particle) override;
                 void dirt_falling_to_the_left(DirtParticle* dirt_particle) override;
                 void dirt_falling_to_the_right(DirtParticle* dirt_particle) override;
                 void mud_falling_to_the_left(MudParticle* mud_particle) override;
@@ -174,6 +178,7 @@ class GrassParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
 };
 
@@ -217,6 +222,7 @@ class WaterParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
         private:
                 int distance_to_overflow_to_the_left();
@@ -260,6 +266,7 @@ class MudParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
 };
 
@@ -302,6 +309,7 @@ class StoneParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
         private:
                 bool is_being_supported();
@@ -352,6 +360,7 @@ class WoodParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
         private:
                 bool isDam() override;
@@ -387,6 +396,7 @@ class FireParticle : public Particle {
                 void fall_onto_void(VoidParticle* void_particle) override;
                 void fall_onto_water(WaterParticle* water_particle) override;
                 void fall_onto_mud(MudParticle* mud_particle) override;
+                void fall_onto_grass(GrassParticle* grass_particle) override;
                 void dirt_falling_to_the_left(DirtParticle* dirt_particle) override;
                 void dirt_falling_to_the_right(DirtParticle* dirt_particle) override;
                 void mud_falling_to_the_left(MudParticle* mud_particle) override;
@@ -394,6 +404,7 @@ class FireParticle : public Particle {
                 void water_falling_to_the_left(WaterParticle* water_particle) override;
                 void water_falling_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
+                void burn() override;
 
         private:
 

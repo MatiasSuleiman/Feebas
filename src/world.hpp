@@ -50,6 +50,8 @@ class World {
         void grass_trying_to_spread();
         void grass_trying_to_spread(GrassParticle* grass_particle);
         void grass_spreads_onto(DirtParticle* dirt_particle);
+        void fire_trying_to_spread(FireParticle* fire_particle);
+        void fire_spreading_onto(GrassParticle* grass_particle);
         void Create_water_particle_at(int x, int y);
         bool there_is_water_particle_at(int x, int y) const;
         void Create_mud_particle_at(int x, int y);

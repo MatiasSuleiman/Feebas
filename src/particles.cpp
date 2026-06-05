@@ -167,6 +167,9 @@ void DirtParticle::grass_trying_to_spread_onto(){
         }
 }
 
+void DirtParticle::burn(){
+}
+
 VoidParticle::VoidParticle(World* world) : Particle(world) {
 }
 
@@ -283,6 +286,8 @@ void VoidParticle::water_falling_to_the_right(WaterParticle* water_particle){
 
 void VoidParticle::grass_trying_to_spread_onto(){}
 
+void VoidParticle::burn(){}
+
 GrassParticle::GrassParticle(World* world) : Particle(world) {
 }
 
@@ -381,6 +386,10 @@ void GrassParticle::fall_onto_water(WaterParticle* water_particle){
 void GrassParticle::fall_onto_mud(MudParticle* mud_particle){
 }
 
+void GrassParticle::fall_onto_fire(FireParticle* fire_particle){
+        burn();
+}
+
 void GrassParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
 }
 
@@ -400,6 +409,10 @@ void GrassParticle::water_falling_to_the_right(WaterParticle* water_particle){
 }
 
 void GrassParticle::grass_trying_to_spread_onto(){}
+
+void GrassParticle::burn(){
+        world_is_in->fire_spreading_onto(this);
+}
 
 WaterParticle::WaterParticle(World* world) : Particle(world) {
 }
@@ -551,6 +564,8 @@ void WaterParticle::water_falling_to_the_right(WaterParticle* water_particle){
 
 void WaterParticle::grass_trying_to_spread_onto(){}
 
+void WaterParticle::burn(){}
+
 MudParticle::MudParticle(World* world) : Particle(world) {
 }
 
@@ -674,6 +689,9 @@ void MudParticle::water_falling_to_the_right(WaterParticle* water_particle){
 }
 
 void MudParticle::grass_trying_to_spread_onto(){
+}
+
+void MudParticle::burn(){
 }
 
 StoneParticle::StoneParticle(World* world) : Particle(world) {
@@ -810,6 +828,9 @@ void StoneParticle::water_falling_to_the_right(WaterParticle* water_particle){
 }
 
 void StoneParticle::grass_trying_to_spread_onto(){
+}
+
+void StoneParticle::burn(){
 }
 
 bool StoneParticle::is_being_supported() {
@@ -999,6 +1020,9 @@ void WoodParticle::water_falling_to_the_right(WaterParticle* water_particle){
 void WoodParticle::grass_trying_to_spread_onto(){
 }
 
+void WoodParticle::burn(){
+}
+
 FireParticle::FireParticle(World* world) : Particle(world) {
 }
 
@@ -1078,6 +1102,7 @@ void FireParticle::step() {
                 return;
         }
 
+        world_is_in->fire_trying_to_spread(this);
         world_is_in->make_particle_fall(this);
 }
 
@@ -1097,6 +1122,11 @@ void FireParticle::fall_onto_water(WaterParticle* water_particle){
 }
 
 void FireParticle::fall_onto_mud(MudParticle* mud_particle){
+        steps_until_being_put_off -= 10;
+}
+
+void FireParticle::fall_onto_grass(GrassParticle* grass_particle){
+        grass_particle->burn();
 }
 
 void FireParticle::dirt_falling_to_the_left(DirtParticle* dirt_particle){
@@ -1122,4 +1152,7 @@ void FireParticle::water_falling_to_the_right(WaterParticle* water_particle){
 }
 
 void FireParticle::grass_trying_to_spread_onto(){
+}
+
+void FireParticle::burn(){
 }
