@@ -180,6 +180,9 @@ class GrassParticle : public Particle {
                 void grass_trying_to_spread_onto() override;
                 void burn() override;
 
+        private:
+                int steps_until_burning_out = 5;
+
 };
 
 class WaterParticle : public Particle {
@@ -366,6 +369,7 @@ class WoodParticle : public Particle {
                 bool isDam() override;
                 bool isDamUpwards() override;
                 bool isDamDownwards() override;
+                int steps_until_burning_out = 35;
 
 };
 
@@ -408,5 +412,5 @@ class FireParticle : public Particle {
 
         private:
 
-                int steps_until_being_put_off = 25;
+                int steps_until_being_put_off = 50;
 };

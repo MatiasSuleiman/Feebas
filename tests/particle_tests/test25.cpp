@@ -11,7 +11,7 @@ TEST_CASE("test24 fire should be put off after 25 steps of not consuming anythin
         World world;
 
         world.Create_fire_particle_at(0,0);
-        for(int i = 0; i < 25; i++){
+        for(int i = 0; i < 50; i++){
                 world.step();
         }
 

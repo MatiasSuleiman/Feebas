@@ -1184,8 +1184,8 @@ void World::fire_trying_to_spread(FireParticle* fire_particle){
         }
 }
 
-void World::fire_spreading_onto(GrassParticle* grass_particle){
-        ParticleIterator particle_iterator = this->iterator_of(grass_particle);
+void World::fire_spreading_onto(Particle* particle){
+        ParticleIterator particle_iterator = this->iterator_of(particle);
         if (particle_iterator == particles.end()) {
                 return;
         }

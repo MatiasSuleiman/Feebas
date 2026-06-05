@@ -12,7 +12,16 @@ const colors = {
   MudParticle: [104, 70, 48, 255],
   StoneParticle: [190, 194, 198, 255],
   WoodParticle: [125, 53, 17, 255],
+  FireParticle: [255, 143, 31, 255],
 };
+
+const fireColors = [
+  [255, 224, 92, 255],
+  [255, 184, 48, 255],
+  [255, 132, 28, 255],
+  [244, 82, 24, 255],
+  [255, 239, 129, 255],
+];
 
 const worldCanvas = document.createElement("canvas");
 const worldContext = worldCanvas.getContext("2d");
@@ -23,6 +32,7 @@ let isPainting = false;
 let lastPaintedCell = "";
 let inputGeneration = 0;
 let stepInFlight = false;
+let fireAnimationFrame = null;
 
 function setStatus(message) {
   statusElement.textContent = message;
@@ -48,6 +58,11 @@ function selectedLabel() {
   if (selectedParticle === "wood") {
     return "Wood";
   }
+
+  if (selectedParticle === "fire") {
+    return "Fire";
+  }
+
   return "Dirt";
 }
 
@@ -125,6 +140,7 @@ function createParticleAt(cell) {
     mud: "/world/create-mud-particle-at",
     stone: "/world/create-stone-particle-at",
     wood: "/world/create-wood-particle-at",
+    fire: "/world/create-fire-particle-at",
   };
   const path = paths[selectedParticle] || paths.dirt;
   const url = `${path}?x=${encodeURIComponent(cell.x)}&y=${encodeURIComponent(cell.y)}`;
@@ -144,6 +160,26 @@ function resizeCanvas() {
   }
 
   drawWorld();
+}
+
+function worldHasFire() {
+  return world !== null && world.cells.includes("FireParticle");
+}
+
+function scheduleFireAnimation() {
+  if (fireAnimationFrame !== null || !worldHasFire()) {
+    return;
+  }
+
+  fireAnimationFrame = window.requestAnimationFrame(() => {
+    fireAnimationFrame = null;
+    drawWorld();
+  });
+}
+
+function fireColorAt(x, y, time) {
+  const paletteIndex = Math.floor(time / 90 + x * 7 + y * 13) % fireColors.length;
+  return fireColors[paletteIndex];
 }
 
 function drawWorld() {
@@ -166,12 +202,16 @@ function drawWorld() {
   }
 
   const image = worldContext.createImageData(world.width, world.height);
+  const now = performance.now();
   for (let worldY = 0; worldY < world.height; worldY += 1) {
     for (let worldX = 0; worldX < world.width; worldX += 1) {
       const worldIndex = worldY * world.width + worldX;
       const renderY = world.height - 1 - worldY;
       const imageIndex = (renderY * world.width + worldX) * 4;
-      const color = colors[world.cells[worldIndex]] || colors.VoidParticle;
+      const particleType = world.cells[worldIndex];
+      const color = particleType === "FireParticle"
+        ? fireColorAt(worldX, worldY, now)
+        : colors[particleType] || colors.VoidParticle;
 
       image.data[imageIndex] = color[0];
       image.data[imageIndex + 1] = color[1];
@@ -184,6 +224,7 @@ function drawWorld() {
   context.drawImage(worldCanvas, 0, 0, canvas.width, canvas.height);
   drawBorder();
   context.restore();
+  scheduleFireAnimation();
 }
 
 function drawBorder() {
