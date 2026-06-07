@@ -1,11 +1,15 @@
 #pragma once
 
-#include <map>
+#include <cstddef>
+#include <functional>
 #include <memory>
 #include <string>
+#include <unordered_map>
 #include <utility>
+#include <vector>
 
 #include "particles.hpp"
+#include "world_cell_change.hpp"
 
 class World {
  public:
@@ -14,7 +18,7 @@ class World {
         int width() const;
         int height() const;
         void accept(WorldVisitor& visitor) const;
-        std::string to_json() const;
+        std::string consume_changes_json();
         void Create_dirt_particle_at(int x, int y);
         bool there_is_dirt_particle_at(int x, int y) const;
         void Create_grass_particle_at(int x, int y);
@@ -97,19 +101,37 @@ class World {
 
  private:
         using Coordinate = std::pair<int, int>;
-        using ParticleIterator = std::map<Coordinate, std::unique_ptr<Particle>>::iterator;
-        using ConstParticleIterator = std::map<Coordinate, std::unique_ptr<Particle>>::const_iterator;
+        struct CoordinateHash {
+                std::size_t operator()(const Coordinate& coordinate) const {
+                        const std::size_t first_hash = std::hash<int>{}(coordinate.first);
+                        const std::size_t second_hash = std::hash<int>{}(coordinate.second);
+                        return first_hash ^ (second_hash + 0x9e3779b9 + (first_hash << 6) + (first_hash >> 2));
+                }
+        };
+        using ParticleStorage = std::unordered_map<Coordinate, std::unique_ptr<Particle>, CoordinateHash>;
+        using ParticleIterator = ParticleStorage::iterator;
+        using ConstParticleIterator = ParticleStorage::const_iterator;
 
-        std::map<Coordinate, std::unique_ptr<Particle>> particles;
+        ParticleStorage particles;
+        std::unordered_map<const Particle*, Coordinate> particle_coordinates_by_pointer;
         VoidParticle void_particle;
+        int current_revision = 0;
+        std::vector<WorldCellChange> changes;
+        std::vector<std::unique_ptr<Particle>> retired_particles;
         bool coordinate_is_inside_world(Coordinate coordinate) const;
         Particle* particle_at(Coordinate coordinate);
         const Particle* particle_at(Coordinate coordinate) const;
+        void record_change_at(Coordinate coordinate, const Particle* particle);
         Particle* look_for_particle_to_the_left_of(Particle* particle);
         Particle* look_for_particle_to_the_right_of(Particle* particle);
         Particle* look_for_particle_above(Particle* particle);
         Particle* look_for_particle_underneath(Particle* particle);
         Particle* look_for_particle_underneath(Coordinate particle_coordinates);
+        void index_particle_at(Coordinate coordinate, const Particle* particle);
+        void unindex_particle(const Particle* particle);
+        void retire_particle(ParticleIterator particle_iterator);
+        void replace_particle_at(Coordinate coordinate, std::unique_ptr<Particle> particle);
+        void erase_particle(ParticleIterator particle_iterator);
         void move_particle_to(ParticleIterator particle_iterator, Coordinate new_coordinate);
         void move_water_chain_to_the_left(Particle* particle);
         void move_water_chain_to_the_right(Particle* particle);

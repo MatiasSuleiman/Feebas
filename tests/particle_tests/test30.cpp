@@ -6,7 +6,7 @@
 
 #include "world.hpp"
 
-TEST_CASE("test30 fire spreads over wood only after 10 steps") {
+TEST_CASE("test30 fire spreads over wood only after 35 steps") {
 
         World world;
 

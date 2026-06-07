@@ -4,7 +4,7 @@
 #include <memory>
 #include <vector>
 
-#include "world_to_json_visitor.hpp"
+#include "world_changes_to_json_visitor.hpp"
 
 namespace {
 
@@ -41,38 +41,49 @@ void World::accept(WorldVisitor& visitor) const {
   visitor.finish_visiting_world();
 }
 
-std::string World::to_json() const {
-  WorldToJSONVisitor visitor;
-  accept(visitor);
-  return visitor.json();
+std::string World::consume_changes_json() {
+        ++current_revision;
+
+        WorldChangesToJSONVisitor visitor(current_revision);
+        std::string json = visitor.json_for(changes);
+        changes.clear();
+        retired_particles.clear();
+        return json;
 }
 
 void World::Create_dirt_particle_at(int x, int y) {
-  particles.insert_or_assign({x, y}, std::make_unique<DirtParticle>(this));
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<DirtParticle>(this));
 }
 
 void World::Create_grass_particle_at(int x, int y) {
-  particles.insert_or_assign({x, y}, std::make_unique<GrassParticle>(this));
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<GrassParticle>(this));
 }
 
 void World::Create_water_particle_at(int x, int y) {
-  particles.insert_or_assign({x, y}, std::make_unique<WaterParticle>(this));
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<WaterParticle>(this));
 }
 
 void World::Create_mud_particle_at(int x, int y) {
-  particles.insert_or_assign({x, y}, std::make_unique<MudParticle>(this));
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<MudParticle>(this));
 }
 
 void World::Create_stone_particle_at(int x, int y) {
-  particles.insert_or_assign({x, y}, std::make_unique<StoneParticle>(this));
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<StoneParticle>(this));
 }
 
 void World::Create_wood_particle_at(int x, int y) {
-  particles.insert_or_assign({x, y}, std::make_unique<WoodParticle>(this));
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<WoodParticle>(this));
 }
 
 void World::Create_fire_particle_at(int x, int y) {
-  particles.insert_or_assign({x, y}, std::make_unique<FireParticle>(this));
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<FireParticle>(this));
 }
 
 bool World::there_is_dirt_particle_at(int x, int y) const {
@@ -204,6 +215,18 @@ const Particle* World::particle_at(Coordinate coordinate) const {
         return target_iterator->second.get();
 }
 
+void World::record_change_at(Coordinate coordinate, const Particle* particle) {
+        if (!coordinate_is_inside_world(coordinate) || particle == nullptr) {
+                return;
+        }
+
+        changes.push_back({
+                coordinate.first,
+                coordinate.second,
+                particle
+        });
+}
+
 Particle* World::look_for_particle_to_the_left_of(Particle* particle) {
         ParticleIterator particle_iterator = this->iterator_of(particle);
         if (particle_iterator == particles.end()) {
@@ -265,12 +288,75 @@ Particle* World::look_for_particle_underneath(Particle* particle) {
 }
 
 World::ParticleIterator World::iterator_of(Particle* particle){
-        for (ParticleIterator iterator = particles.begin(); iterator != particles.end(); ++iterator) {
-                if (iterator->second.get() == particle) {
-                        return iterator;
-                }
+        if (particle == nullptr) {
+                return particles.end();
         }
-        return particles.end();
+
+        auto coordinate_iterator = particle_coordinates_by_pointer.find(particle);
+        if (coordinate_iterator == particle_coordinates_by_pointer.end()) {
+                return particles.end();
+        }
+
+        ParticleIterator particle_iterator = particles.find(coordinate_iterator->second);
+        if (particle_iterator == particles.end() || particle_iterator->second.get() != particle) {
+                particle_coordinates_by_pointer.erase(coordinate_iterator);
+                return particles.end();
+        }
+
+        return particle_iterator;
+}
+
+void World::index_particle_at(Coordinate coordinate, const Particle* particle) {
+        if (particle == nullptr || particle == &void_particle) {
+                return;
+        }
+
+        particle_coordinates_by_pointer[particle] = coordinate;
+}
+
+void World::unindex_particle(const Particle* particle) {
+        if (particle == nullptr) {
+                return;
+        }
+
+        particle_coordinates_by_pointer.erase(particle);
+}
+
+void World::retire_particle(ParticleIterator particle_iterator) {
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        unindex_particle(particle_iterator->second.get());
+        retired_particles.push_back(std::move(particle_iterator->second));
+}
+
+void World::replace_particle_at(Coordinate coordinate, std::unique_ptr<Particle> particle) {
+        if (!coordinate_is_inside_world(coordinate) || particle == nullptr) {
+                return;
+        }
+
+        Particle* new_particle = particle.get();
+        ParticleIterator existing_particle_iterator = particles.find(coordinate);
+        if (existing_particle_iterator != particles.end()) {
+                retire_particle(existing_particle_iterator);
+                existing_particle_iterator->second = std::move(particle);
+                index_particle_at(coordinate, existing_particle_iterator->second.get());
+        } else {
+                auto insertion_result = particles.emplace(coordinate, std::move(particle));
+                index_particle_at(coordinate, insertion_result.first->second.get());
+        }
+
+        record_change_at(coordinate, new_particle);
+}
+
+void World::erase_particle(ParticleIterator particle_iterator) {
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        retire_particle(particle_iterator);
+        particles.erase(particle_iterator);
 }
 
 Particle* World::look_for_particle_underneath(Coordinate particle_coordinates){
@@ -286,9 +372,21 @@ void World::move_particle_to(ParticleIterator particle_iterator, Coordinate new_
                 return;
         }
 
+        const Coordinate old_coordinate = particle_iterator->first;
         std::unique_ptr<Particle> particle = std::move(particle_iterator->second);
+        Particle* moved_particle = particle.get();
+        unindex_particle(moved_particle);
         particles.erase(particle_iterator);
-        particles.insert_or_assign(new_coordinate, std::move(particle));
+        record_change_at(old_coordinate, &void_particle);
+
+        ParticleIterator displaced_particle_iterator = particles.find(new_coordinate);
+        if (displaced_particle_iterator != particles.end()) {
+                erase_particle(displaced_particle_iterator);
+        }
+
+        auto insertion_result = particles.emplace(new_coordinate, std::move(particle));
+        index_particle_at(new_coordinate, insertion_result.first->second.get());
+        record_change_at(new_coordinate, moved_particle);
 }
 
 bool World::can_be_moved_to_the_left(Particle* particle) {
@@ -791,7 +889,8 @@ void World::dirt_particle_falling_onto_water(DirtParticle* dirt_particle, WaterP
                 return;
         }
 
-        dirt_iterator->second = std::make_unique<MudParticle>(this);
+        Coordinate dirt_coordinate = dirt_iterator->first;
+        replace_particle_at(dirt_coordinate, std::make_unique<MudParticle>(this));
 }
 
 void World::mud_particle_falling_onto_water(MudParticle* mud_particle, WaterParticle* water_particle){
@@ -859,8 +958,12 @@ void World::water_particle_falling_onto_dirt(WaterParticle* water_particle, Dirt
                 return;
         }
 
-        dirt_iterator->second = std::make_unique<MudParticle>(this);
-        particles.erase(water_iterator);
+        Coordinate dirt_coordinate = dirt_iterator->first;
+        Coordinate water_coordinate = water_iterator->first;
+        replace_particle_at(dirt_coordinate, std::make_unique<MudParticle>(this));
+        water_iterator = this->iterator_of(water_particle);
+        erase_particle(water_iterator);
+        record_change_at(water_coordinate, &void_particle);
 }
 
 void World::dirt_falling_to_the_left_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle){
@@ -1155,7 +1258,8 @@ void World::grass_spreads_onto(DirtParticle* dirt_particle){
                 return;
         }
 
-        particle_iterator->second = std::make_unique<GrassParticle>(this);
+        Coordinate particle_coordinate = particle_iterator->first;
+        replace_particle_at(particle_coordinate, std::make_unique<GrassParticle>(this));
 }
 
 void World::fire_trying_to_spread(FireParticle* fire_particle){
@@ -1190,7 +1294,8 @@ void World::fire_spreading_onto(Particle* particle){
                 return;
         }
 
-        particle_iterator->second = std::make_unique<FireParticle>(this);
+        Coordinate particle_coordinate = particle_iterator->first;
+        replace_particle_at(particle_coordinate, std::make_unique<FireParticle>(this));
 }
 
 void World::fire_died(FireParticle* fire_particle){
@@ -1200,5 +1305,7 @@ void World::fire_died(FireParticle* fire_particle){
                 return;
         }
 
-        particles.erase(particle_iterator);
+        Coordinate particle_coordinate = particle_iterator->first;
+        erase_particle(particle_iterator);
+        record_change_at(particle_coordinate, &void_particle);
 }
