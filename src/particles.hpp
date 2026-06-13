@@ -234,7 +234,6 @@ class WaterParticle : public Particle {
                 int water_to_the_right() override;
                 int water_from_to_the_left() override;
                 int water_from_to_the_right() override;
-                bool left_has_the_nearest_space_to_overlflow();
                 void accept(WorldVisitor& visitor) const override;
                 void step() override;
                 void particle_is_pushing_onto(Particle* particle) override;
@@ -254,10 +253,6 @@ class WaterParticle : public Particle {
                 void water_pushing_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
                 void burn() override;
-
-        private:
-                int distance_to_overflow_to_the_left();
-                int distance_to_overflow_to_the_right();
 
 };
 
@@ -344,18 +339,6 @@ class StoneParticle : public Particle {
                 void grass_trying_to_spread_onto() override;
                 void burn() override;
                 void support(StoneParticle* stone_particle) override;
-
-        private:
-                bool is_being_supported();
-                bool has_neighbour_stone();
-                bool has_stone_upwards();
-                bool has_stone_downwards();
-                bool has_stone_to_the_left();
-                bool has_stone_to_the_right();
-                bool has_stone_to_the_upper_left();
-                bool has_stone_to_the_upper_right();
-                bool has_stone_to_the_lower_left();
-                bool has_stone_to_the_lower_right();
 
 };
 

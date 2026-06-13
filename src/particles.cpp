@@ -617,21 +617,6 @@ int WaterParticle::water_from_to_the_right() {
         return 1 + world_is_in->amount_of_water_to_the_right_of(this);
 }
 
-bool WaterParticle::left_has_the_nearest_space_to_overlflow() {
-        int left_distance = distance_to_overflow_to_the_left();
-        int right_distance = distance_to_overflow_to_the_right();
-        return left_distance != -1 &&
-                (right_distance == -1 || left_distance <= right_distance);
-}
-
-int WaterParticle::distance_to_overflow_to_the_left() {
-        return world_is_in->distance_to_overflow_to_the_left_from(this);
-}
-
-int WaterParticle::distance_to_overflow_to_the_right() {
-        return world_is_in->distance_to_overflow_to_the_right_from(this);
-}
-
 void WaterParticle::accept(WorldVisitor& visitor) const {
         visitor.visit_water_particle(*this);
 }
@@ -975,55 +960,6 @@ void StoneParticle::burn(){
 void StoneParticle::support(StoneParticle* stone_particle) {
         world_is_in->reset_speed(stone_particle);
 }
-
-bool StoneParticle::is_being_supported() {
-        return has_neighbour_stone();
-}
-
-bool StoneParticle::has_neighbour_stone() {
-        return has_stone_upwards() ||
-                has_stone_downwards() ||
-                has_stone_to_the_left() ||
-                has_stone_to_the_right() ||
-                has_stone_to_the_upper_left() ||
-                has_stone_to_the_upper_right() ||
-                has_stone_to_the_lower_left() ||
-                has_stone_to_the_lower_right();
-}
-
-bool StoneParticle::has_stone_upwards() {
-        return world_is_in->has_stone_upwards(this);
-}
-
-bool StoneParticle::has_stone_downwards() {
-        return world_is_in->has_stone_downwards(this);
-}
-
-bool StoneParticle::has_stone_to_the_left() {
-        return world_is_in->has_stone_to_the_left(this);
-}
-
-bool StoneParticle::has_stone_to_the_right() {
-        return world_is_in->has_stone_to_the_right(this);
-}
-
-bool StoneParticle::has_stone_to_the_upper_left() {
-        return world_is_in->has_stone_to_the_upper_left(this);
-}
-
-bool StoneParticle::has_stone_to_the_upper_right() {
-        return world_is_in->has_stone_to_the_upper_right(this);
-}
-
-bool StoneParticle::has_stone_to_the_lower_left() {
-        return world_is_in->has_stone_to_the_lower_left(this);
-}
-
-bool StoneParticle::has_stone_to_the_lower_right() {
-        return world_is_in->has_stone_to_the_lower_right(this);
-}
-
-
 
 WoodParticle::WoodParticle(World* world) : Particle(world) {
 }

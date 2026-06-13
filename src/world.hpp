@@ -24,7 +24,6 @@ class World {
         void Create_grass_particle_at(int x, int y);
         bool there_is_grass_particle_at(int x, int y) const;
         bool there_is_void_particle_at(int x, int y) const;
-        void make_particle_fall(Particle* particle);
         void make_particle_fall_to_the_left(Particle* particle, Particle* bottom_left_edge_particle);
         void make_particle_fall_to_the_right(Particle* particle, Particle* bottom_right_edge_particle);
         void make_water_particle_fall_to_the_left(WaterParticle* water_particle, Particle* bottom_left_edge_particle);
@@ -82,15 +81,6 @@ class World {
         int distance_to_overflow_to_the_left_from(WaterParticle* water_particle);
         int distance_to_overflow_to_the_right_from(WaterParticle* water_particle);
 
-        bool has_stone_upwards(Particle* particle);
-        bool has_stone_downwards(Particle* particle);
-        bool has_stone_to_the_left(Particle* particle);
-        bool has_stone_to_the_right(Particle* particle);
-        bool has_stone_to_the_upper_left(Particle* particle);
-        bool has_stone_to_the_upper_right(Particle* particle);
-        bool has_stone_to_the_lower_left(Particle* particle);
-        bool has_stone_to_the_lower_right(Particle* particle);
-
         void water_falling_to_the_left_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
         void water_falling_to_the_right_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
 
@@ -114,6 +104,7 @@ class World {
                 int y;
         };
         struct CoordinateHash {
+                
                 std::size_t operator()(const Coordinate& coordinate) const {
                         const std::size_t first_hash = std::hash<int>{}(coordinate.first);
                         const std::size_t second_hash = std::hash<int>{}(coordinate.second);
@@ -155,14 +146,11 @@ class World {
         void reset_acceleration(Particle* particle);
         void reset_vertical_speed(Particle* particle);
         void reduce_vertical_speed(Particle* particle);
-        void halve_speed_and_acceleration(Particle* particle);
         void apply_friction_to(Particle* particle);
         void apply_movement_to(Particle* particle);
         int maximum_distance_it_can_travel_to_the_left_capped_at(Particle* particle, int distance);
         Coordinate maximum_uninterrupted_movement_to(Particle* particle, Vector movement);
         int maximum_distance_it_can_travel_to_the_right_capped_at(Particle* particle, int distance);
-        void apply_horizontal_movement_to(Particle* particle);
-        void apply_vertical_movement_to(Particle* particle);
         void move_water_chain_to_the_left(Particle* particle);
         void move_water_chain_to_the_right(Particle* particle);
         void move_water_chain_upwards(WaterParticle* water_particle);
@@ -177,10 +165,6 @@ class World {
         bool overflow_target_to_the_left_from(WaterParticle* water_particle, Coordinate& target_coordinate);
         bool overflow_target_to_the_right_from(WaterParticle* water_particle, Coordinate& target_coordinate);
         bool make_water_overflow(WaterParticle* clashed_water, Vector impact);
-        bool water_chain_can_overflow_to_the_left(Particle* particle);
-        bool water_chain_can_overflow_to_the_right(Particle* particle);
-        void move_water_chain_overflow_to_the_left(WaterParticle* water_particle);
-        void move_water_chain_overflow_to_the_right(WaterParticle* water_particle);
         ParticleIterator iterator_of(Particle* particle);
         std::vector<Coordinate> coordinates_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);
         std::vector<Coordinate> coordinates_wide_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);
