@@ -30,27 +30,27 @@ class World {
         void make_water_particle_fall_to_the_left(WaterParticle* water_particle, Particle* bottom_left_edge_particle);
         void make_water_particle_fall_to_the_right(WaterParticle* water_particle, Particle* bottom_right_edge_particle);
         void step();
-        void dirt_particle_falling_onto_void(DirtParticle* dirt_particle);
-        void dirt_particle_falling_onto_dirt(DirtParticle* dirt_particle);
-        void solid_falling_onto_water(Particle* particle, WaterParticle* water_particle);
-        void dirt_particle_falling_onto_water(DirtParticle* dirt_particle, WaterParticle* water_particle);
+        void particle_pushing_onto_void(Particle* particle, VoidParticle* void_particle);
+        void dirt_particle_pushing_onto_dirt(DirtParticle* pushing_dirt, DirtParticle* blocking_dirt);
+        void solid_pushing_onto_water(Particle* particle, WaterParticle* water_particle);
+        void wood_pushing_onto_water(WoodParticle* wood_particle, WaterParticle* water_particle);
         void dirt_falling_to_the_left_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle);
         void dirt_falling_to_the_right_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle);
         void dirt_falling_to_the_left_onto_fire(DirtParticle* dirt_particle, FireParticle* fire_particle);
         void dirt_falling_to_the_right_onto_fire(DirtParticle* dirt_particle, FireParticle* fire_particle);
-        void mud_particle_falling_onto_void(MudParticle* mud_particle);
-        void mud_particle_falling_onto_blocking_particle(MudParticle* mud_particle);
-        void mud_particle_falling_onto_water(MudParticle* mud_particle, WaterParticle* water_particle);
-        void stone_particle_falling_onto_void(StoneParticle* stone_particle);
-        void stone_particle_falling_onto_water(StoneParticle* stone_particle, WaterParticle* water_particle);
-        void wood_particle_falling_onto_void(WoodParticle* wood_particle);
-        void fire_particle_falling_onto_void(FireParticle* fire_particle);
+        void mud_particle_pushing_onto_void(MudParticle* mud_particle);
+        void mud_particle_pushing_onto_mud(MudParticle* pushing_mud, MudParticle* blocking_mud);
+        void mud_particle_pushing_onto_water(MudParticle* mud_particle, WaterParticle* water_particle);
+        void stone_particle_pushing_onto_void(StoneParticle* stone_particle);
+        void stone_particle_pushing_onto_water(StoneParticle* stone_particle, WaterParticle* water_particle);
+        void wood_particle_pushing_onto_void(WoodParticle* wood_particle);
+        void fire_particle_pushing_onto_void(FireParticle* fire_particle);
         void mud_falling_to_the_left_onto_void(MudParticle* mud_particle, VoidParticle* void_particle);
         void mud_falling_to_the_right_onto_void(MudParticle* mud_particle, VoidParticle* void_particle);
         void mud_falling_to_the_left_onto_fire(MudParticle* mud_particle, FireParticle* fire_particle);
         void mud_falling_to_the_right_onto_fire(MudParticle* mud_particle, FireParticle* fire_particle);
-        void grass_particle_falling_onto_void(GrassParticle* grass_particle);
-        void grass_particle_falling_onto_water(GrassParticle* grass_particle, WaterParticle* water_particle);
+        void grass_particle_pushing_onto_void(GrassParticle* grass_particle);
+        void grass_particle_pushing_onto_water(GrassParticle* grass_particle, WaterParticle* water_particle);
         void grass_trying_to_spread();
         void grass_trying_to_spread(GrassParticle* grass_particle);
         void grass_spreads_onto(DirtParticle* dirt_particle);
@@ -66,11 +66,10 @@ class World {
         bool there_is_wood_particle_at(int x, int y) const;
         void Create_fire_particle_at(int x, int y);
         bool there_is_fire_particle_at(int x, int y) const;
-        
-        void water_particle_falling_onto_void(WaterParticle* water_particle);
-        void water_particle_falling_onto_dirt(WaterParticle* water_particle, DirtParticle* dirt_particle);
-        void water_particle_falling_onto_blocking_particle(WaterParticle* water_particle);
-        void water_particle_falling_onto_water(WaterParticle* falling_water_particle, WaterParticle* blocking_water_particle);
+
+        void water_particle_pushing_onto_void(WaterParticle* water_particle);
+        void water_particle_pushing_onto_dirt(WaterParticle* water_particle, DirtParticle* dirt_particle);
+        void water_particle_pushing_onto_blocking_particle(WaterParticle* water_particle);
 
         bool can_be_moved_to_the_left(Particle* particle);
         bool can_be_moved_to_the_right(Particle* particle);
@@ -94,13 +93,26 @@ class World {
 
         void water_falling_to_the_left_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
         void water_falling_to_the_right_onto_void(WaterParticle* water_particle, VoidParticle* void_particle);
-  
-        void fire_died(FireParticle* fire_particle);
 
-        
+        void fire_died(FireParticle* fire_particle);
+        void reset_speed(Particle* particle);
+        void support_stone(StoneParticle* stone_particle);
+        void particle_clash(Particle* clashing_particle, Particle* blocking_particle);
+        void water_pushing_onto_water(WaterParticle* pushing_water, WaterParticle* pushed_water);
+        void water_pushing_onto_solid(WaterParticle* water, Particle* solid);
+        void water_pushing_onto_wood(WaterParticle* water_particle, WoodParticle* wood_particle);
+        void water_pushing_onto_fire(WaterParticle* water_particle, FireParticle* fire_particle);
+        void fire_pushing_onto_water(FireParticle* fire_particle, WaterParticle* water_particle);
+        void crash_onto_wall(Particle* particle, int attempted_x, int attempted_y);
+        void turn_dirt_into_mud(DirtParticle* dirt_particle);
+        bool water_can_overflow(WaterParticle* water_particle);
 
  private:
         using Coordinate = std::pair<int, int>;
+        struct Vector {
+                int x;
+                int y;
+        };
         struct CoordinateHash {
                 std::size_t operator()(const Coordinate& coordinate) const {
                         const std::size_t first_hash = std::hash<int>{}(coordinate.first);
@@ -108,7 +120,12 @@ class World {
                         return first_hash ^ (second_hash + 0x9e3779b9 + (first_hash << 6) + (first_hash >> 2));
                 }
         };
-        using ParticleStorage = std::unordered_map<Coordinate, std::unique_ptr<Particle>, CoordinateHash>;
+        struct ParticleState {
+                std::unique_ptr<Particle> particle;
+                Vector speed;
+                Vector acceleration;
+        };
+        using ParticleStorage = std::unordered_map<Coordinate, ParticleState, CoordinateHash>;
         using ParticleIterator = ParticleStorage::iterator;
         using ConstParticleIterator = ParticleStorage::const_iterator;
 
@@ -133,12 +150,39 @@ class World {
         void replace_particle_at(Coordinate coordinate, std::unique_ptr<Particle> particle);
         void erase_particle(ParticleIterator particle_iterator);
         void move_particle_to(ParticleIterator particle_iterator, Coordinate new_coordinate);
+        void applyForce(Particle* particle, Vector force);
+        void apply_acceleration_to_speed(Particle* particle);
+        void reset_acceleration(Particle* particle);
+        void reset_vertical_speed(Particle* particle);
+        void reduce_vertical_speed(Particle* particle);
+        void halve_speed_and_acceleration(Particle* particle);
+        void apply_friction_to(Particle* particle);
+        void apply_movement_to(Particle* particle);
+        int maximum_distance_it_can_travel_to_the_left_capped_at(Particle* particle, int distance);
+        Coordinate maximum_uninterrupted_movement_to(Particle* particle, Vector movement);
+        int maximum_distance_it_can_travel_to_the_right_capped_at(Particle* particle, int distance);
+        void apply_horizontal_movement_to(Particle* particle);
+        void apply_vertical_movement_to(Particle* particle);
         void move_water_chain_to_the_left(Particle* particle);
         void move_water_chain_to_the_right(Particle* particle);
         void move_water_chain_upwards(WaterParticle* water_particle);
+        bool floatable_column_can_move_upwards(Particle* particle);
+        bool move_floatable_column_upwards(Particle* particle);
+        WaterParticle* left_water_edge(WaterParticle* water_particle);
+        WaterParticle* right_water_edge(WaterParticle* water_particle);
+        void apply_horizontal_water_wave_force(WaterParticle* pushed_water, Vector force);
+        bool water_can_overflow_to_the_left_from(WaterParticle* water_particle);
+        bool water_can_overflow_to_the_right_from(WaterParticle* water_particle);
+        bool overflow_target_above(WaterParticle* water_particle, Coordinate& target_coordinate);
+        bool overflow_target_to_the_left_from(WaterParticle* water_particle, Coordinate& target_coordinate);
+        bool overflow_target_to_the_right_from(WaterParticle* water_particle, Coordinate& target_coordinate);
+        bool make_water_overflow(WaterParticle* clashed_water, Vector impact);
         bool water_chain_can_overflow_to_the_left(Particle* particle);
         bool water_chain_can_overflow_to_the_right(Particle* particle);
         void move_water_chain_overflow_to_the_left(WaterParticle* water_particle);
         void move_water_chain_overflow_to_the_right(WaterParticle* water_particle);
         ParticleIterator iterator_of(Particle* particle);
+        std::vector<Coordinate> coordinates_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);
+        std::vector<Coordinate> coordinates_wide_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);
+        std::vector<Coordinate> coordinates_tall_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);
 };

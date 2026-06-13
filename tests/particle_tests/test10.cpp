@@ -14,6 +14,10 @@ TEST_CASE("test10 water levels to the terrain recursivelly") {
         world.Create_water_particle_at(3,0);
 
         world.step();
+        world.step();
+        world.step();
+        world.step();
+        world.step();
 
         REQUIRE(world.there_is_water_particle_at(0,0));
         REQUIRE(world.there_is_water_particle_at(1,0));
