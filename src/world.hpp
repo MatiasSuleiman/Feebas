@@ -30,7 +30,7 @@ class World {
         void make_water_particle_fall_to_the_right(WaterParticle* water_particle, Particle* bottom_right_edge_particle);
         void step();
         void particle_pushing_onto_void(Particle* particle, VoidParticle* void_particle);
-        void dirt_particle_pushing_onto_dirt(DirtParticle* pushing_dirt, DirtParticle* blocking_dirt);
+        void solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(Particle* pushing_solid, Particle* blocking_solid);
         void solid_pushing_onto_water(Particle* particle, WaterParticle* water_particle);
         void wood_pushing_onto_water(WoodParticle* wood_particle, WaterParticle* water_particle);
         void dirt_falling_to_the_left_onto_void(DirtParticle* dirt_particle, VoidParticle* void_particle);
@@ -65,6 +65,8 @@ class World {
         bool there_is_wood_particle_at(int x, int y) const;
         void Create_fire_particle_at(int x, int y);
         bool there_is_fire_particle_at(int x, int y) const;
+        void Create_TNT_particle_at(int x, int y);
+        bool there_is_TNT_particle_at(int x, int y) const;
 
         void water_particle_pushing_onto_void(WaterParticle* water_particle);
         void water_particle_pushing_onto_dirt(WaterParticle* water_particle, DirtParticle* dirt_particle);

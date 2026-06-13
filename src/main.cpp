@@ -342,6 +342,31 @@ int main() {
     });
   });
 
+  server.Post("/world/create-TNT-particle-at", [&world, &world_mutex](const httplib::Request& req, httplib::Response& res) {
+    int x = 0;
+    int y = 0;
+    if (!read_int_param(req, "x", x) || !read_int_param(req, "y", y)) {
+      set_bad_request(res, "x and y query parameters must be integers");
+      return;
+    }
+
+    std::lock_guard<std::mutex> lock(world_mutex);
+    if (!coordinates_are_inside_world(world, x, y)) {
+      set_bad_request(res, "coordinates must be inside the world");
+      return;
+    }
+
+    world.Create_TNT_particle_at(x, y);
+    res.set_content(world.consume_changes_json(), "application/json");
+  });
+
+  server.Post("/world/create-TNT-particles", [&world, &world_mutex](const httplib::Request& req, httplib::Response& res) {
+    create_particles_from_cells(req, res, world, world_mutex, [](World& target_world, int x, int y) {
+      target_world.Create_TNT_particle_at(x, y);
+    });
+  });
+
+
   if (!server.set_mount_point("/", static_dir)) {
     std::cerr << "Failed to mount static directory: " << static_dir << '\n';
     return 1;

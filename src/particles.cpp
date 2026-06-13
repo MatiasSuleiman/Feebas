@@ -65,6 +65,10 @@ bool Particle::fire_can_pass_through_it() {
         return false;
 }
 
+bool Particle::tnt_can_pass_through_it() {
+        return false;
+}
+
 void Particle::push_onto_dirt(DirtParticle* dirt_particle) {
         world_is_in->particle_clash(this, dirt_particle);
 }
@@ -135,6 +139,10 @@ bool DirtParticle::isFire() const {
         return false;
 }
 
+bool DirtParticle::isTNT() const {
+  return false;
+}
+
 bool DirtParticle::dirt_can_push_through() const {
   return false;
 }
@@ -187,7 +195,7 @@ void DirtParticle::particle_is_pushing_onto(Particle* particle){
 }
 
 void DirtParticle::push_onto_dirt(DirtParticle* dirt_particle){
-        world_is_in->dirt_particle_pushing_onto_dirt(this, dirt_particle);
+        world_is_in->solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(this, dirt_particle);
 }
 
 void DirtParticle::push_onto_void(VoidParticle* void_particle){
@@ -273,6 +281,10 @@ bool VoidParticle::isFire() const {
         return false;
 }
 
+bool VoidParticle::isTNT() const {
+  return false;
+}
+
 bool VoidParticle::dirt_can_push_through() const {
   return true;
 }
@@ -306,6 +318,10 @@ bool VoidParticle::wood_can_pass_through_it() {
 }
 
 bool VoidParticle::fire_can_pass_through_it() {
+        return true;
+}
+
+bool VoidParticle::tnt_can_pass_through_it() {
         return true;
 }
 
@@ -424,6 +440,10 @@ bool GrassParticle::isWood() const {
 }
 
 bool GrassParticle::isFire() const {
+        return false;
+}
+
+bool GrassParticle::isTNT() const {
         return false;
 }
 
@@ -566,6 +586,11 @@ bool WaterParticle::isWood() const {
 }
 
 bool WaterParticle::isFire() const {
+        return false;
+}
+
+
+bool WaterParticle::isTNT() const {
         return false;
 }
 
@@ -719,6 +744,10 @@ bool MudParticle::isFire() const {
         return false;
 }
 
+bool MudParticle::isTNT() const {
+        return false;
+}
+
 bool MudParticle::dirt_can_push_through() const {
   return false;
 }
@@ -846,6 +875,10 @@ bool StoneParticle::isWood() const {
 }
 
 bool StoneParticle::isFire() const {
+        return false;
+}
+
+bool StoneParticle::isTNT() const {
         return false;
 }
 
@@ -993,6 +1026,10 @@ bool WoodParticle::isWood() const {
 }
 
 bool WoodParticle::isFire() const {
+        return false;
+}
+
+bool WoodParticle::isTNT() const {
         return false;
 }
 
@@ -1151,6 +1188,10 @@ bool FireParticle::isFire() const {
         return true;
 }
 
+bool FireParticle::isTNT() const {
+        return false;
+}
+
 bool FireParticle::dirt_can_push_through() const {
         return true;
 }
@@ -1280,4 +1321,146 @@ void FireParticle::grass_trying_to_spread_onto(){
 }
 
 void FireParticle::burn(){
+}
+
+TNTParticle::TNTParticle(World* world) : Particle(world) {
+}
+
+bool TNTParticle::isDirt() const {
+        return false;
+}
+
+bool TNTParticle::isGrass() const {
+        return false;
+}
+
+bool TNTParticle::isVoid() const {
+        return false;
+}
+
+bool TNTParticle::isWater() const {
+        return false;
+}
+
+bool TNTParticle::isMud() const {
+        return false;
+}
+
+bool TNTParticle::isStone() const {
+        return false;
+}
+
+bool TNTParticle::isWood() const {
+        return false;
+}
+
+bool TNTParticle::isFire() const {
+        return false;
+}
+
+bool TNTParticle::isTNT() const {
+        return true;
+}
+
+
+bool TNTParticle::dirt_can_push_through() const {
+        return false;
+}
+
+bool TNTParticle::can_pass_through_it(Particle* blocking_particle) {
+        return blocking_particle->tnt_can_pass_through_it();
+}
+
+bool TNTParticle::can_be_pushed_into_by_water() const {
+        return false;
+}
+
+bool TNTParticle::water_can_push_it_to_the_left() {
+        return false;
+}
+
+bool TNTParticle::water_can_push_it_to_the_right() {
+        return false;
+}
+
+int TNTParticle::water_to_the_left() {
+        return 0;
+}
+
+int TNTParticle::water_to_the_right() {
+        return 0;
+}
+
+int TNTParticle::water_from_to_the_left() {
+        return 0;
+}
+
+int TNTParticle::water_from_to_the_right() {
+        return 0;
+}
+
+void TNTParticle::accept(WorldVisitor& visitor) const {
+        visitor.visit_TNT_particle(*this);
+}
+
+void TNTParticle::step() {
+}
+
+void TNTParticle::particle_is_pushing_onto(Particle* particle) {
+}
+
+void TNTParticle::push_onto_dirt(DirtParticle* dirt_particle) {
+        world_is_in->solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(this, dirt_particle);
+}
+
+void TNTParticle::push_onto_void(VoidParticle* void_particle) {
+        Particle::push_onto_void(void_particle);
+}
+
+void TNTParticle::push_onto_water(WaterParticle* water_particle) {
+        world_is_in->solid_pushing_onto_water(this, water_particle);
+}
+
+
+void TNTParticle::push_onto_mud(MudParticle* mud_particle) {
+        world_is_in->solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(this, mud_particle);
+}
+
+void TNTParticle::push_onto_grass(GrassParticle* grass_particle) {
+        world_is_in->solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(this, grass_particle);
+}
+
+void TNTParticle::push_onto_stone(StoneParticle* stone_particle) {
+        world_is_in->solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(this, stone_particle);
+}
+
+void TNTParticle::push_onto_wood(WoodParticle* wood_particle) {
+        world_is_in->solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(this, wood_particle);
+}
+
+void TNTParticle::push_onto_fire(FireParticle* fire_particle) {
+}
+
+void TNTParticle::dirt_pushing_to_the_left(DirtParticle* dirt_particle) {
+}
+
+void TNTParticle::dirt_pushing_to_the_right(DirtParticle* dirt_particle) {
+}
+
+void TNTParticle::mud_pushing_to_the_left(MudParticle* mud_particle) {
+}
+
+void TNTParticle::mud_pushing_to_the_right(MudParticle* mud_particle) {
+}
+
+void TNTParticle::water_pushing_to_the_left(WaterParticle* water_particle) {
+}
+
+void TNTParticle::water_pushing_to_the_right(WaterParticle* water_particle) {
+}
+
+void TNTParticle::grass_trying_to_spread_onto() {
+}
+
+void TNTParticle::burn() {
 }

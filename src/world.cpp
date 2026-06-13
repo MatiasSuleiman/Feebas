@@ -87,6 +87,12 @@ void World::Create_fire_particle_at(int x, int y) {
   replace_particle_at(coordinate, std::make_unique<FireParticle>(this));
 }
 
+
+void World::Create_TNT_particle_at(int x, int y) {
+  Coordinate coordinate{x, y};
+  replace_particle_at(coordinate, std::make_unique<TNTParticle>(this));
+}
+
 bool World::there_is_dirt_particle_at(int x, int y) const {
   const Particle* particle = particle_at({x, y});
   return particle != nullptr && particle->isDirt();
@@ -125,6 +131,11 @@ bool World::there_is_wood_particle_at(int x, int y) const {
 bool World::there_is_fire_particle_at(int x, int y) const {
   const Particle* particle = particle_at({x, y});
   return particle != nullptr && particle->isFire();
+}
+
+bool World::there_is_TNT_particle_at(int x, int y) const {
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isTNT();
 }
 
 void World::make_particle_fall_to_the_left(Particle* particle, Particle* bottom_left_edge_particle) {
@@ -1391,18 +1402,18 @@ void World::particle_pushing_onto_void(Particle* particle, VoidParticle* void_pa
         move_particle_to(particle_iterator, new_coordinate);
 }
 
-void World::dirt_particle_pushing_onto_dirt(DirtParticle* pushing_dirt, DirtParticle* blocking_dirt){
-        ParticleIterator particle_iterator = this->iterator_of(pushing_dirt);
+void World::solid_particle_pushing_onto_another_solid_particle_it_can_fall_to_the_sides_to(Particle* pushing_solid, Particle* blocking_solid){
+        ParticleIterator particle_iterator = this->iterator_of(pushing_solid);
         if (particle_iterator == particles.end()) {
                 return;
         }
 
-        if (iterator_of(blocking_dirt) == particles.end()) {
+        if (iterator_of(blocking_solid) == particles.end()) {
                 return;
         }
 
         if (particle_iterator->second.speed.y == 0) {
-                particle_clash(pushing_dirt, blocking_dirt);
+                particle_clash(pushing_solid, blocking_solid);
                 return;
         }
 
@@ -1413,13 +1424,13 @@ void World::dirt_particle_pushing_onto_dirt(DirtParticle* pushing_dirt, DirtPart
                         particle_coordinates.second
                 };
 
-                Particle* particle_to_the_left = this->look_for_particle_to_the_left_of(pushing_dirt);
+                Particle* particle_to_the_left = this->look_for_particle_to_the_left_of(pushing_solid);
                 Particle* particle_underneath_to_the_left = this->look_for_particle_underneath(left_coordinates);
 
                 if(particle_to_the_left != nullptr && particle_underneath_to_the_left != nullptr &&
-                                particle_to_the_left->dirt_can_push_through() &&
-                                particle_underneath_to_the_left->dirt_can_push_through()){
-                        this->make_particle_fall_to_the_left(pushing_dirt, particle_underneath_to_the_left);
+                                pushing_solid->can_pass_through_it(particle_to_the_left) &&
+                                pushing_solid->can_pass_through_it(particle_underneath_to_the_left)){
+                        this->make_particle_fall_to_the_left(pushing_solid, particle_underneath_to_the_left);
                         return;
                 }
         }
@@ -1429,18 +1440,18 @@ void World::dirt_particle_pushing_onto_dirt(DirtParticle* pushing_dirt, DirtPart
                         particle_coordinates.first + 1,
                         particle_coordinates.second
                 };
-                Particle* particle_to_the_right = this->look_for_particle_to_the_right_of(pushing_dirt);
+                Particle* particle_to_the_right = this->look_for_particle_to_the_right_of(pushing_solid);
                 Particle* particle_underneath_to_the_right = this->look_for_particle_underneath(right_coordinates);
 
                 if(particle_to_the_right != nullptr && particle_underneath_to_the_right != nullptr &&
-                                particle_to_the_right->dirt_can_push_through() &&
-                                particle_underneath_to_the_right->dirt_can_push_through()){
-                        this->make_particle_fall_to_the_right(pushing_dirt, particle_underneath_to_the_right);
+                                pushing_solid->can_pass_through_it(particle_to_the_right) &&
+                                pushing_solid->can_pass_through_it(particle_underneath_to_the_right)){
+                        this->make_particle_fall_to_the_right(pushing_solid, particle_underneath_to_the_right);
                         return;
                 }
         }
 
-        reset_vertical_speed(pushing_dirt);
+        reset_vertical_speed(pushing_solid);
 }
 
 void World::wood_pushing_onto_water(WoodParticle* wood_particle, WaterParticle* water_particle){
@@ -1488,7 +1499,7 @@ void World::solid_pushing_onto_water(Particle* particle, WaterParticle* water_pa
         }
 
         const Coordinate water_coordinates = water_iterator->first;
-        const bool try_left_first = impact.x <= 0;
+        bool try_left_first = impact.x <= 0;
 
         WaterParticle* preferred_edge = try_left_first ?
                 left_water_edge(water_particle) :

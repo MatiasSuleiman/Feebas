@@ -6,7 +6,7 @@
 
 #include "world.hpp"
 
-TEST_CASE("test35 falling has a standard accelleration of 1 for all particles") {
+TEST_CASE("test31 falling has a standard accelleration of 1 for all particles") {
         World world;
         world.Create_dirt_particle_at(0,100);
 

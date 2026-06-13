@@ -20,6 +20,7 @@ class WorldChangesToJSONVisitor : public WorldVisitor {
         void visit_stone_particle(const StoneParticle& particle) override;
         void visit_wood_particle(const WoodParticle& particle) override;
         void visit_fire_particle(const FireParticle& particle) override;
+        void visit_TNT_particle(const TNTParticle& particle) override;
         std::string json_for(const std::vector<WorldCellChange>& changes);
 
  private:

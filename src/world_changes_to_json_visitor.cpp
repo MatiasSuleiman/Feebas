@@ -44,6 +44,10 @@ void WorldChangesToJSONVisitor::visit_fire_particle(const FireParticle&) {
         set_particle_type("FireParticle");
 }
 
+void WorldChangesToJSONVisitor::visit_TNT_particle(const TNTParticle&) {
+        set_particle_type("TNTParticle");
+}
+
 std::string WorldChangesToJSONVisitor::json_for(const std::vector<WorldCellChange>& changes) {
         output << "{\"revision\":" << world_revision << ",\"changes\":[";
 

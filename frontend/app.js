@@ -12,6 +12,7 @@ const colors = {
   StoneParticle: [190, 194, 198, 255],
   WoodParticle: [125, 53, 17, 255],
   FireParticle: [255, 143, 31, 255],
+  TNTParticle: [255, 0, 0, 255],
 };
 
 const fireColors = [
@@ -66,6 +67,11 @@ function particleLabel(particle) {
 
   if (particle === "fire") {
     return "Fire";
+  }
+
+
+  if (particle === "TNT") {
+    return "TNT";
   }
 
   return "Dirt";
@@ -256,6 +262,7 @@ function flushPendingCreateBatch() {
     stone: "/world/create-stone-particles",
     wood: "/world/create-wood-particles",
     fire: "/world/create-fire-particles",
+    TNT: "/world/create-TNT-particles",
   };
   const path = paths[particle] || paths.dirt;
   const cells = Array.from(pendingCreateCells).join(",");
