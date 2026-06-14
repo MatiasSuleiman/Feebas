@@ -1404,6 +1404,13 @@ void TNTParticle::accept(WorldVisitor& visitor) const {
 }
 
 void TNTParticle::step() {
+        if(this->is_ignited()){
+                steps_until_blowing_up--;
+        }
+        if(steps_until_blowing_up < 1){
+                world_is_in->explode(this);
+                return;
+        }
 }
 
 void TNTParticle::particle_is_pushing_onto(Particle* particle) {
@@ -1463,4 +1470,12 @@ void TNTParticle::grass_trying_to_spread_onto() {
 }
 
 void TNTParticle::burn() {
+        if(!is_ignited()){
+                steps_until_blowing_up--;
+                world_is_in->TNT_ignited(this);
+        }
+}
+
+bool TNTParticle::is_ignited() const {
+        return steps_until_blowing_up < 11;
 }

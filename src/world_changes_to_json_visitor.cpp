@@ -44,7 +44,12 @@ void WorldChangesToJSONVisitor::visit_fire_particle(const FireParticle&) {
         set_particle_type("FireParticle");
 }
 
-void WorldChangesToJSONVisitor::visit_TNT_particle(const TNTParticle&) {
+void WorldChangesToJSONVisitor::visit_TNT_particle(const TNTParticle& particle) {
+        if (particle.is_ignited()) {
+                set_particle_type("IgnitedTNTParticle");
+                return;
+        }
+
         set_particle_type("TNTParticle");
 }
 

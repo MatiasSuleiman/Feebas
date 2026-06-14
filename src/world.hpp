@@ -55,6 +55,7 @@ class World {
         void grass_spreads_onto(DirtParticle* dirt_particle);
         void fire_trying_to_spread(FireParticle* fire_particle);
         void fire_spreading_onto(Particle* particle);
+        void TNT_ignited(TNTParticle* tnt_particle);
         void Create_water_particle_at(int x, int y);
         bool there_is_water_particle_at(int x, int y) const;
         void Create_mud_particle_at(int x, int y);
@@ -67,6 +68,7 @@ class World {
         bool there_is_fire_particle_at(int x, int y) const;
         void Create_TNT_particle_at(int x, int y);
         bool there_is_TNT_particle_at(int x, int y) const;
+        bool there_is_ignited_TNT_particle_at(int x, int y) const;
 
         void water_particle_pushing_onto_void(WaterParticle* water_particle);
         void water_particle_pushing_onto_dirt(WaterParticle* water_particle, DirtParticle* dirt_particle);
@@ -98,6 +100,8 @@ class World {
         void crash_onto_wall(Particle* particle, int attempted_x, int attempted_y);
         void turn_dirt_into_mud(DirtParticle* dirt_particle);
         bool water_can_overflow(WaterParticle* water_particle);
+
+        void explode(TNTParticle* tnt_particle);
 
  private:
         using Coordinate = std::pair<int, int>;
@@ -168,6 +172,9 @@ class World {
         bool overflow_target_to_the_right_from(WaterParticle* water_particle, Coordinate& target_coordinate);
         bool make_water_overflow(WaterParticle* clashed_water, Vector impact);
         ParticleIterator iterator_of(Particle* particle);
+        bool explosion_offset_destroys_core(Vector offset) const;
+        bool explosion_offset_pushes_particle(Vector offset) const;
+        Vector explosion_force_for_offset(Vector offset) const;
         std::vector<Coordinate> coordinates_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);
         std::vector<Coordinate> coordinates_wide_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);
         std::vector<Coordinate> coordinates_tall_vector_passes_through_starting_at(Coordinate starting_point, Vector trayectory);

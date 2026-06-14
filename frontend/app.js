@@ -13,6 +13,7 @@ const colors = {
   WoodParticle: [125, 53, 17, 255],
   FireParticle: [255, 143, 31, 255],
   TNTParticle: [255, 0, 0, 255],
+  IgnitedTNTParticle: [255, 218, 46, 255],
 };
 
 const fireColors = [

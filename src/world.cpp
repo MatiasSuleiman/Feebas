@@ -1,6 +1,7 @@
 #include "world.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <cstdlib>
 #include <memory>
 #include <vector>
@@ -138,6 +139,11 @@ bool World::there_is_TNT_particle_at(int x, int y) const {
   return particle != nullptr && particle->isTNT();
 }
 
+bool World::there_is_ignited_TNT_particle_at(int x, int y) const {
+  const Particle* particle = particle_at({x, y});
+  return particle != nullptr && particle->isTNT() && particle->is_ignited();
+}
+
 void World::make_particle_fall_to_the_left(Particle* particle, Particle* bottom_left_edge_particle) {
         bottom_left_edge_particle->dirt_pushing_to_the_left(static_cast<DirtParticle*>(particle));
 }
@@ -155,26 +161,26 @@ void World::make_water_particle_fall_to_the_right(WaterParticle* water_particle,
 }
 
 void World::step() {
-        std::vector<Coordinate> particle_coordinates;
-        particle_coordinates.reserve(particles.size());
+        std::vector<Particle*> particles_to_step;
+        particles_to_step.reserve(particles.size());
 
         for (const auto& particle_entry : particles) {
-                particle_coordinates.push_back(particle_entry.first);
+                particles_to_step.push_back(particle_entry.second.particle.get());
         }
 
-        std::sort(particle_coordinates.begin(), particle_coordinates.end(),
-                [](Coordinate left, Coordinate right) {
+        std::sort(particles_to_step.begin(), particles_to_step.end(),
+                [this](Particle* left_particle, Particle* right_particle) {
+                        const Coordinate left = iterator_of(left_particle)->first;
+                        const Coordinate right = iterator_of(right_particle)->first;
                         if (left.second != right.second) {
                                 return left.second < right.second;
                         }
                         return left.first < right.first;
                 });
 
-        for (Coordinate coordinate : particle_coordinates) {
-                ParticleIterator iterator = particles.find(coordinate);
+        for (Particle* particle : particles_to_step) {
+                ParticleIterator iterator = iterator_of(particle);
                 if (iterator != particles.end()) {
-
-                        Particle* particle = iterator->second.particle.get();
                         apply_acceleration_to_speed(particle);
                         reset_acceleration(particle);
 
@@ -1944,6 +1950,15 @@ void World::fire_trying_to_spread(FireParticle* fire_particle){
         }
 }
 
+void World::TNT_ignited(TNTParticle* tnt_particle) {
+        ParticleIterator particle_iterator = this->iterator_of(tnt_particle);
+        if (particle_iterator == particles.end()) {
+                return;
+        }
+
+        record_change_at(particle_iterator->first, tnt_particle);
+}
+
 void World::fire_spreading_onto(Particle* particle){
         ParticleIterator particle_iterator = this->iterator_of(particle);
         if (particle_iterator == particles.end()) {
@@ -1964,4 +1979,98 @@ void World::fire_died(FireParticle* fire_particle){
         Coordinate particle_coordinate = particle_iterator->first;
         erase_particle(particle_iterator);
         record_change_at(particle_coordinate, &void_particle);
+}
+
+bool World::explosion_offset_destroys_core(Vector offset) const {
+        return std::max(std::abs(offset.x), std::abs(offset.y)) <= 1;
+}
+
+bool World::explosion_offset_pushes_particle(Vector offset) const {
+        const int horizontal_distance = std::abs(offset.x);
+        const int vertical_distance = std::abs(offset.y);
+        const int square_distance = std::max(horizontal_distance, vertical_distance);
+
+        if (square_distance == 2) {
+                return true;
+        }
+
+        if (horizontal_distance == 3 && vertical_distance <= 1) {
+                return true;
+        }
+
+        if (vertical_distance == 3 && horizontal_distance <= 1) {
+                return true;
+        }
+
+        return (horizontal_distance == 4 && vertical_distance == 0) ||
+                (vertical_distance == 4 && horizontal_distance == 0);
+}
+
+World::Vector World::explosion_force_for_offset(Vector offset) const {
+        const double distance = std::sqrt(static_cast<double>(offset.x * offset.x + offset.y * offset.y));
+        if (distance == 0.0) {
+                return {0, 0};
+        }
+
+        const double magnitude = 7.0 - distance;
+        return {
+                static_cast<int>((static_cast<double>(offset.x) / distance) * magnitude),
+                static_cast<int>((static_cast<double>(offset.y) / distance) * magnitude)
+        };
+}
+
+void World::explode(TNTParticle* tnt_particle) {
+        ParticleIterator tnt_iterator = iterator_of(tnt_particle);
+        if (tnt_iterator == particles.end()) {
+                return;
+        }
+
+        const Coordinate explosion_coordinate = tnt_iterator->first;
+        std::vector<Coordinate> core_coordinates;
+
+        for (int x_offset = -4; x_offset <= 4; ++x_offset) {
+                for (int y_offset = -4; y_offset <= 4; ++y_offset) {
+                        const Vector offset{x_offset, y_offset};
+                        const Coordinate target_coordinate{
+                                explosion_coordinate.first + x_offset,
+                                explosion_coordinate.second + y_offset
+                        };
+
+                        if (!coordinate_is_inside_world(target_coordinate)) {
+                                continue;
+                        }
+
+                        if (explosion_offset_destroys_core(offset)) {
+                                core_coordinates.push_back(target_coordinate);
+                                continue;
+                        }
+
+                        if (!explosion_offset_pushes_particle(offset)) {
+                                continue;
+                        }
+
+                        ParticleIterator target_iterator = particles.find(target_coordinate);
+                        if (target_iterator == particles.end()) {
+                                continue;
+                        }
+
+                        const Vector force = explosion_force_for_offset(offset);
+                        if (force.x == 0 && force.y == 0) {
+                                continue;
+                        }
+
+                        applyForce(target_iterator->second.particle.get(), force);
+                }
+        }
+
+        for (Coordinate core_coordinate : core_coordinates) {
+                ParticleIterator core_iterator = particles.find(core_coordinate);
+                if (core_iterator == particles.end()) {
+                        continue;
+                }
+
+                erase_particle(core_iterator);
+                record_change_at(core_coordinate, &void_particle);
+        }
+
 }

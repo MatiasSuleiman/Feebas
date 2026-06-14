@@ -72,6 +72,7 @@ class Particle {
                 virtual void grass_trying_to_spread_onto() = 0;
                 virtual void burn() = 0;
                 virtual void support(StoneParticle* stone_particle);
+                virtual bool is_ignited() const { return false; };
 
         protected:
                 World* world_is_in;
@@ -492,4 +493,8 @@ class TNTParticle : public Particle {
                 void water_pushing_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
                 void burn() override;
+                bool is_ignited() const override;
+
+        private:
+                int steps_until_blowing_up = 11;
 };
