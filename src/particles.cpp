@@ -408,6 +408,10 @@ void VoidParticle::grass_trying_to_spread_onto(){}
 
 void VoidParticle::burn(){}
 
+bool VoidParticle::has_friction() const {
+        return false;
+}
+
 GrassParticle::GrassParticle(World* world) : Particle(world) {
 }
 

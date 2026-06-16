@@ -685,11 +685,19 @@ void World::apply_friction_to(Particle* particle) {
                 return;
         }
 
+        Particle* particle_underneath = look_for_particle_underneath(particle);
+
+        const Coordinate particle_coordinates = particle_iterator->first;
         ParticleState& particle_state = particle_iterator->second;
-        if (particle_state.speed.x > 0) {
-                --particle_state.acceleration.x;
-        } else if (particle_state.speed.x < 0) {
-                ++particle_state.acceleration.x;
+
+        if (particle_coordinates.second == 0 || particle_underneath->has_friction()) {
+
+                if (particle_state.speed.x > 0) {
+                        --particle_state.acceleration.x;
+                } else if (particle_state.speed.x < 0) {
+                        ++particle_state.acceleration.x;
+                }
+
         }
 }
 
@@ -2012,7 +2020,7 @@ World::Vector World::explosion_force_for_offset(Vector offset) const {
                 return {0, 0};
         }
 
-        const double magnitude = 7.0 - distance;
+        const double magnitude = 9.0 - distance;
         return {
                 static_cast<int>((static_cast<double>(offset.x) / distance) * magnitude),
                 static_cast<int>((static_cast<double>(offset.y) / distance) * magnitude)
@@ -2059,7 +2067,10 @@ void World::explode(TNTParticle* tnt_particle) {
                                 continue;
                         }
 
-                        applyForce(target_iterator->second.particle.get(), force);
+                        Particle* particle = target_iterator->second.particle.get();
+                        particle->burn();
+                        applyForce(particle, force);
+
                 }
         }
 
@@ -2074,3 +2085,4 @@ void World::explode(TNTParticle* tnt_particle) {
         }
 
 }
+

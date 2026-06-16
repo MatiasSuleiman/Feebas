@@ -73,6 +73,7 @@ class Particle {
                 virtual void burn() = 0;
                 virtual void support(StoneParticle* stone_particle);
                 virtual bool is_ignited() const { return false; };
+                virtual bool has_friction() const {return true;}
 
         protected:
                 World* world_is_in;
@@ -168,7 +169,7 @@ class VoidParticle : public Particle {
                 void water_pushing_to_the_right(WaterParticle* water_particle) override;
                 void grass_trying_to_spread_onto() override;
                 void burn() override;
-
+                bool has_friction() const override;
 };
 
 class GrassParticle : public Particle {
